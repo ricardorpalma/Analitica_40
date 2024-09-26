@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Capítulo 9 Random Forest | Analítica de Datos 4.0</title>
+<meta name="author" content="Ricardo R. Palma">
+<meta name="description" content="Es una técnica que utiliza un conjunto de árboles predictores. Cada árbol depende de un vector randómicamiente generado y con árboles que tienen entre sí como factor común una misma estructura...">
+<meta name="generator" content="bookdown 0.33 with bs4_book()">
+<meta property="og:title" content="Capítulo 9 Random Forest | Analítica de Datos 4.0">
+<meta property="og:type" content="book">
+<meta property="og:description" content="Es una técnica que utiliza un conjunto de árboles predictores. Cada árbol depende de un vector randómicamiente generado y con árboles que tienen entre sí como factor común una misma estructura...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Capítulo 9 Random Forest | Analítica de Datos 4.0">
+<meta name="twitter:description" content="Es una técnica que utiliza un conjunto de árboles predictores. Cada árbol depende de un vector randómicamiente generado y con árboles que tienen entre sí como factor común una misma estructura...">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.4.2/transition.js"></script><script src="libs/bs3compat-0.4.2/tabs.js"></script><script src="libs/bs3compat-0.4.2/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="libs/htmlwidgets-1.6.2/htmlwidgets.js"></script><script src="libs/d3-5.7.0/d3-5.15.0.min.js"></script><script src="libs/d3-regression-1.3.4/d3-regression.min.js"></script><link href="libs/scatterPlotMatrix-0.2/scatterPlotMatrix.css" rel="stylesheet">
+<script src="libs/scatterPlotMatrix-0.2/spm-msp.js"></script><script src="libs/scatterPlotMatrix-binding-0.2.0/scatterPlotMatrix.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+<style type="text/css">
+    /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+        }
+    .hanging div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }
+  </style>
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">Analítica de Datos 4.0</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html">Acerca de este curso</a></li>
+<li><a class="" href="data_analitics.html"><span class="header-section-number">1</span> Data_Analitics</a></li>
+<li><a class="" href="patrones-de-asociaci%C3%B3n.html"><span class="header-section-number">2</span> Patrones de asociación</a></li>
+<li><a class="" href="clasificaci%C3%B3n-con-knn.html"><span class="header-section-number">3</span> Clasificación con KNN</a></li>
+<li><a class="" href="algoritmo-del-vecino-m%C3%A1s-pr%C3%B3ximo.html"><span class="header-section-number">4</span> Algoritmo del vecino más próximo</a></li>
+<li><a class="" href="agrupaci%C3%B3n-k-means.html"><span class="header-section-number">5</span> Agrupación K-Means</a></li>
+<li><a class="" href="clusterizaci%C3%B3n.html"><span class="header-section-number">6</span> Clusterización</a></li>
+<li><a class="" href="redes-neuronales-artificiales.html"><span class="header-section-number">7</span> Redes Neuronales artificiales</a></li>
+<li><a class="" href="%C3%A1rboles-de-decisi%C3%B3n.html"><span class="header-section-number">8</span> Árboles de decisión</a></li>
+<li><a class="active" href="random-forest.html"><span class="header-section-number">9</span> Random Forest</a></li>
+<li><a class="" href="bibliograf%C3%ADa.html">Bibliografía</a></li>
+</ul>
+
+        <div class="book-extra">
+          <p><a id="book-repo" href="https://ricardorpalma.github.io/MCSC_Op_4.0/Cap_1/">View book source <i class="fab fa-gitlab"></i></a></p>
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="random-forest" class="section level1" number="9">
+<h1>
+<span class="header-section-number">Capítulo 9</span> Random Forest<a class="anchor" aria-label="anchor" href="#random-forest"><i class="fas fa-link"></i></a>
+</h1>
+<p>Es una técnica que utiliza un conjunto de árboles predictores.
+Cada árbol depende de un vector randómicamiente generado y con árboles que tienen entre sí como factor común una misma estructura (Breiman 2001.1). Su uso implica construir múltiples árboles de decisión que conforman un bosque o colección de árboles. Cada bosque a su vez utiliza un técnica de votación para hacer la clasificación y la solución más botada es la que se toma por cierta o verdadera.</p>
+<p>Utilizaremos la función ramdonForest() de la biblioteca que lleva el mismo nombre para construir el modelo del bosque. Especificaremos que en el bosque hay 500 árboles que serán informados en el parámetro <strong>ntree</strong> que le pasaremos a la función.</p>
+<p><strong><em>Nota:</em></strong> La salida de la función nos proporcionará una muestra “out-of-bag” más conocida como <strong>OOB</strong> como resultado, que es una muestra reforzada aproximada del conjunto de datos de entrenamiento.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Moosavian et al., &lt;span&gt;“Comparison of Two Classifiers; &lt;span&gt;K&lt;/span&gt;-Nearest Neighbor and Artificial Neural Network, for Fault Diagnosis on a Main Engine Journal-Bearing.”&lt;/span&gt;&lt;/p&gt;"><sup>28</sup></a></span></p>
+<div id="bibliografía-recomendada-6" class="section level2" number="9.1">
+<h2>
+<span class="header-section-number">9.1</span> Bibliografía recomendada<a class="anchor" aria-label="anchor" href="#bibliograf%C3%ADa-recomendada-6"><i class="fas fa-link"></i></a>
+</h2>
+<div class="float">
+<img src="images/book_14.png" alt="Ciencia de datos con R"><div class="figcaption">Ciencia de datos con R</div>
+</div>
+<p>Creación del conjunto de datos</p>
+<div class="sourceCode" id="cb179"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://www.stat.berkeley.edu/~breiman/RandomForests/">randomForest</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; randomForest 4.7-1.1</span></span>
+<span><span class="co">#&gt; Type rfNews() to see new features/changes/bug fixes.</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/topepo/caret/">caret</a></span><span class="op">)</span> <span class="co"># Tienen la función de partición </span></span>
+<span><span class="co">#&gt; Loading required package: ggplot2</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Attaching package: 'ggplot2'</span></span>
+<span><span class="co">#&gt; The following object is masked from 'package:randomForest':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     margin</span></span>
+<span><span class="co">#&gt; Loading required package: lattice</span></span>
+<span><span class="va">in.Train.C</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/createDataPartition.html">createDataPartition</a></span> <span class="op">(</span><span class="va">iris</span><span class="op">$</span><span class="va">Species</span>, p<span class="op">=</span><span class="fl">0.7</span> , list<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<p>Separación de índices</p>
+<div class="sourceCode" id="cb180"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">training</span> <span class="op">&lt;-</span> <span class="va">iris</span><span class="op">[</span><span class="va">in.Train.C</span>, <span class="op">]</span></span>
+<span><span class="va">test</span> <span class="op">&lt;-</span> <span class="va">iris</span><span class="op">[</span><span class="op">-</span><span class="va">in.Train.C</span>, <span class="op">]</span></span></code></pre></div>
+<div class="sourceCode" id="cb181"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">831</span><span class="op">)</span></span>
+<span><span class="va">rf.mod.C</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/randomForest/man/randomForest.html">randomForest</a></span><span class="op">(</span><span class="va">Species</span><span class="op">~</span><span class="va">.</span>, data<span class="op">=</span> <span class="va">training</span>, importance<span class="op">=</span><span class="cn">TRUE</span>, proximity<span class="op">=</span><span class="cn">TRUE</span>, ntree<span class="op">=</span><span class="fl">500</span> <span class="op">)</span></span>
+<span><span class="va">rf.mod.C</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Call:</span></span>
+<span><span class="co">#&gt;  randomForest(formula = Species ~ ., data = training, importance = TRUE,      proximity = TRUE, ntree = 500) </span></span>
+<span><span class="co">#&gt;                Type of random forest: classification</span></span>
+<span><span class="co">#&gt;                      Number of trees: 500</span></span>
+<span><span class="co">#&gt; No. of variables tried at each split: 2</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;         OOB estimate of  error rate: 5.71%</span></span>
+<span><span class="co">#&gt; Confusion matrix:</span></span>
+<span><span class="co">#&gt;            setosa versicolor virginica class.error</span></span>
+<span><span class="co">#&gt; setosa         35          0         0  0.00000000</span></span>
+<span><span class="co">#&gt; versicolor      0         33         2  0.05714286</span></span>
+<span><span class="co">#&gt; virginica       0          4        31  0.11428571</span></span></code></pre></div>
+<p>Podemos observar una representación multidimensional escalada de la proximidad de los conjuntos clasificados según la muestra o <strong>MDS</strong>.</p>
+<div class="sourceCode" id="cb182"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/randomForest/man/MDSplot.html">MDSplot</a></span><span class="op">(</span><span class="va">rf.mod.C</span>, <span class="va">training</span><span class="op">$</span><span class="va">Species</span>, xlab<span class="op">=</span><span class="st">"CP1"</span>, ylab<span class="op">=</span><span class="st">"CP2"</span>, main<span class="op">=</span><span class="st">"MDS basada en randmo forest"</span><span class="op">)</span> </span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html">legend</a></span><span class="op">(</span><span class="st">"bottomleft"</span>, title <span class="op">=</span> <span class="st">"Especies"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"setosa"</span>,<span class="st">"versicolor"</span>,<span class="st">"virginica"</span><span class="op">)</span>, fill<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"red"</span>,<span class="st">"green"</span>,<span class="st">"blue"</span><span class="op">)</span>, horiz<span class="op">=</span><span class="cn">TRUE</span>, cex<span class="op">=</span><span class="fl">0.45</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="08-randomforest_files/figure-html/unnamed-chunk-4-1.png" width="672"></div>
+<p>Podemos también ver las variables que más peso tienen en la clasificación del randmoforest construyendo un gráfica de <em>“promedio de exactitud decreciente”</em>
+o <strong>Average Decrease Accuracy (ADC)</strong> y otro gráfico semejante denominado <em>“promedio decreciente de nodo de impuridad”</em> o <strong>Mean Decrease in Node Impurity </strong> esta técnica coincide con el análisis del <strong>índice Gini</strong>. Ambos gráficos deben producir</p>
+<div class="sourceCode" id="cb183"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/randomForest/man/varImpPlot.html">varImpPlot</a></span><span class="op">(</span><span class="va">rf.mod.C</span>, main<span class="op">=</span><span class="st">"Grafico de Importancia Relativa"</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="08-randomforest_files/figure-html/unnamed-chunk-5-1.png" width="672"></div>
+</div>
+<div id="medición-de-la-preformance" class="section level2" number="9.2">
+<h2>
+<span class="header-section-number">9.2</span> Medición de la preformance<a class="anchor" aria-label="anchor" href="#medici%C3%B3n-de-la-preformance"><i class="fas fa-link"></i></a>
+</h2>
+<p>Cada vez que implementamos un método lo indicado es proceder a evaluar que tan bueno son los resultados que podemos obtener y esto podemos hacerlo con el ser de entrenamiento o con el de verificación.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Zheng Chai and Chunhui Zhao, &lt;span&gt;“Enhanced Random Forest with Concurrent Analysis of Static and Dynamic Nodes for Industrial Fault Classification,”&lt;/span&gt; &lt;em&gt;IEEE Transactions on Industrial Informatics&lt;/em&gt; 16, no. 1 (2019): 54–66.&lt;/p&gt;"><sup>29</sup></a></span></p>
+<div class="sourceCode" id="cb184"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">rf.train</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">rf.mod.C</span>, <span class="va">training</span><span class="op">[</span> ,<span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span>, type <span class="op">=</span> <span class="st">"class"</span><span class="op">)</span></span>
+<span><span class="va">rf.train.confmat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/confusionMatrix.html">confusionMatrix</a></span><span class="op">(</span><span class="va">rf.train</span>, <span class="va">training</span><span class="op">$</span><span class="va">Species</span>, mode<span class="op">=</span><span class="st">"prec_recall"</span><span class="op">)</span></span>
+<span><span class="va">rf.train.confmat</span></span>
+<span><span class="co">#&gt; Confusion Matrix and Statistics</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;             Reference</span></span>
+<span><span class="co">#&gt; Prediction   setosa versicolor virginica</span></span>
+<span><span class="co">#&gt;   setosa         35          0         0</span></span>
+<span><span class="co">#&gt;   versicolor      0         35         0</span></span>
+<span><span class="co">#&gt;   virginica       0          0        35</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Overall Statistics</span></span>
+<span><span class="co">#&gt;                                      </span></span>
+<span><span class="co">#&gt;                Accuracy : 1          </span></span>
+<span><span class="co">#&gt;                  95% CI : (0.9655, 1)</span></span>
+<span><span class="co">#&gt;     No Information Rate : 0.3333     </span></span>
+<span><span class="co">#&gt;     P-Value [Acc &gt; NIR] : &lt; 2.2e-16  </span></span>
+<span><span class="co">#&gt;                                      </span></span>
+<span><span class="co">#&gt;                   Kappa : 1          </span></span>
+<span><span class="co">#&gt;                                      </span></span>
+<span><span class="co">#&gt;  Mcnemar's Test P-Value : NA         </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Statistics by Class:</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;                      Class: setosa Class: versicolor</span></span>
+<span><span class="co">#&gt; Precision                   1.0000            1.0000</span></span>
+<span><span class="co">#&gt; Recall                      1.0000            1.0000</span></span>
+<span><span class="co">#&gt; F1                          1.0000            1.0000</span></span>
+<span><span class="co">#&gt; Prevalence                  0.3333            0.3333</span></span>
+<span><span class="co">#&gt; Detection Rate              0.3333            0.3333</span></span>
+<span><span class="co">#&gt; Detection Prevalence        0.3333            0.3333</span></span>
+<span><span class="co">#&gt; Balanced Accuracy           1.0000            1.0000</span></span>
+<span><span class="co">#&gt;                      Class: virginica</span></span>
+<span><span class="co">#&gt; Precision                      1.0000</span></span>
+<span><span class="co">#&gt; Recall                         1.0000</span></span>
+<span><span class="co">#&gt; F1                             1.0000</span></span>
+<span><span class="co">#&gt; Prevalence                     0.3333</span></span>
+<span><span class="co">#&gt; Detection Rate                 0.3333</span></span>
+<span><span class="co">#&gt; Detection Prevalence           0.3333</span></span>
+<span><span class="co">#&gt; Balanced Accuracy              1.0000</span></span></code></pre></div>
+</div>
+<div id="prueba-de-performance-utilizando-dataset-de-prueba" class="section level2" number="9.3">
+<h2>
+<span class="header-section-number">9.3</span> Prueba de performance utilizando dataset de prueba<a class="anchor" aria-label="anchor" href="#prueba-de-performance-utilizando-dataset-de-prueba"><i class="fas fa-link"></i></a>
+</h2>
+<p>Al utilizar el dataset de prueba y tener las columna previamente etiquetadas podemos medir la eficacia del algoritmo utilizado</p>
+<div class="sourceCode" id="cb185"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">rf.test</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">rf.mod.C</span>, <span class="va">test</span><span class="op">[</span> ,<span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span>, type <span class="op">=</span> <span class="st">"class"</span><span class="op">)</span></span>
+<span><span class="va">rf.test.confmat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/confusionMatrix.html">confusionMatrix</a></span><span class="op">(</span><span class="va">rf.test</span>, <span class="va">test</span><span class="op">$</span><span class="va">Species</span>, mode<span class="op">=</span><span class="st">"prec_recall"</span><span class="op">)</span></span>
+<span><span class="va">rf.test.confmat</span></span>
+<span><span class="co">#&gt; Confusion Matrix and Statistics</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;             Reference</span></span>
+<span><span class="co">#&gt; Prediction   setosa versicolor virginica</span></span>
+<span><span class="co">#&gt;   setosa         15          0         0</span></span>
+<span><span class="co">#&gt;   versicolor      0         14         2</span></span>
+<span><span class="co">#&gt;   virginica       0          1        13</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Overall Statistics</span></span>
+<span><span class="co">#&gt;                                          </span></span>
+<span><span class="co">#&gt;                Accuracy : 0.9333         </span></span>
+<span><span class="co">#&gt;                  95% CI : (0.8173, 0.986)</span></span>
+<span><span class="co">#&gt;     No Information Rate : 0.3333         </span></span>
+<span><span class="co">#&gt;     P-Value [Acc &gt; NIR] : &lt; 2.2e-16      </span></span>
+<span><span class="co">#&gt;                                          </span></span>
+<span><span class="co">#&gt;                   Kappa : 0.9            </span></span>
+<span><span class="co">#&gt;                                          </span></span>
+<span><span class="co">#&gt;  Mcnemar's Test P-Value : NA             </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Statistics by Class:</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;                      Class: setosa Class: versicolor</span></span>
+<span><span class="co">#&gt; Precision                   1.0000            0.8750</span></span>
+<span><span class="co">#&gt; Recall                      1.0000            0.9333</span></span>
+<span><span class="co">#&gt; F1                          1.0000            0.9032</span></span>
+<span><span class="co">#&gt; Prevalence                  0.3333            0.3333</span></span>
+<span><span class="co">#&gt; Detection Rate              0.3333            0.3111</span></span>
+<span><span class="co">#&gt; Detection Prevalence        0.3333            0.3556</span></span>
+<span><span class="co">#&gt; Balanced Accuracy           1.0000            0.9333</span></span>
+<span><span class="co">#&gt;                      Class: virginica</span></span>
+<span><span class="co">#&gt; Precision                      0.9286</span></span>
+<span><span class="co">#&gt; Recall                         0.8667</span></span>
+<span><span class="co">#&gt; F1                             0.8966</span></span>
+<span><span class="co">#&gt; Prevalence                     0.3333</span></span>
+<span><span class="co">#&gt; Detection Rate                 0.2889</span></span>
+<span><span class="co">#&gt; Detection Prevalence           0.3111</span></span>
+<span><span class="co">#&gt; Balanced Accuracy              0.9167</span></span></code></pre></div>
+</div>
+<div id="ajuste-del-modelo-2" class="section level2" number="9.4">
+<h2>
+<span class="header-section-number">9.4</span> Ajuste del modelo<a class="anchor" aria-label="anchor" href="#ajuste-del-modelo-2"><i class="fas fa-link"></i></a>
+</h2>
+<p>Comparando los resultados anteriores podemos estimar la exactitud del modelo (Accuracy).</p>
+<div class="sourceCode" id="cb186"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span><span class="op">(</span><span class="va">rf.train.confmat</span><span class="op">$</span><span class="va">overall</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="va">rf.test.confmat</span><span class="op">$</span><span class="va">overall</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="co">#&gt;       Accuracy</span></span>
+<span><span class="co">#&gt; [1,] 1.0000000</span></span>
+<span><span class="co">#&gt; [2,] 0.9333333</span></span></code></pre></div>
+<p>Como vemos la exactitud con el set de entrenamiento es del 100% y con el de prueba es bastante aceptable 97%.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;CH Bryan Liu et al., &lt;span&gt;“Generalising Random Forest Parameter Optimisation to Include Stability and Cost,”&lt;/span&gt; in &lt;em&gt;Machine &lt;span&gt;Learning&lt;/span&gt; and &lt;span&gt;Knowledge&lt;/span&gt; &lt;span&gt;Discovery&lt;/span&gt; in &lt;span&gt;Databases&lt;/span&gt;: &lt;span&gt;European&lt;/span&gt; &lt;span&gt;Conference&lt;/span&gt;, &lt;span&gt;ECML&lt;/span&gt; &lt;span&gt;PKDD&lt;/span&gt; 2017, &lt;span&gt;Skopje&lt;/span&gt;, &lt;span&gt;Macedonia&lt;/span&gt;, &lt;span&gt;September&lt;/span&gt; 18–22, 2017, &lt;span&gt;Proceedings&lt;/span&gt;, &lt;span&gt;Part&lt;/span&gt; &lt;span&gt;III&lt;/span&gt; 10&lt;/em&gt; (Springer, 2017), 102–13.&lt;/p&gt;"><sup>30</sup></a></span></p>
+</div>
+<div id="buenas-prácticas-en-randomforest" class="section level2" number="9.5">
+<h2>
+<span class="header-section-number">9.5</span> Buenas prácticas en RandomForest<a class="anchor" aria-label="anchor" href="#buenas-pr%C3%A1cticas-en-randomforest"><i class="fas fa-link"></i></a>
+</h2>
+<div id="ajuste-del-número-de-árboles-en-el-bosque" class="section level3" number="9.5.1">
+<h3>
+<span class="header-section-number">9.5.1</span> Ajuste del número de árboles en el bosque<a class="anchor" aria-label="anchor" href="#ajuste-del-n%C3%BAmero-de-%C3%A1rboles-en-el-bosque"><i class="fas fa-link"></i></a>
+</h3>
+<pre><code>    * number of trees **(ntree)**</code></pre>
+<p>Deberían existir suficiente árboles como para garantizar la estabilidad de la soluciones, pero no tanto como para que el costo computacional crezca más allá de la capacidad de la computadora que utilizas. Te darás cuenta si estás utilizando muchos árboles porque no llegarás al resultado y tendrás la pantalla azul que aparece cuando Windows se cuelga.
+Puede ayudarte el gráfico de abajo que muestre la nivel de clase de error, que se estabiliza para este ejemplo con 100 árboles. Luego cualquier modelo semejante que tenga resultados mejores debería utilizar más árboles que estos.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Yunus Santur, Mehmet Karaköse, and Erhan Akin, &lt;span&gt;“Random Forest Based Diagnosis Approach for Rail Fault Inspection in Railways,”&lt;/span&gt; in &lt;em&gt;2016 &lt;span&gt;National&lt;/span&gt; &lt;span&gt;Conference&lt;/span&gt; on &lt;span&gt;Electrical&lt;/span&gt;, &lt;span&gt;Electronics&lt;/span&gt; and &lt;span&gt;Biomedical&lt;/span&gt; &lt;span&gt;Engineering&lt;/span&gt; (&lt;span&gt;ELECO&lt;/span&gt;)&lt;/em&gt; (IEEE, 2016), 745–50.&lt;/p&gt;"><sup>31</sup></a></span></p>
+<div class="sourceCode" id="cb188"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">rf.mod.C</span>, main <span class="op">=</span> <span class="st">"Class-Leve Error vs Número de Árboles"</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="08-randomforest_files/figure-html/unnamed-chunk-9-1.png" width="672"></div>
+<pre><code>  * Ajuste de variables aleatoriamente muestreadas </code></pre>
+<p><span class="math display">\[ mtry = \sqrt {n_{features}} \]</span></p>
+<p>Por defecto **mtry* tomará el valor entero más próximo a la raíz cuadrada de la cantidad de columnas que tenga el dataset.</p>
+<div class="sourceCode" id="cb190"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">831</span><span class="op">)</span></span>
+<span><span class="va">tuneR</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/randomForest/man/tuneRF.html">tuneRF</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">training</span><span class="op">[</span> ,<span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span>, y<span class="op">=</span><span class="va">training</span><span class="op">$</span><span class="va">Species</span>, ntreeTry <span class="op">=</span> <span class="fl">500</span>, stepFactor <span class="op">=</span> <span class="fl">1.5</span><span class="op">)</span></span>
+<span><span class="co">#&gt; mtry = 2  OOB error = 5.71% </span></span>
+<span><span class="co">#&gt; Searching left ...</span></span>
+<span><span class="co">#&gt; Searching right ...</span></span>
+<span><span class="co">#&gt; mtry = 3     OOB error = 5.71% </span></span>
+<span><span class="co">#&gt; 0 0.05</span></span></code></pre></div>
+<div class="inline-figure"><img src="08-randomforest_files/figure-html/unnamed-chunk-10-1.png" width="672"></div>
+
+</div>
+</div>
+</div>
+
+  <div class="chapter-nav">
+<div class="prev"><a href="%C3%A1rboles-de-decisi%C3%B3n.html"><span class="header-section-number">8</span> Árboles de decisión</a></div>
+<div class="next"><a href="bibliograf%C3%ADa.html">Bibliografía</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#random-forest"><span class="header-section-number">9</span> Random Forest</a></li>
+<li><a class="nav-link" href="#bibliograf%C3%ADa-recomendada-6"><span class="header-section-number">9.1</span> Bibliografía recomendada</a></li>
+<li><a class="nav-link" href="#medici%C3%B3n-de-la-preformance"><span class="header-section-number">9.2</span> Medición de la preformance</a></li>
+<li><a class="nav-link" href="#prueba-de-performance-utilizando-dataset-de-prueba"><span class="header-section-number">9.3</span> Prueba de performance utilizando dataset de prueba</a></li>
+<li><a class="nav-link" href="#ajuste-del-modelo-2"><span class="header-section-number">9.4</span> Ajuste del modelo</a></li>
+<li>
+<a class="nav-link" href="#buenas-pr%C3%A1cticas-en-randomforest"><span class="header-section-number">9.5</span> Buenas prácticas en RandomForest</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#ajuste-del-n%C3%BAmero-de-%C3%A1rboles-en-el-bosque"><span class="header-section-number">9.5.1</span> Ajuste del número de árboles en el bosque</a></li></ul>
+</li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+<li><a id="book-source" href="https://ricardorpalma.github.io/MCSC_Op_4.0/Cap_1//blob/master/08-randomforest.Rmd">View source <i class="fab fa-gitlab"></i></a></li>
+          <li><a id="book-edit" href="https://ricardorpalma.github.io/MCSC_Op_4.0/Cap_1//edit/master/08-randomforest.Rmd">Edit this page <i class="fab fa-gitlab"></i></a></li>
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>Analítica de Datos 4.0</strong>" was written by Ricardo R. Palma. It was last built on 2023-06-30.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer><!-- dynamically load mathjax for compatibility with self-contained --><script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script><script type="text/x-mathjax-config">const popovers = document.querySelectorAll('a.footnote-ref[data-toggle="popover"]');
+for (let popover of popovers) {
+  const div = document.createElement('div');
+  div.setAttribute('style', 'position: absolute; top: 0, left:0; width:0, height:0, overflow: hidden; visibility: hidden;');
+  div.innerHTML = popover.getAttribute('data-content');
+
+  var has_math = div.querySelector("span.math");
+  if (has_math) {
+    document.body.appendChild(div);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
+    MathJax.Hub.Queue(function() {
+      popover.setAttribute('data-content', div.innerHTML);
+      document.body.removeChild(div);
+    })
+  }
+}
+</script>
+</body>
+</html>

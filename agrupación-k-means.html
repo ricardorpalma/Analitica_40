@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Capítulo 5 Agrupación K-Means | Analítica de Datos 4.0</title>
+<meta name="author" content="Ricardo R. Palma">
+<meta name="description" content="En el enfoque de partición de R, las observaciones se dividen en grupos K y se reorganizan para formar los grupos más cohesivos posibles de acuerdo con un criterio dado. Hay dos métodos: K-medias...">
+<meta name="generator" content="bookdown 0.33 with bs4_book()">
+<meta property="og:title" content="Capítulo 5 Agrupación K-Means | Analítica de Datos 4.0">
+<meta property="og:type" content="book">
+<meta property="og:description" content="En el enfoque de partición de R, las observaciones se dividen en grupos K y se reorganizan para formar los grupos más cohesivos posibles de acuerdo con un criterio dado. Hay dos métodos: K-medias...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Capítulo 5 Agrupación K-Means | Analítica de Datos 4.0">
+<meta name="twitter:description" content="En el enfoque de partición de R, las observaciones se dividen en grupos K y se reorganizan para formar los grupos más cohesivos posibles de acuerdo con un criterio dado. Hay dos métodos: K-medias...">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.4.2/transition.js"></script><script src="libs/bs3compat-0.4.2/tabs.js"></script><script src="libs/bs3compat-0.4.2/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="libs/htmlwidgets-1.6.2/htmlwidgets.js"></script><script src="libs/d3-5.7.0/d3-5.15.0.min.js"></script><script src="libs/d3-regression-1.3.4/d3-regression.min.js"></script><link href="libs/scatterPlotMatrix-0.2/scatterPlotMatrix.css" rel="stylesheet">
+<script src="libs/scatterPlotMatrix-0.2/spm-msp.js"></script><script src="libs/scatterPlotMatrix-binding-0.2.0/scatterPlotMatrix.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+<style type="text/css">
+    /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+        }
+    .hanging div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }
+  </style>
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">Analítica de Datos 4.0</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html">Acerca de este curso</a></li>
+<li><a class="" href="data_analitics.html"><span class="header-section-number">1</span> Data_Analitics</a></li>
+<li><a class="" href="patrones-de-asociaci%C3%B3n.html"><span class="header-section-number">2</span> Patrones de asociación</a></li>
+<li><a class="" href="clasificaci%C3%B3n-con-knn.html"><span class="header-section-number">3</span> Clasificación con KNN</a></li>
+<li><a class="" href="algoritmo-del-vecino-m%C3%A1s-pr%C3%B3ximo.html"><span class="header-section-number">4</span> Algoritmo del vecino más próximo</a></li>
+<li><a class="active" href="agrupaci%C3%B3n-k-means.html"><span class="header-section-number">5</span> Agrupación K-Means</a></li>
+<li><a class="" href="clusterizaci%C3%B3n.html"><span class="header-section-number">6</span> Clusterización</a></li>
+<li><a class="" href="redes-neuronales-artificiales.html"><span class="header-section-number">7</span> Redes Neuronales artificiales</a></li>
+<li><a class="" href="%C3%A1rboles-de-decisi%C3%B3n.html"><span class="header-section-number">8</span> Árboles de decisión</a></li>
+<li><a class="" href="random-forest.html"><span class="header-section-number">9</span> Random Forest</a></li>
+<li><a class="" href="bibliograf%C3%ADa.html">Bibliografía</a></li>
+</ul>
+
+        <div class="book-extra">
+          <p><a id="book-repo" href="https://ricardorpalma.github.io/MCSC_Op_4.0/Cap_1/">View book source <i class="fab fa-gitlab"></i></a></p>
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="agrupación-k-means" class="section level1" number="5">
+<h1>
+<span class="header-section-number">Capítulo 5</span> Agrupación K-Means<a class="anchor" aria-label="anchor" href="#agrupaci%C3%B3n-k-means"><i class="fas fa-link"></i></a>
+</h1>
+<p>En el enfoque de partición de R, las observaciones se dividen en grupos K y se reorganizan para formar los grupos más cohesivos posibles de acuerdo con un criterio dado. Hay dos métodos: K-medias y partición alrededor de mediodes <em>PAM</em>. En este artículo, basado en el capítulo 16 de R in Action, Second Edition, el autor Rob Kabacoff analiza la agrupación de K-means.</p>
+<p>El algoritmo k-means podría utilizarse en el contexto del mantenimiento industrial.</p>
+<p>Supongamos que tienes un conjunto de datos históricos sobre el rendimiento y la vida útil de diferentes componentes de maquinaria en una planta industrial. Estos datos pueden incluir variables como la temperatura de funcionamiento, la vibración, el consumo de energía, la carga de trabajo, entre otros.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Jun Lin and Lan Liu, &lt;span&gt;“Research on Security Detection and Data Analysis for Industrial Internet,”&lt;/span&gt; in &lt;em&gt;2019 &lt;span&gt;IEEE&lt;/span&gt; 19th International Conference on Software Quality, Reliability and Security Companion (&lt;span&gt;QRS&lt;/span&gt;-&lt;span&gt;C&lt;/span&gt;)&lt;/em&gt; (IEEE, 2019), 466–70.&lt;/p&gt;"><sup>13</sup></a></span></p>
+<p>El objetivo sería utilizar el algoritmo k-means para identificar grupos o clusters de componentes que tengan un comportamiento similar en términos de su rendimiento y vida útil. Esto puede ayudar a los ingenieros y operarios de mantenimiento a entender mejor el comportamiento de los componentes y tomar decisiones más informadas sobre el mantenimiento preventivo o la sustitución de los mismos.</p>
+<p>El proceso podría seguir los siguientes pasos:</p>
+<ul>
+<li><p>Preparación de datos: Reunir y preparar los datos históricos relevantes de los componentes de maquinaria. Esto puede incluir la recopilación de variables, como la temperatura, la vibración, el consumo de energía, etc., para cada componente en diferentes momentos.</p></li>
+<li><p>Selección de características: Identificar las características relevantes para el análisis. Puedes realizar un análisis de correlación o utilizar el conocimiento experto para seleccionar las variables más significativas que pueden influir en el rendimiento y la vida útil de los componentes.</p></li>
+<li><p>Normalización de datos: Normalizar los datos para asegurarse de que todas las características tengan la misma escala y rango. Esto es importante para que todas las variables tengan una influencia equitativa en el algoritmo k-means.</p></li>
+<li><p>Elección del número de clusters (k): Determinar el número de clusters que deseas encontrar. Puedes utilizar métodos como el método del codo (elbow method) o la silueta (silhouette) para evaluar diferentes valores de k y seleccionar el más adecuado.</p></li>
+<li><p>Aplicación del algoritmo k-means: Ejecutar el algoritmo k-means en los datos normalizados, agrupando los componentes en los k clusters determinados. El algoritmo asignará cada componente al cluster más cercano en función de las características seleccionadas.</p></li>
+<li><p>Análisis e interpretación de los resultados: Analizar los resultados del clustering para identificar patrones y comportamientos similares entre los componentes. Puedes examinar las características de cada cluster para entender qué factores pueden estar relacionados con un mayor rendimiento o una vida útil más larga. Esto puede ayudar a tomar decisiones de mantenimiento más precisas y eficientes.</p></li>
+</ul>
+<p>Atención que este es solo un ejemplo de cómo se podría aplicar el algoritmo k-means en el mantenimiento industrial. La selección de variables, la normalización de datos y la interpretación de los resultados pueden variar según el contexto y los objetivos específicos del estudio de mantenimiento. No es lo mismo utilizar esta técnica para mantenimiento en la industria alimenticia que en la industria nuclear. Cada campo de aplicación debería respetar los procedimiento Hazop sugerido por las normas y buenas prácticas recomendadas.</p>
+<div id="bibliografía-recomendada-2" class="section level2" number="5.1">
+<h2>
+<span class="header-section-number">5.1</span> Bibliografía recomendada<a class="anchor" aria-label="anchor" href="#bibliograf%C3%ADa-recomendada-2"><i class="fas fa-link"></i></a>
+</h2>
+<div class="float">
+<img src="https://images.manning.com/720/960/resize/book/1/82c427b-3e8b-423d-b49f-948cebab0a0b/kabacoff2_cover.png" alt="R In Action por Robert Kabacoff"><div class="figcaption">R In Action por Robert Kabacoff</div>
+</div>
+<p>PAM es por lejos el más comunmente utilizado, pero existen otros como <em>CLARA</em>, <em>MELISSA</em>, y otros tantos que se adaptan a diferentes problemas. En el caso de la localización de las balizas de satélites como el ARSAT e incluso de los nano satélites como el FossaSat-1 (cubesat) este método es muy utilizado. Ver <a href="https://www.hackster.io/news/fossasat-1-an-open-source-satellite-for-the-internet-of-things-7f31cab00ef5">Satelites para internet de las cosas Industriales</a>.
+Todas estas tecnologías de satélites de bajo costo están permitiendo mejorar la competitividad y eficiencia de las cadenas de suministros en todo el planeta. En especial esta tipo de tecnología sirve para ver el deterioro de las propiedades alimenticias de cargas en línea y en tiempo real. A pesar de ello en gran parte de latinoamérica y caribe estas tecnología aún están por descubrirse.
+Se han utilizado varios métodos del <strong>skimr()</strong> (un sustituto de <strong>summary()</strong> ), pero el paquete que utilizaremos para esta tarea específica será <strong>cluster()</strong> paquete exitosamente para problemas de congestion de puertos y misiones de vacunación post covid de el paquete : <a href="https://cran.r-project.org/web/views/Cluster.html">ClusteR</a></p>
+</div>
+<div id="agrupación-k-means-1" class="section level2" number="5.2">
+<h2>
+<span class="header-section-number">5.2</span> Agrupación K-means<a class="anchor" aria-label="anchor" href="#agrupaci%C3%B3n-k-means-1"><i class="fas fa-link"></i></a>
+</h2>
+<p>El método de partición más común es el análisis de clúster de K-means. Conceptualmente, el algoritmo K-means:</p>
+<ol style="list-style-type: decimal">
+<li>Selecciona K centroides (K filas elegidas al azar)</li>
+<li>Asigna cada punto de datos a su centroide más cercano</li>
+<li>Recalcula los centroides como el promedio de todos los puntos de datos en un clúster (es decir, los centroides son vectores medios de p-longitud, donde p es el número de variables)</li>
+<li>Asigna puntos de datos a sus centroides más cercanos</li>
+<li>Continúa los pasos 3 y 4 hasta que no se reasignen las observaciones o se alcance el número máximo de iteraciones (R usa 10 como valor predeterminado).<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Aguinaldo Bezerra et al., &lt;span&gt;“Extracting Value from Industrial Alarms and Events: &lt;span&gt;A&lt;/span&gt; Data-Driven Approach Based on Exploratory Data Analysis,”&lt;/span&gt; &lt;em&gt;Sensors&lt;/em&gt; 19, no. 12 (2019): 2772.&lt;/p&gt;"><sup>14</sup></a></span>
+</li>
+</ol>
+<p>Los detalles de implementación de este enfoque pueden variar. R utiliza un algoritmo eficiente de Hartigan y Wong (1979) que divide las observaciones en grupos k de tal manera que la suma de cuadrados de las observaciones a sus centros de clúster asignados es un mínimo. Esto significa que en los pasos 2 y 4, cada observación se asigna al clúster con el valor más pequeño de:</p>
+<p><span class="math display">\[ SS_{(k)}= \sum_{i=1}^n  \sum_{j=1}^p( x_{ij}- \bar{x_{kj}}) ²\]</span>
+Donde <span class="math inline">\(k\)</span> es un cluster, <span class="math inline">\(x_{ij}\)</span> es el valor de la variable <span class="math inline">\(j ésima\)</span> para la observación <span class="math inline">\(iésima\)</span>, y <span class="math inline">\(\bar{x}_{kj}\)</span> es la media de la variable j_{p} para el cluster k_i .</p>
+<p>La agrupación en clústeres K-means puede manejar conjuntos de datos más grandes que los enfoques de clúster jerárquicos. Además, las observaciones no se comprometen permanentemente a un grupo. Se mueven cuando al hacerlo mejora la solución general. Sin embargo, el uso de medioides implica que todas las variables deben ser continuas y el enfoque puede verse gravemente afectado por valores atípicos. Por ejemplo k-means no es aplicable para localización de pallets en sistemas de posición flotante si dentro del edificio hay muros o barreras que impiden la circulación entre racks.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Thomas A. Runkler, &lt;em&gt;Data Analytics&lt;/em&gt; (Springer, 2020).&lt;/p&gt;"><sup>15</sup></a></span></p>
+<p>También se desempeñan mal en presencia de grupos no convexos (por ejemplo, en forma de U o celdas de manufactura flexible). El formato de la función K-means en R es:</p>
+<p><span class="math display">\[kmeans(x, centros)\]</span>
+donde <span class="math inline">\(x\)</span> es un conjunto de datos numéricos (matriz o data.frame) y <span class="math inline">\(centros\)</span> es el número de clústeres a extraer. Es un parámetro arbitrario que elijo y con el que pruebo o simulo alternativas. Por su bajo costo computacional converge razonablemente bien a una solución.</p>
+<p>La función devuelve la pertenencia de casos al clúster, los centroides, las sumas de cuadrados (dentro, entre y total) y los tamaños de cada clúster.</p>
+<p>Dado que el análisis de clústeres de K-medias comienza con k centroides elegidos al azar, se puede obtener una solución diferente cada vez que se invoca la función.
+Utilice la función set.seed() para garantizar que los resultados sean reproducibles, en especial si publicas en papers.</p>
+<p><img src="images/K-means_convergence.gif" alt="Convergencia de K-Means(Gentileza de Wikicommons )">
+Además, este enfoque de agrupación puede ser sensible a la selección inicial de centroides. La función <span class="math inline">\(kmeans()\)</span> tiene una opción o parámetro <span class="math inline">\(nstart\)</span> que intenta varias configuraciones iniciales e informa sobre la mejor. Por ejemplo, agregando <span class="math inline">\(nstart=25\)</span> generará 25 configuraciones iniciales. Este enfoque a menudo muy recomendable. A diferencia de la agrupación jerárquica, la agrupación en clústeres de <em>K-means</em> requiere que el número de clústeres que se extraer se especifique de antemano. Una vez más, el paquete <em>NbClust()</em> se puede utilizar como guía para estimar un número inicial de clusters acpetable. Además, puede ser útil un gráfico de las sumas totales de cuadrados dentro de los grupos contra el número de clústeres en una solución de K-means. Una curva en el gráfico puede sugerirnos el número apropiado de clústeres.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Wendong Li et al., &lt;span&gt;“Nonparametric Monitoring of Multivariate Data via &lt;span&gt;KNN&lt;/span&gt; Learning,”&lt;/span&gt; &lt;em&gt;International Journal of Production Research&lt;/em&gt; 59, no. 20 (2021): 6311–26.&lt;/p&gt;"><sup>16</sup></a></span></p>
+<p>El gráfico se puede producir mediante la siguiente función.</p>
+<p>A efectos de sostener un estilo único en los gráficos amenudo conviene crear una función de ploteo en la que repito los parámetros.</p>
+<div class="sourceCode" id="cb95"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">wssplot</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">nc</span><span class="op">=</span><span class="fl">15</span>, <span class="va">seed</span><span class="op">=</span><span class="fl">1234</span><span class="op">)</span><span class="op">{</span></span>
+<span>               <span class="va">wss</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span><span class="op">-</span><span class="fl">1</span><span class="op">)</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">data</span>,<span class="fl">2</span>,<span class="va">var</span><span class="op">)</span><span class="op">)</span></span>
+<span>               <span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">2</span><span class="op">:</span><span class="va">nc</span><span class="op">)</span><span class="op">{</span></span>
+<span>                    <span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="va">seed</span><span class="op">)</span></span>
+<span>                    <span class="va">wss</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/kmeans.html">kmeans</a></span><span class="op">(</span><span class="va">data</span>, centers<span class="op">=</span><span class="va">i</span><span class="op">)</span><span class="op">$</span><span class="va">withinss</span><span class="op">)</span><span class="op">}</span></span>
+<span>                <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="va">nc</span>, <span class="va">wss</span>, type<span class="op">=</span><span class="st">"b"</span>, xlab<span class="op">=</span><span class="st">"Número de Clusters"</span>,</span>
+<span>                     ylab<span class="op">=</span><span class="st">"Suma cuadrática dentro de cada grupo"</span><span class="op">)</span><span class="op">}</span></span></code></pre></div>
+<p>El parámetro de datos es el conjunto de datos numéricos que se analizará, <span class="math inline">\(nc\)</span> es el número máximo de grupos a considerar y la semilla es una semilla de número aleatorio. Aquí, se analiza un conjunto de datos que contiene 13 mediciones químicas en 178 muestras de vino italiano. Los datos provienen originalmente del Repositorio de Aprendizaje Automático de la UCI (<a href="http://www.ics.uci.edu/~mlearn/MLRepository.html" class="uri">http://www.ics.uci.edu/~mlearn/MLRepository.html</a>), pero también se pueden acceder a ellos a través del paquete de <a href="https://cran.r-project.org/web/packages/rattle.data/index.html">rattle</a>.
+En el listado se proporciona un análisis de conglomerado de K-means para los datos.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;NC Santosh Kumar et al., &lt;span&gt;“Colour Based &lt;span&gt;Object&lt;/span&gt; &lt;span&gt;Classification&lt;/span&gt; Using &lt;span&gt;KNN&lt;/span&gt; &lt;span&gt;Algorithm&lt;/span&gt; for &lt;span&gt;Industrial&lt;/span&gt; &lt;span&gt;Applications&lt;/span&gt;,”&lt;/span&gt; in &lt;em&gt;2022 &lt;span&gt;International&lt;/span&gt; &lt;span&gt;Conference&lt;/span&gt; on &lt;span&gt;Automation&lt;/span&gt;, &lt;span&gt;Computing&lt;/span&gt; and &lt;span&gt;Renewable&lt;/span&gt; &lt;span&gt;Systems&lt;/span&gt; (&lt;span&gt;ICACRS&lt;/span&gt;)&lt;/em&gt; (IEEE, 2022), 1110–15.&lt;/p&gt;"><sup>17</sup></a></span></p>
+<div class="sourceCode" id="cb96"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://readr.tidyverse.org">readr</a></span><span class="op">)</span></span>
+<span><span class="va">wine</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="st">"http://archive.ics.uci.edu/ml/machine-learning-databases/wine/wine.data"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Rows: 177 Columns: 14</span></span>
+<span><span class="co">#&gt; ── Column specification ────────────────────────────────────</span></span>
+<span><span class="co">#&gt; Delimiter: ","</span></span>
+<span><span class="co">#&gt; dbl (14): 1, 14.23, 1.71, 2.43, 15.6, 127, 2.8, 3.06, .2...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ℹ Use `spec()` to retrieve the full column specification for this data.</span></span>
+<span><span class="co">#&gt; ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</span></span></code></pre></div>
+<p><em>Dimensiones:</em></p>
+<div class="inline-table"><table class="table table-sm">
+<thead><tr class="header">
+<th>columna</th>
+<th>Propiedad</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>1)</td>
+<td>Alcohol</td>
+</tr>
+<tr class="even">
+<td>2)</td>
+<td>Ácido Malico</td>
+</tr>
+<tr class="odd">
+<td>3)</td>
+<td>Cenizas</td>
+</tr>
+<tr class="even">
+<td>4)</td>
+<td>Alcalinidad de las cenizas</td>
+</tr>
+<tr class="odd">
+<td>5)</td>
+<td>Magnecio</td>
+</tr>
+<tr class="even">
+<td>6)</td>
+<td>Fenoles Totales</td>
+</tr>
+<tr class="odd">
+<td>7)</td>
+<td>Flavonoides</td>
+</tr>
+<tr class="even">
+<td>8)</td>
+<td>Fenoles no flavonoides</td>
+</tr>
+<tr class="odd">
+<td>9)</td>
+<td>Proantocianinas</td>
+</tr>
+<tr class="even">
+<td>10)</td>
+<td>Intensidad de Color</td>
+</tr>
+<tr class="odd">
+<td>11)</td>
+<td>Tinte</td>
+</tr>
+<tr class="even">
+<td>12)</td>
+<td>OD280/OD315 de vinos diluídos</td>
+</tr>
+<tr class="odd">
+<td>13)</td>
+<td>Prolina</td>
+</tr>
+</tbody>
+</table></div>
+<div class="sourceCode" id="cb97"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">nombres</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span> <span class="st">"Type"</span>, </span>
+<span>  <span class="st">"Alcohol"</span>,</span>
+<span><span class="st">"Ácido Malico"</span>,</span>
+<span> <span class="st">"Cenizas"</span>,</span>
+<span><span class="st">"Alcalinidad de las cenizas"</span>  ,</span>
+<span> <span class="st">"Magnecio"</span>,</span>
+<span><span class="st">"Fenoles Totales"</span>, </span>
+<span> <span class="st">"Flavonoides"</span> ,</span>
+<span><span class="st">"Fenoles no flavonoides"</span>, </span>
+<span> <span class="st">"Proantocianinas"</span> ,</span>
+<span>    <span class="st">"Intensidad de Color"</span>, </span>
+<span>    <span class="st">"Tinte"</span>,</span>
+<span>    <span class="st">"OD280/OD315 de vinos diluídos"</span>,</span>
+<span><span class="st">"Prolina"</span>                <span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">wine</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">nombres</span></span></code></pre></div>
+<p>Generaremos un reporte exploratorio automático con la biblioteca skim</p>
+<div class="sourceCode" id="cb98"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/skimr/">skimr</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://docs.ropensci.org/skimr/reference/skim.html">skim</a></span><span class="op">(</span><span class="va">wine</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-table"><table class="table table-sm">
+<caption>
+<span id="tab:unnamed-chunk-4">Table 5.1: </span>Data summary</caption>
+<tbody>
+<tr class="odd">
+<td align="left">Name</td>
+<td align="left">wine</td>
+</tr>
+<tr class="even">
+<td align="left">Number of rows</td>
+<td align="left">177</td>
+</tr>
+<tr class="odd">
+<td align="left">Number of columns</td>
+<td align="left">14</td>
+</tr>
+<tr class="even">
+<td align="left">_______________________</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Column type frequency:</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">numeric</td>
+<td align="left">14</td>
+</tr>
+<tr class="odd">
+<td align="left">________________________</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Group variables</td>
+<td align="left">None</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Variable type: numeric</strong></p>
+<div class="inline-table"><table style="width:100%;" class="table table-sm">
+<colgroup>
+<col width="27%">
+<col width="9%">
+<col width="12%">
+<col width="6%">
+<col width="6%">
+<col width="6%">
+<col width="6%">
+<col width="6%">
+<col width="6%">
+<col width="7%">
+<col width="5%">
+</colgroup>
+<thead><tr class="header">
+<th align="left">skim_variable</th>
+<th align="right">n_missing</th>
+<th align="right">complete_rate</th>
+<th align="right">mean</th>
+<th align="right">sd</th>
+<th align="right">p0</th>
+<th align="right">p25</th>
+<th align="right">p50</th>
+<th align="right">p75</th>
+<th align="right">p100</th>
+<th align="left">hist</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">Type</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1.94</td>
+<td align="right">0.77</td>
+<td align="right">1.00</td>
+<td align="right">1.00</td>
+<td align="right">2.00</td>
+<td align="right">3.00</td>
+<td align="right">3.00</td>
+<td align="left">▆▁▇▁▆</td>
+</tr>
+<tr class="even">
+<td align="left">Alcohol</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">12.99</td>
+<td align="right">0.81</td>
+<td align="right">11.03</td>
+<td align="right">12.36</td>
+<td align="right">13.05</td>
+<td align="right">13.67</td>
+<td align="right">14.83</td>
+<td align="left">▂▇▇▇▃</td>
+</tr>
+<tr class="odd">
+<td align="left">Ácido Malico</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">2.34</td>
+<td align="right">1.12</td>
+<td align="right">0.74</td>
+<td align="right">1.60</td>
+<td align="right">1.87</td>
+<td align="right">3.10</td>
+<td align="right">5.80</td>
+<td align="left">▇▅▂▂▁</td>
+</tr>
+<tr class="even">
+<td align="left">Cenizas</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">2.37</td>
+<td align="right">0.28</td>
+<td align="right">1.36</td>
+<td align="right">2.21</td>
+<td align="right">2.36</td>
+<td align="right">2.56</td>
+<td align="right">3.23</td>
+<td align="left">▁▂▇▅▁</td>
+</tr>
+<tr class="odd">
+<td align="left">Alcalinidad de las cenizas</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">19.52</td>
+<td align="right">3.34</td>
+<td align="right">10.60</td>
+<td align="right">17.20</td>
+<td align="right">19.50</td>
+<td align="right">21.50</td>
+<td align="right">30.00</td>
+<td align="left">▁▆▇▃▁</td>
+</tr>
+<tr class="even">
+<td align="left">Magnecio</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">99.59</td>
+<td align="right">14.17</td>
+<td align="right">70.00</td>
+<td align="right">88.00</td>
+<td align="right">98.00</td>
+<td align="right">107.00</td>
+<td align="right">162.00</td>
+<td align="left">▅▇▃▁▁</td>
+</tr>
+<tr class="odd">
+<td align="left">Fenoles Totales</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">2.29</td>
+<td align="right">0.63</td>
+<td align="right">0.98</td>
+<td align="right">1.74</td>
+<td align="right">2.35</td>
+<td align="right">2.80</td>
+<td align="right">3.88</td>
+<td align="left">▅▇▇▇▁</td>
+</tr>
+<tr class="even">
+<td align="left">Flavonoides</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">2.02</td>
+<td align="right">1.00</td>
+<td align="right">0.34</td>
+<td align="right">1.20</td>
+<td align="right">2.13</td>
+<td align="right">2.86</td>
+<td align="right">5.08</td>
+<td align="left">▆▆▇▂▁</td>
+</tr>
+<tr class="odd">
+<td align="left">Fenoles no flavonoides</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0.36</td>
+<td align="right">0.12</td>
+<td align="right">0.13</td>
+<td align="right">0.27</td>
+<td align="right">0.34</td>
+<td align="right">0.44</td>
+<td align="right">0.66</td>
+<td align="left">▃▇▅▃▂</td>
+</tr>
+<tr class="even">
+<td align="left">Proantocianinas</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1.59</td>
+<td align="right">0.57</td>
+<td align="right">0.41</td>
+<td align="right">1.25</td>
+<td align="right">1.55</td>
+<td align="right">1.95</td>
+<td align="right">3.58</td>
+<td align="left">▃▇▆▂▁</td>
+</tr>
+<tr class="odd">
+<td align="left">Intensidad de Color</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">5.05</td>
+<td align="right">2.32</td>
+<td align="right">1.28</td>
+<td align="right">3.21</td>
+<td align="right">4.68</td>
+<td align="right">6.20</td>
+<td align="right">13.00</td>
+<td align="left">▇▇▃▂▁</td>
+</tr>
+<tr class="even">
+<td align="left">Tinte</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0.96</td>
+<td align="right">0.23</td>
+<td align="right">0.48</td>
+<td align="right">0.78</td>
+<td align="right">0.96</td>
+<td align="right">1.12</td>
+<td align="right">1.71</td>
+<td align="left">▅▇▇▃▁</td>
+</tr>
+<tr class="odd">
+<td align="left">OD280/OD315 de vinos diluídos</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">2.60</td>
+<td align="right">0.71</td>
+<td align="right">1.27</td>
+<td align="right">1.93</td>
+<td align="right">2.78</td>
+<td align="right">3.17</td>
+<td align="right">4.00</td>
+<td align="left">▆▃▆▇▂</td>
+</tr>
+<tr class="even">
+<td align="left">Prolina</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">745.10</td>
+<td align="right">314.88</td>
+<td align="right">278.00</td>
+<td align="right">500.00</td>
+<td align="right">672.00</td>
+<td align="right">985.00</td>
+<td align="right">1680.00</td>
+<td align="left">▇▇▅▃▁</td>
+</tr>
+</tbody>
+</table></div>
+<p>Procederemos a escalar el dataset, que es un poco menos eficiente que normalizar, pero es más rápido y nos muestra algunas de las herramientas de la biblioteca <strong>skimr</strong>.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Xiao-long Chen et al., &lt;span&gt;“Evidential &lt;span&gt;KNN&lt;/span&gt;-Based Condition Monitoring and Early Warning Method with Applications in Power Plant,”&lt;/span&gt; &lt;em&gt;Neurocomputing&lt;/em&gt; 315 (2018): 18–32.&lt;/p&gt;"><sup>18</sup></a></span></p>
+<div class="sourceCode" id="cb99"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/scale.html">scale</a></span><span class="op">(</span><span class="va">wine</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span> </span>
+<span><span class="fu">wssplot</span><span class="op">(</span><span class="va">df</span><span class="op">)</span>     </span></code></pre></div>
+<div class="inline-figure"><img src="04-kmeans_files/figure-html/unnamed-chunk-5-1.png" width="672"></div>
+<p>Cargaremos la biblioteca <strong>NbClust()</strong> para usar el método kmeasn que ella proporciona.</p>
+<div class="sourceCode" id="cb100"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://sites.google.com/site/malikacharrad/research/nbclust-package">NbClust</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1234</span><span class="op">)</span></span>
+<span><span class="va">nc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/NbClust/man/NbClust.html">NbClust</a></span><span class="op">(</span><span class="va">df</span>, min.nc<span class="op">=</span><span class="fl">2</span>, max.nc<span class="op">=</span><span class="fl">15</span>, method<span class="op">=</span><span class="st">"kmeans"</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="04-kmeans_files/figure-html/unnamed-chunk-6-1.png" width="672"></div>
+<pre><code>#&gt; *** : The Hubert index is a graphical method of determining the number of clusters.
+#&gt;                 In the plot of Hubert index, we seek a significant knee that corresponds to a 
+#&gt;                 significant increase of the value of the measure i.e the significant peak in Hubert
+#&gt;                 index second differences plot. 
+#&gt; </code></pre>
+<div class="inline-figure"><img src="04-kmeans_files/figure-html/unnamed-chunk-6-2.png" width="672"></div>
+<pre><code>#&gt; *** : The D index is a graphical method of determining the number of clusters. 
+#&gt;                 In the plot of D index, we seek a significant knee (the significant peak in Dindex
+#&gt;                 second differences plot) that corresponds to a significant increase of the value of
+#&gt;                 the measure. 
+#&gt;  
+#&gt; ******************************************************************* 
+#&gt; * Among all indices:                                                
+#&gt; * 1 proposed 2 as the best number of clusters 
+#&gt; * 19 proposed 3 as the best number of clusters 
+#&gt; * 1 proposed 9 as the best number of clusters 
+#&gt; * 2 proposed 15 as the best number of clusters 
+#&gt; 
+#&gt;                    ***** Conclusion *****                            
+#&gt;  
+#&gt; * According to the majority rule, the best number of clusters is  3 
+#&gt;  
+#&gt;  
+#&gt; *******************************************************************
+table(nc$Best.n[1,])
+#&gt; 
+#&gt;  0  1  2  3  9 15 
+#&gt;  2  1  1 19  1  2</code></pre>
+<p>Dado que las variables varían en rango, se estandarizan antes de la agrupación (función <span class="math inline">\(scale()\)</span>) es muy importante utiulizarla ya que esta biblioteca es muy sensible al error si no se aplica normalizado.</p>
+<p>A continuación, el número de clústeres se determina mediante las funciones <em>wwsplot()</em> y <span class="math inline">\(NbClust()\)</span> . La Figura indica que hay una clara caída en la suma de cuadrados dentro de los grupos cuando se pasa de 1 a 3 grupos. Después de tres clústeres, esta disminución disminuye, lo que sugiere que una solución de 3 clústeres puede ser una buena opción para los datos.</p>
+<p>En la siguiente figura, 14 de los 24 criterios proporcionados por el paquete <span class="math inline">\(NbClust\)</span> sugieren una solución de 3 clústeres.</p>
+<p>Tenga en cuenta que no se pueden calcular los 30 criterios para cada conjunto de datos. Se obtiene una solución final de clúster con la función kmeans() y se imprimen los centroides de clúster.</p>
+<p>Dado que los centroides proporcionados por la función se basan en datos estandarizados, la función <span class="math inline">\(aggregate()\)</span> se utiliza junto con las pertenencias al clúster para determinar las medias variables para cada clúster en la métrica original (o desescalando).</p>
+<div class="sourceCode" id="cb103"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/barplot.html">barplot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">nc</span><span class="op">$</span><span class="va">Best.n</span><span class="op">[</span><span class="fl">1</span>,<span class="op">]</span><span class="op">)</span>, </span>
+<span>          xlab<span class="op">=</span><span class="st">"Numer of Clusters"</span>, ylab<span class="op">=</span><span class="st">"Number of Criteria"</span>,</span>
+<span>          main<span class="op">=</span><span class="st">"Number of Clusters Chosen by 26 Criteria"</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="04-kmeans_files/figure-html/unnamed-chunk-7-1.png" width="672"></div>
+<p>¿Cuantas muestras hay en cada grupo?</p>
+<div class="sourceCode" id="cb104"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1234</span><span class="op">)</span></span>
+<span><span class="va">fit.km</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/kmeans.html">kmeans</a></span><span class="op">(</span><span class="va">df</span>, <span class="fl">3</span>, nstart<span class="op">=</span><span class="fl">25</span><span class="op">)</span>                           <span class="co">#3</span></span>
+<span><span class="va">fit.km</span><span class="op">$</span><span class="va">size</span></span>
+<span><span class="co">#&gt; [1] 61 65 51</span></span></code></pre></div>
+<p><em>Dónde estan los centroides?</em></p>
+<div class="sourceCode" id="cb105"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">fit.km</span><span class="op">$</span><span class="va">centers</span>  </span>
+<span><span class="co">#&gt;      Alcohol Ácido Malico    Cenizas</span></span>
+<span><span class="co">#&gt; 1  0.8333649   -0.3013131  0.3661731</span></span>
+<span><span class="co">#&gt; 2 -0.9183253   -0.3953334 -0.4905017</span></span>
+<span><span class="co">#&gt; 3  0.1736447    0.8642504  0.1871775</span></span>
+<span><span class="co">#&gt;   Alcalinidad de las cenizas    Magnecio Fenoles Totales</span></span>
+<span><span class="co">#&gt; 1                 -0.6065538  0.56922228      0.88768039</span></span>
+<span><span class="co">#&gt; 2                  0.1637039 -0.48321576     -0.07114136</span></span>
+<span><span class="co">#&gt; 3                  0.5168437 -0.06497127     -0.97106500</span></span>
+<span><span class="co">#&gt;   Flavonoides Fenoles no flavonoides Proantocianinas</span></span>
+<span><span class="co">#&gt; 1  0.98016451            -0.56173008      0.57583669</span></span>
+<span><span class="co">#&gt; 2  0.02658937            -0.03709561      0.06509498</span></span>
+<span><span class="co">#&gt; 3 -1.20624204             0.71915195     -0.77171004</span></span>
+<span><span class="co">#&gt;   Intensidad de Color      Tinte</span></span>
+<span><span class="co">#&gt; 1           0.1702296  0.4753467</span></span>
+<span><span class="co">#&gt; 2          -0.8955790  0.4614076</span></span>
+<span><span class="co">#&gt; 3           0.9378162 -1.1566204</span></span>
+<span><span class="co">#&gt;   OD280/OD315 de vinos diluídos    Prolina</span></span>
+<span><span class="co">#&gt; 1                     0.7753334  1.1296451</span></span>
+<span><span class="co">#&gt; 2                     0.2823571 -0.7460740</span></span>
+<span><span class="co">#&gt; 3                    -1.2872265 -0.4002655</span></span></code></pre></div>
+<p>Mira con detenimiento los valores entregados por <span class="math display">\[fit$(...)\]</span></p>
+<div class="sourceCode" id="cb106"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">fit.km</span><span class="op">$</span><span class="va">centers</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="04-kmeans_files/figure-html/unnamed-chunk-10-1.png" width="672"></div>
+<p><em>Matriz de confusión</em></p>
+<div class="sourceCode" id="cb107"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">ct.km</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">wine</span><span class="op">$</span><span class="va">Type</span>, <span class="va">fit.km</span><span class="op">$</span><span class="va">cluster</span><span class="op">)</span></span>
+<span><span class="va">ct.km</span>  </span>
+<span><span class="co">#&gt;    </span></span>
+<span><span class="co">#&gt;      1  2  3</span></span>
+<span><span class="co">#&gt;   1 58  0  0</span></span>
+<span><span class="co">#&gt;   2  3 65  3</span></span>
+<span><span class="co">#&gt;   3  0  0 48</span></span></code></pre></div>
+<p>Como podemos ver se nos ha indicado que es muy probable que existan <strong>3 categorías</strong> o grupos en los que podemos clasificar o etiquetar este dataset.
+La matriz de confusión es muy buena.</p>
+
+</div>
+</div>
+
+  <div class="chapter-nav">
+<div class="prev"><a href="algoritmo-del-vecino-m%C3%A1s-pr%C3%B3ximo.html"><span class="header-section-number">4</span> Algoritmo del vecino más próximo</a></div>
+<div class="next"><a href="clusterizaci%C3%B3n.html"><span class="header-section-number">6</span> Clusterización</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#agrupaci%C3%B3n-k-means"><span class="header-section-number">5</span> Agrupación K-Means</a></li>
+<li><a class="nav-link" href="#bibliograf%C3%ADa-recomendada-2"><span class="header-section-number">5.1</span> Bibliografía recomendada</a></li>
+<li><a class="nav-link" href="#agrupaci%C3%B3n-k-means-1"><span class="header-section-number">5.2</span> Agrupación K-means</a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+<li><a id="book-source" href="https://ricardorpalma.github.io/MCSC_Op_4.0/Cap_1//blob/master/04-kmeans.Rmd">View source <i class="fab fa-gitlab"></i></a></li>
+          <li><a id="book-edit" href="https://ricardorpalma.github.io/MCSC_Op_4.0/Cap_1//edit/master/04-kmeans.Rmd">Edit this page <i class="fab fa-gitlab"></i></a></li>
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>Analítica de Datos 4.0</strong>" was written by Ricardo R. Palma. It was last built on 2023-06-30.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer><!-- dynamically load mathjax for compatibility with self-contained --><script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script><script type="text/x-mathjax-config">const popovers = document.querySelectorAll('a.footnote-ref[data-toggle="popover"]');
+for (let popover of popovers) {
+  const div = document.createElement('div');
+  div.setAttribute('style', 'position: absolute; top: 0, left:0; width:0, height:0, overflow: hidden; visibility: hidden;');
+  div.innerHTML = popover.getAttribute('data-content');
+
+  var has_math = div.querySelector("span.math");
+  if (has_math) {
+    document.body.appendChild(div);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
+    MathJax.Hub.Queue(function() {
+      popover.setAttribute('data-content', div.innerHTML);
+      document.body.removeChild(div);
+    })
+  }
+}
+</script>
+</body>
+</html>

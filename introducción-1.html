@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Chapter 4 Introducción | A Minimal Book Example</title>
+<meta name="author" content="John Doe">
+<meta name="description" content="A lo largo de este curso desarrollaremos una serie de tópicos que son novedosos y omnipresentes en la II. Muchos de ellos han estado presente en el pasado, tales como los métodos estadísticos....">
+<meta name="generator" content="bookdown 0.33 with bs4_book()">
+<meta property="og:title" content="Chapter 4 Introducción | A Minimal Book Example">
+<meta property="og:type" content="book">
+<meta property="og:description" content="A lo largo de este curso desarrollaremos una serie de tópicos que son novedosos y omnipresentes en la II. Muchos de ellos han estado presente en el pasado, tales como los métodos estadísticos....">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Chapter 4 Introducción | A Minimal Book Example">
+<meta name="twitter:description" content="A lo largo de este curso desarrollaremos una serie de tópicos que son novedosos y omnipresentes en la II. Muchos de ellos han estado presente en el pasado, tales como los métodos estadísticos....">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.4.2/transition.js"></script><script src="libs/bs3compat-0.4.2/tabs.js"></script><script src="libs/bs3compat-0.4.2/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="libs/htmlwidgets-1.6.2/htmlwidgets.js"></script><script src="libs/d3-5.7.0/d3-5.15.0.min.js"></script><script src="libs/d3-regression-1.3.4/d3-regression.min.js"></script><link href="libs/scatterPlotMatrix-0.2/scatterPlotMatrix.css" rel="stylesheet">
+<script src="libs/scatterPlotMatrix-0.2/spm-msp.js"></script><script src="libs/scatterPlotMatrix-binding-0.2.0/scatterPlotMatrix.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">A Minimal Book Example</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html"><span class="header-section-number">1</span> About</a></li>
+<li><a class="" href="introducci%C3%B3n.html"><span class="header-section-number">2</span> Introducción</a></li>
+<li><a class="" href="repaso-de-estad%C3%ADstica.html"><span class="header-section-number">3</span> Repaso de Estadística</a></li>
+<li><a class="active" href="introducci%C3%B3n-1.html"><span class="header-section-number">4</span> Introducción</a></li>
+<li><a class="" href="clasificaci%C3%B3n-con-knn.html"><span class="header-section-number">5</span> Clasificación con KNN</a></li>
+<li><a class="" href="agrupaci%C3%B3n-k-means.html"><span class="header-section-number">6</span> Agrupación K-Means</a></li>
+<li><a class="" href="clusterizaci%C3%B3n.html"><span class="header-section-number">7</span> Clusterización</a></li>
+<li><a class="" href="redes-neuronales-artificiales.html"><span class="header-section-number">8</span> Redes Neuronales artificiales</a></li>
+<li><a class="" href="%C3%A1rboles-de-decisi%C3%B3n.html"><span class="header-section-number">9</span> Árboles de decisión</a></li>
+<li><a class="" href="references.html">References</a></li>
+<li><a class="" href="random-forest.html"><span class="header-section-number">10</span> Random Forest</a></li>
+</ul>
+
+        <div class="book-extra">
+          <p><a id="book-repo" href="https://github.com/rstudio/bookdown-demo">View book source <i class="fab fa-github"></i></a></p>
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="introducción-1" class="section level1" number="4">
+<h1>
+<span class="header-section-number">4</span> Introducción<a class="anchor" aria-label="anchor" href="#introducci%C3%B3n-1"><i class="fas fa-link"></i></a>
+</h1>
+<p>A lo largo de este curso desarrollaremos una serie de tópicos que son novedosos y omnipresentes en la II. Muchos de ellos han estado presente en el pasado, tales como los métodos estadísticos. Pero solamente han capturado la atención de gobiernos, academia y empresas cuando las arquitecturas del hardware, más los avances de datos disponibles en la nube han logrado superar las barreras de los estancos que los límites que el papel nos imponía. Gran parte de los cimientos de la inteligencia artificial se remontan a los años 50 del siglo XX, autores como <strong>GEORGE BOOLE</strong> en 1854 sentaron las bases de esta disciplina.
+En 1950 <strong>ALAN TURING</strong> Propone en su ensayo Computing Machinery and Intelligence el Test de Turing, una prueba de comunicación verbal hombre-máquina que evalúa la capacidad de las segundas de hacerse pasar por humanos.</p>
+<p>Luego en 1956 <strong>JOHN MCCARTHY</strong> El informático acuña por primera vez el término “Inteligencia Artificial”, durante la Conferencia de Darmouth, evento considerado el germen de la disciplina, para finalizar con <strong>MARVIN MINSKY</strong> que en 1969 escribe el libro perceptores, el trabajo fundamental del análisis de las redes neuronales artificiales.</p>
+<p>En estos días hay dos lenguajes de propósito general que se están imponiendo en el terreno de abordar y aplicar los conceptos de <strong>Analítica de Datos</strong>.</p>
+<p>El primero de ellos es <em>Python</em>, que sin dudas veras que ha tenido repercución y éxito, aún cuando no ha llegado a ser parte del Sylabus de todas las carreras de ingeniería industrial.</p>
+<p>El otro lengunaje, que a mi leal entender es más rápidamente asimilable con los ingenieros industriales es <em>R-Cran</em>.</p>
+<div id="desambiguación-de-conceptos-1" class="section level2" number="4.1">
+<h2>
+<span class="header-section-number">4.1</span> Desambiguación de conceptos<a class="anchor" aria-label="anchor" href="#desambiguaci%C3%B3n-de-conceptos-1"><i class="fas fa-link"></i></a>
+</h2>
+<p>Se suele utilizar como sinónimos, pero son diferentes conceptos</p>
+<ul>
+<li>Analítica de Datos</li>
+<li>Machine Learning</li>
+<li>Deep Learning</li>
+<li>Business Intelligence</li>
+<li>Minería de Datos</li>
+<li>Inteligencia Artificial</li>
+</ul>
+<p>Todos ellos tienen un factor en común, el uso del un dataset, hardware y software, pero si bien tienen similitudes son bastantes distintos.</p>
+<p>Veamos una aproximación al problema partiendo de los modelos estadísticos.</p>
+<div class="float">
+<img src="images/Fig_1_IA.png" alt="Aproximación Estadística"><div class="figcaption">Aproximación Estadística</div>
+</div>
+<p>Cualquier estadístico que usemos (T-Studen, Distribución Normal, Criterio de máxima verosimilitud, etc) puede ser obordado con el uso de computadora tomando datos etiquetados (que tienen una columna que muestra de que tipo son), luego con un algoritmo apropiado podemos construir un modelo.</p>
+<p>En analítica de datos invertimos el proceso.
+Tomando datos sin etiquetar los sometemos al análisis de un modelo y predecimos que resultado de obtendría en un mundo físico a partir de los datos que son abstracción de ese mundo.</p>
+<p>Así:</p>
+<ul>
+<li>Predecir cuando se romperá un eje</li>
+<li>Encontrar en que categoría de la flota sería conveniente incorporar un camión nuevo</li>
+<li>Determinar antes de cerrar una transacción electrónica virtual la probabilidad de fraude</li>
+<li>Etc.</li>
+</ul>
+<p>Son ejemplos de lo que se puede hacer con analítica de datos.</p>
+<div class="float">
+<img src="images/Fig_2_IA.png" alt="Enfoque de Inteligencia Artificial"><div class="figcaption">Enfoque de Inteligencia Artificial</div>
+</div>
+<p>En inteligencia artificial el proceso es muy semejante. A diferencia del caso anterior no tenemos un algorítmo que puede crear el modelo en base a las etiquetas de los datos. En este caso se opera en forma no supervisada. para crear un modelo.
+El resultado de la inteligencia artificial es un modelo que nos entrega datos y a partir de datos que el tomó para entrenarse y nos muestra patrones de semejanza entre los datos de entrenamiento y los de prueba.</p>
+<p>Es una práctica habitual crear modelos de IA utilizando un dataset y remuestrear (sampling) usando el 25% de los datos para entrenar y el 75% para predecir y evaluar la calidad del modelo.</p>
+<p>Ejemplos de este tipo de modelos son los árboles de decisión y su entrenamiento</p>
+<p>Por último tenemos el abordaje de machine learning.</p>
+</div>
+<div id="data-analitycs-1" class="section level2" number="4.2">
+<h2>
+<span class="header-section-number">4.2</span> Data Analitycs<a class="anchor" aria-label="anchor" href="#data-analitycs-1"><i class="fas fa-link"></i></a>
+</h2>
+<p>La analítica de datos permite a las organizaciones analizar todos sus datos (en tiempo real, históricos, no estructurados, estructurados, cualitativos) para identificar patrones y generar conocimientos para informar y, en algunos casos, automatizar decisiones, conectando la inteligencia y la acción. Las mejores soluciones actuales respaldan el proceso analítico de un extremo a otro, desde el acceso, la preparación y la analítica de datos hasta la operatividad de los análisis y el seguimiento de los resultados.</p>
+<p>Según TIBCO, la analítica de datos permite a las organizaciones transformar digitalmente su empresa y su cultura, volviéndose más innovadoras y con visión de futuro en la toma de decisiones. Más allá del monitoreo y la generación de informes tradicionales de KPI para encontrar patrones ocultos en los datos, las organizaciones potenciadas por algoritmos son los nuevos innovadores y líderes empresariales.</p>
+<p>Al cambiar el paradigma más allá de los datos para conectar los conocimientos con la acción, las empresas podrán crear experiencias personalizadas para los clientes, crear productos digitales conectados, optimizar las operaciones y aumentar la productividad de los empleados.</p>
+<p>Con la analítica colaborativa de datos, las empresas permiten que todos contribuyan al éxito empresarial, desde ingenieros de datos y científicos de datos, hasta desarrolladores y analistas empresariales, e incluso profesionales y líderes empresariales. La analítica colaborativa de datos también incentiva a quienes están dentro y fuera de una organización a conectarse y colaborar. Por ejemplo, los científicos de datos pueden trabajar en estrecha colaboración con un cliente para ayudarlo a resolver sus problemas en tiempo real utilizando la interfaz de usuario altamente colaborativa de la analítica moderna del mundo de hoy.</p>
+<p>La analítica de datos impulsa a las empresas a avanzar mediante la introducción de algoritmos en todas partes para optimizar los momentos comerciales críticos, como un cliente que ingresa a su tienda, un equipo a punto de fallar u otros eventos que podrían significar la diferencia entre ganar o perder negocios. La analítica de datos se aplica a todas las industrias, incluidas las de servicios financieros y seguros, fabricación, energía, transporte, viajes y logística, atención médica y otras. La analítica de datos puede ayudar a predecir y manejar interrupciones, optimizar rutas, brindar un servicio proactivo al cliente, realizar ofertas inteligentes de venta cruzada, predecir fallas inminentes de equipos, administrar el inventario en tiempo real, optimizar los precios y prevenir el fraude.</p>
+</div>
+<div id="qué-dimensiones-engloba-el-concepto-de-ad-1" class="section level2" number="4.3">
+<h2>
+<span class="header-section-number">4.3</span> ¿Qué dimensiones engloba el concepto de AD?<a class="anchor" aria-label="anchor" href="#qu%C3%A9-dimensiones-engloba-el-concepto-de-ad-1"><i class="fas fa-link"></i></a>
+</h2>
+<ul>
+<li>Automatización de Reportes</li>
+<li>Inteligencia de Negocios</li>
+<li>Preparción de datos (Data Wrangling)</li>
+<li>Visualización de Datos y Conocimiento</li>
+<li>Analítica Geoespacial (GIS)</li>
+<li>Analítica productiva (predictiva y prescriptiva)</li>
+<li>Machine Learning</li>
+<li>Analítica en tiempo real</li>
+</ul>
+</div>
+<div id="cómo-utilizar-la-analítica-de-datos-el-proceso-analítico-1" class="section level2" number="4.4">
+<h2>
+<span class="header-section-number">4.4</span> ¿Cómo utilizar la analítica de datos: el proceso analítico?<a class="anchor" aria-label="anchor" href="#c%C3%B3mo-utilizar-la-anal%C3%ADtica-de-datos-el-proceso-anal%C3%ADtico-1"><i class="fas fa-link"></i></a>
+</h2>
+<ol style="list-style-type: decimal">
+<li>Comprenda el problema empresarial.</li>
+<li>Recopile/identifique datos relevantes para el problema.</li>
+<li>Prepare los datos para el análisis.</li>
+<li>Analice los datos para generar conocimientos.</li>
+<li>Implemente/ponga en funcionamiento los análisis y los modelos.</li>
+<li>Supervise y optimice el rendimiento.</li>
+</ol>
+<div id="dataset-o-información-base-1" class="section level3" number="4.4.1">
+<h3>
+<span class="header-section-number">4.4.1</span> Dataset o Información base<a class="anchor" aria-label="anchor" href="#dataset-o-informaci%C3%B3n-base-1"><i class="fas fa-link"></i></a>
+</h3>
+<p>Tomaremos un dataset simple, que nos muestra la cantidad de semanas que un pack de baterias de un autoelevador fue capaz de tomar carga como para resistir las operaciones durante toda una jornada de trabajo sin necesidad de recargarse o ser cambiado.</p>
+<div class="inline-table"><table class="table table-sm">
+<thead><tr class="header">
+<th>Baterias Varta 75</th>
+<th align="center">Edad (semanas)</th>
+<th align="right">Ensayo Cortocircuito</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td align="center">19</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td align="center">18</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td align="center">22</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td align="center">25</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td align="center">17</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td align="center">30</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td align="center">29</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td align="center">32</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td>9</td>
+<td align="center">31</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>10</td>
+<td align="center">33</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td>11</td>
+<td align="center">38</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>12</td>
+<td align="center">36</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td>13</td>
+<td align="center">40</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td>14</td>
+<td align="center">40</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td>15</td>
+<td align="center">42</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>16</td>
+<td align="center">45</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td>17</td>
+<td align="center">47</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>18</td>
+<td align="center">49</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td>19</td>
+<td align="center">55</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>20</td>
+<td align="center">58</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td>21</td>
+<td align="center">57</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td>22</td>
+<td align="center">63</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td>23</td>
+<td align="center">65</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td>24</td>
+<td align="center">65</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td>25</td>
+<td align="center">66</td>
+<td align="right">1</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>Trucos:</p>
+<p>Puedes cargar los datos en un vecto con el comando <strong>Edad_75 &lt;- scan()</strong> . tipea uno a uno los valores de edad y luego dos veces seguidas <em>Enter</em> para finalizar el proceso.</p>
+<p>En los siguientes capítulos veremos como capturar de fuentes de datos como .xls</p>
+</blockquote>
+<div class="inline-table"><table class="table table-sm">
+<thead><tr class="header">
+<th>Baterias Siemens 1005</th>
+<th align="center">Edad (semanas)</th>
+<th align="right">Ensayo de Cortocircuito</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td align="center">19</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td align="center">18</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td align="center">22</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td align="center">25</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td align="center">17</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td align="center">30</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td align="center">29</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td align="center">32</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td>9</td>
+<td align="center">31</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>10</td>
+<td align="center">33</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td>11</td>
+<td align="center">38</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td>12</td>
+<td align="center">36</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td>13</td>
+<td align="center">40</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td>14</td>
+<td align="center">40</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td>15</td>
+<td align="center">42</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td>16</td>
+<td align="center">45</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td>17</td>
+<td align="center">47</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td>18</td>
+<td align="center">49</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td>19</td>
+<td align="center">55</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>20</td>
+<td align="center">58</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td>21</td>
+<td align="center">57</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td>22</td>
+<td align="center">63</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td>23</td>
+<td align="center">65</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td>24</td>
+<td align="center">65</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td>25</td>
+<td align="center">66</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td>26</td>
+<td align="center">69</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td>27</td>
+<td align="center">70</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td>28</td>
+<td align="center">71</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td>29</td>
+<td align="center">75</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td>30</td>
+<td align="center">86</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td>31</td>
+<td align="center">79</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td>32</td>
+<td align="center">88</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td>33</td>
+<td align="center">89</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>34</td>
+<td align="center">92</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td>35</td>
+<td align="center">84</td>
+<td align="right">1</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<div id="tratamiento-y-captura-de-la-información-1" class="section level2" number="4.5">
+<h2>
+<span class="header-section-number">4.5</span> Tratamiento y captura de la información<a class="anchor" aria-label="anchor" href="#tratamiento-y-captura-de-la-informaci%C3%B3n-1"><i class="fas fa-link"></i></a>
+</h2>
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">datos_75</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span> , <span class="fl">19</span> , <span class="fl">0</span>,</span>
+<span><span class="fl">2</span> , <span class="fl">18</span> , <span class="fl">0</span>,</span>
+<span><span class="fl">3</span> , <span class="fl">22</span> , <span class="fl">0</span>,</span>
+<span><span class="fl">4</span> , <span class="fl">25</span> , <span class="fl">0</span>,</span>
+<span><span class="fl">5</span> , <span class="fl">17</span> , <span class="fl">0</span>,</span>
+<span><span class="fl">6</span> , <span class="fl">30</span> , <span class="fl">0</span>,</span>
+<span><span class="fl">7</span> , <span class="fl">29</span> , <span class="fl">0</span>,</span>
+<span><span class="fl">8</span> , <span class="fl">32</span> , <span class="fl">0</span>,</span>
+<span><span class="fl">9</span> , <span class="fl">31</span> , <span class="fl">0</span>,</span>
+<span><span class="fl">10</span>, <span class="fl">33</span> , <span class="fl">0</span>,</span>
+<span><span class="fl">11</span>, <span class="fl">38</span> , <span class="fl">0</span>,</span>
+<span><span class="fl">12</span>, <span class="fl">36</span> , <span class="fl">0</span>,</span>
+<span><span class="fl">13</span>, <span class="fl">40</span> , <span class="fl">1</span>,</span>
+<span><span class="fl">14</span>, <span class="fl">40</span> , <span class="fl">0</span>,</span>
+<span><span class="fl">15</span>, <span class="fl">42</span> , <span class="fl">0</span>,</span>
+<span><span class="fl">16</span>, <span class="fl">45</span> , <span class="fl">0</span>,</span>
+<span><span class="fl">17</span>, <span class="fl">47</span> , <span class="fl">0</span>,</span>
+<span><span class="fl">18</span>, <span class="fl">49</span> , <span class="fl">0</span>,</span>
+<span><span class="fl">19</span>, <span class="fl">55</span> , <span class="fl">0</span>,</span>
+<span><span class="fl">20</span>, <span class="fl">58</span> , <span class="fl">1</span>,</span>
+<span><span class="fl">21</span>, <span class="fl">57</span> , <span class="fl">1</span>,</span>
+<span><span class="fl">22</span>, <span class="fl">63</span> , <span class="fl">1</span>,</span>
+<span><span class="fl">23</span>, <span class="fl">65</span> , <span class="fl">1</span>,</span>
+<span><span class="fl">24</span>, <span class="fl">65</span> , <span class="fl">1</span>,</span>
+<span><span class="fl">25</span>, <span class="fl">66</span> , <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="va">Muestra_75</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="va">datos_75</span>, ncol <span class="op">=</span> <span class="fl">3</span>, byrow <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">Muestra_75</span></span>
+<span><span class="co">#&gt;       [,1] [,2] [,3]</span></span>
+<span><span class="co">#&gt;  [1,]    1   19    0</span></span>
+<span><span class="co">#&gt;  [2,]    2   18    0</span></span>
+<span><span class="co">#&gt;  [3,]    3   22    0</span></span>
+<span><span class="co">#&gt;  [4,]    4   25    0</span></span>
+<span><span class="co">#&gt;  [5,]    5   17    0</span></span>
+<span><span class="co">#&gt;  [6,]    6   30    0</span></span>
+<span><span class="co">#&gt;  [7,]    7   29    0</span></span>
+<span><span class="co">#&gt;  [8,]    8   32    0</span></span>
+<span><span class="co">#&gt;  [9,]    9   31    0</span></span>
+<span><span class="co">#&gt; [10,]   10   33    0</span></span>
+<span><span class="co">#&gt; [11,]   11   38    0</span></span>
+<span><span class="co">#&gt; [12,]   12   36    0</span></span>
+<span><span class="co">#&gt; [13,]   13   40    1</span></span>
+<span><span class="co">#&gt; [14,]   14   40    0</span></span>
+<span><span class="co">#&gt; [15,]   15   42    0</span></span>
+<span><span class="co">#&gt; [16,]   16   45    0</span></span>
+<span><span class="co">#&gt; [17,]   17   47    0</span></span>
+<span><span class="co">#&gt; [18,]   18   49    0</span></span>
+<span><span class="co">#&gt; [19,]   19   55    0</span></span>
+<span><span class="co">#&gt; [20,]   20   58    1</span></span>
+<span><span class="co">#&gt; [21,]   21   57    1</span></span>
+<span><span class="co">#&gt; [22,]   22   63    1</span></span>
+<span><span class="co">#&gt; [23,]   23   65    1</span></span>
+<span><span class="co">#&gt; [24,]   24   65    1</span></span>
+<span><span class="co">#&gt; [25,]   25   66    1</span></span></code></pre></div>
+<p>Obtener el la edad de la batería con nro de inventario 3</p>
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">Muestra_75</span><span class="op">[</span><span class="fl">3</span>,<span class="fl">2</span><span class="op">]</span></span>
+<span><span class="co">#&gt; [1] 22</span></span></code></pre></div>
+<p>Nos interesa saber si la vida en semanas de nuestras baterias compradas coincide con los valores publicados en el sitio web del fabricantes. Se considera que una batería tiene una vida últil mientras al aplicarle una carga completa ella pueda resistir todo el turno de 8 horas sin necesidad de ser reemplazada.</p>
+<p>Obtener las edades de la muestra</p>
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span> <span class="op">(</span><span class="op">(</span><span class="va">Muestra_75</span><span class="op">[</span> ,<span class="fl">2</span><span class="op">]</span><span class="op">)</span>, main<span class="op">=</span> <span class="st">"Vida en Semanas"</span>,xlab<span class="op">=</span><span class="st">"Ficha Taller Batería con falla"</span>, ylab<span class="op">=</span> <span class="st">"Semanas"</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="02-Baterias_Autoelevador_files/figure-html/unnamed-chunk-3-1.png" width="672"></div>
+<p>Promedio de vida</p>
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">vida_media_muestra</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">Muestra_75</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="va">vida_media_muestra</span></span>
+<span><span class="co">#&gt; [1] 40.88</span></span></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op">(</span><span class="va">Muestra_75</span><span class="op">[</span> ,<span class="fl">2</span><span class="op">]</span><span class="op">)</span>, main<span class="op">=</span> <span class="st">"Vida en Semanas"</span>,xlab<span class="op">=</span><span class="st">"Batería"</span>, ylab<span class="op">=</span> <span class="st">"Semanas"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span>h<span class="op">=</span><span class="va">vida_media_muestra</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span>h<span class="op">=</span><span class="fl">40</span>,col<span class="op">=</span><span class="st">"red"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span>h<span class="op">=</span><span class="fl">50</span>,col<span class="op">=</span><span class="st">"green"</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure">
+<img src="02-Baterias_Autoelevador_files/figure-html/unnamed-chunk-5-1.png" width="672">
+La línea roja muestra la duración mínima por contrato garantizada por el fabricante. La línea verde indica la duración máxima de la carga e indica si el producto conserva el electrolito original. Se puede extender la duración de la carga con otro electrolíto no original, pero no tendrá garantía del fabricante en caso de fallas.</div>
+<div id="muestra-de-historial-de-carga-1" class="section level3" number="4.5.1">
+<h3>
+<span class="header-section-number">4.5.1</span> Muestra de Historial de Carga<a class="anchor" aria-label="anchor" href="#muestra-de-historial-de-carga-1"><i class="fas fa-link"></i></a>
+</h3>
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">Muestra_75</span><span class="op">[</span> , <span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span>,main <span class="op">=</span> <span class="st">"Resumen de Casos"</span>,xlab <span class="op">=</span> <span class="st">"Ficha Bateria"</span>,ylab<span class="op">=</span><span class="st">"Edad"</span>, type<span class="op">=</span><span class="st">"b"</span>, col<span class="op">=</span><span class="st">"RED"</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="02-Baterias_Autoelevador_files/figure-html/unnamed-chunk-6-1.png" width="672"></div>
+</div>
+</div>
+<div id="histogramas-de-edades-1" class="section level2" number="4.6">
+<h2>
+<span class="header-section-number">4.6</span> Histogramas de Edades<a class="anchor" aria-label="anchor" href="#histogramas-de-edades-1"><i class="fas fa-link"></i></a>
+</h2>
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">Muestra_75</span><span class="op">[</span> ,<span class="fl">2</span><span class="op">]</span>,breaks <span class="op">=</span> <span class="fl">10</span>, main <span class="op">=</span> <span class="st">"Histogramas de edades"</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="02-Baterias_Autoelevador_files/figure-html/unnamed-chunk-7-1.png" width="672"></div>
+</div>
+<div id="gráficos-de-densidad-1" class="section level2" number="4.7">
+<h2>
+<span class="header-section-number">4.7</span> Gráficos de Densidad<a class="anchor" aria-label="anchor" href="#gr%C3%A1ficos-de-densidad-1"><i class="fas fa-link"></i></a>
+</h2>
+<p>También conocido como gráfico de densidad de Kernel y gráfico de densidad de traza.</p>
+<p>Un gráfico de densidad visualiza la distribución de datos en un intervalo o período de tiempo continuo. Este gráfico es una variación de un Histograma que usa el suavizado de cerner para trazar valores, permitiendo distribuciones más suaves al suavizar el ruido. Los picos de un gráfico de densidad ayudan a mostrar dónde los valores se concentran en el intervalo.</p>
+<p>Una ventaja de los gráficos de densidad sobre los histogramas es que son mejores para determinar la forma de distribución porque no se ven afectados por el número de contenedores utilizados (cada barra utilizada en un histograma típico). Un histograma que consta de solo 4 compartimientos no producirá una forma de distribución lo suficientemente distinguible como lo haría un histograma de 20 compartimientos. Sin embargo, con los gráficos de densidad esto no es un problema.</p>
+<p>La función de densidad puede calcularse fácilmene en R-Cran con el siguiente comando</p>
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/density.html">density</a></span><span class="op">(</span><span class="va">Muestra_75</span><span class="op">[</span> ,<span class="fl">2</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Call:</span></span>
+<span><span class="co">#&gt;  density.default(x = Muestra_75[, 2])</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Data: Muestra_75[, 2] (25 obs.); Bandwidth 'bw' = 7.394</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;        x                y            </span></span>
+<span><span class="co">#&gt;  Min.   :-5.183   Min.   :5.383e-05  </span></span>
+<span><span class="co">#&gt;  1st Qu.:18.159   1st Qu.:2.474e-03  </span></span>
+<span><span class="co">#&gt;  Median :41.500   Median :1.246e-02  </span></span>
+<span><span class="co">#&gt;  Mean   :41.500   Mean   :1.070e-02  </span></span>
+<span><span class="co">#&gt;  3rd Qu.:64.841   3rd Qu.:1.698e-02  </span></span>
+<span><span class="co">#&gt;  Max.   :88.183   Max.   :2.186e-02</span></span></code></pre></div>
+<p>Dado que es un objeto de R a partir del resultado de los cuantiles es posible plotear directamente la función invocada</p>
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/density.html">density</a></span><span class="op">(</span><span class="va">Muestra_75</span><span class="op">[</span> ,<span class="fl">2</span><span class="op">]</span><span class="op">)</span>, main <span class="op">=</span> <span class="st">"Gráfico de Densidad"</span>, ylab<span class="op">=</span><span class="st">"Cantidad relativa de muestras"</span>,xlab<span class="op">=</span><span class="st">"Edad"</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="02-Baterias_Autoelevador_files/figure-html/unnamed-chunk-9-1.png" width="672"></div>
+<div id="gráfica-conjunta-de-histograma-y-densidad-1" class="section level3" number="4.7.1">
+<h3>
+<span class="header-section-number">4.7.1</span> Gráfica conjunta de Histograma y Densidad<a class="anchor" aria-label="anchor" href="#gr%C3%A1fica-conjunta-de-histograma-y-densidad-1"><i class="fas fa-link"></i></a>
+</h3>
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">Muestra_75</span><span class="op">[</span> ,<span class="fl">2</span><span class="op">]</span>, <span class="co"># histogram</span></span>
+<span>    breaks <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>     col<span class="op">=</span><span class="st">"peachpuff"</span>, <span class="co"># column color</span></span>
+<span> border<span class="op">=</span><span class="st">"black"</span>,</span>
+<span> prob <span class="op">=</span> <span class="cn">TRUE</span>, <span class="co"># show densities instead of frequencies</span></span>
+<span> xlab <span class="op">=</span> <span class="st">"Edad"</span>,</span>
+<span> main <span class="op">=</span> <span class="st">"Distribución Edades de la Muestra"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/density.html">density</a></span><span class="op">(</span><span class="va">Muestra_75</span><span class="op">[</span> ,<span class="fl">2</span><span class="op">]</span><span class="op">)</span>, <span class="co"># density plot</span></span>
+<span> lwd <span class="op">=</span> <span class="fl">2</span>, <span class="co"># thickness of line</span></span>
+<span> col <span class="op">=</span> <span class="st">"chocolate3"</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="02-Baterias_Autoelevador_files/figure-html/unnamed-chunk-10-1.png" width="672"></div>
+</div>
+</div>
+<div id="varianza-de-muestra-y-población-1" class="section level2" number="4.8">
+<h2>
+<span class="header-section-number">4.8</span> Varianza de Muestra y Población<a class="anchor" aria-label="anchor" href="#varianza-de-muestra-y-poblaci%C3%B3n-1"><i class="fas fa-link"></i></a>
+</h2>
+<p>La varianza de una población está expresada por la ecuación</p>
+<p><span class="math display">\[\sigma^2 = \sum_{i=1}^{n} \frac {(x_i – \mu)^2} {N}   \]</span></p>
+<p>La varianza (de la muestra puede ser calculada con el comando</p>
+<pre><code>  var(Muestra_75[ ,2])</code></pre>
+<p>Dato que la muestra siempre tiene un número considerablemente menor de individuos que la población la expresión que se usa para calcular la varianza de la muestra es distinta.</p>
+<p>Varianza de la <strong>muestra</strong> es</p>
+<p><span class="math display">\[ s^2 = \sum_{i=1}^{n} \frac {(x_i – \bar{x})^2} {n-1}  \]</span></p>
+<p>Puede encontrarse la varianza de la población sustituyendo los valores como se indica a continuación:</p>
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">var_muestra</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/cor.html">var</a></span><span class="op">(</span><span class="va">Muestra_75</span> <span class="op">[</span> ,<span class="fl">2</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="va">var_muestra</span></span>
+<span><span class="co">#&gt; [1] 244.61</span></span>
+<span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">Muestra_75</span><span class="op">[</span> ,<span class="fl">2</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="va">n</span></span>
+<span><span class="co">#&gt; [1] 25</span></span>
+<span><span class="va">n_over_n_1</span> <span class="op">&lt;-</span> <span class="va">n</span><span class="op">/</span><span class="op">(</span><span class="va">n</span><span class="op">-</span><span class="fl">1</span><span class="op">)</span></span>
+<span><span class="va">n_over_n_1</span></span>
+<span><span class="co">#&gt; [1] 1.041667</span></span></code></pre></div>
+<p>Con esto valores podemos calcular la varianza de la población con la siguiente codificación</p>
+<p><span class="math display">\[ \sigma = \frac {S} {n} \]</span></p>
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">var_poblacion</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/cor.html">var</a></span><span class="op">(</span><span class="va">Muestra_75</span><span class="op">[</span> ,<span class="fl">2</span><span class="op">]</span><span class="op">)</span> <span class="op">/</span> <span class="va">n</span></span>
+<span><span class="va">var_poblacion</span></span>
+<span><span class="co">#&gt; [1] 9.7844</span></span></code></pre></div>
+<p>El desvio estandar de la meustra es</p>
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">dsm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="op">{</span><span class="va">Muestra_75</span><span class="op">[</span> ,<span class="fl">2</span><span class="op">]</span><span class="op">}</span><span class="op">)</span></span>
+<span><span class="va">dsm</span></span>
+<span><span class="co">#&gt; [1] 15.64001</span></span></code></pre></div>
+<p>En tanto que el desvió estándar de la población es</p>
+<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">dsp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="va">var_poblacion</span><span class="op">)</span></span>
+<span><span class="va">dsp</span></span>
+<span><span class="co">#&gt; [1] 3.128003</span></span></code></pre></div>
+<p>Una forma más elegante de presentar estos resultados parciales puede conseguirse con el uso de la función *<strong>sprintf()</strong></p>
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span><span class="st">"Varianza muestral =%s, Varianza poblacional = %s"</span>, <span class="va">var_muestra</span>, <span class="va">var_poblacion</span> <span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "Varianza muestral =244.61, Varianza poblacional = 9.7844"</span></span></code></pre></div>
+<p>Un valor que es interesante calcular para comparar con la muestra es el desvío porcentual calculado como <span class="math inline">\(dsp_{\%}= \frac{dsp}{n}\)</span></p>
+<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">dspp_75</span> <span class="op">&lt;-</span> <span class="va">dsp</span><span class="op">/</span><span class="va">n</span></span>
+<span><span class="va">dspp_75</span></span>
+<span><span class="co">#&gt; [1] 0.1251201</span></span></code></pre></div>
+</div>
+<div id="repetir-en-análisis-para-la-muestra-siemens-1005-1" class="section level2" number="4.9">
+<h2>
+<span class="header-section-number">4.9</span> Repetir en análisis para la muestra Siemens 1005<a class="anchor" aria-label="anchor" href="#repetir-en-an%C3%A1lisis-para-la-muestra-siemens-1005-1"><i class="fas fa-link"></i></a>
+</h2>
+<div class="blackbox">
+<div class="center">
+<p><strong>Tarea !</strong></p>
+</div>
+<p>Siempre comenzaremos nuestro trabajo con un análisis exploratorio básico, tal como hemos señalado.
+En este caso no hemos descartado ningún individuo de la muestra, pero sería conveniente hacerlo.
+El comando <strong><em>boxplot()</em></strong> te permitirá hacer una inspección rápida.
+Adisionalmente prueba el comando <strong><em>summary()</em></strong> para analizar la distribución de cunatiles y datos faltantes.</p>
+</div>
+</div>
+<div id="construcción-de-un-modelo-1" class="section level2" number="4.10">
+<h2>
+<span class="header-section-number">4.10</span> Construcción de un modelo<a class="anchor" aria-label="anchor" href="#construcci%C3%B3n-de-un-modelo-1"><i class="fas fa-link"></i></a>
+</h2>
+<div class="infobox caution">
+<p><strong>Nota!</strong></p>
+<p>En esta parte comenzaremos a desarrollar un modelo.</p>
+</div>
+<p>En la ficha del fabricante de baterías, se indica que el hecho de sustituir el electrolíto original por otro que no sea el oficial y que en general contiene antimonio puede ser en primera instancia considerado como un factor que prolonga la vida útil de la batería y amplía el rango de su ciclo de carga/descarga.</p>
+<p>Sin embrago el fabricante advierte del peligro potencial de cáncer de próstata que el antimonio presenta para el personal técnico que opera las baterías y para el conductor del vehículo.</p>
+<p>Vale recordar que las placas de plomo tienen en su aleación antimonio y a medida que se van envejeciendo liberan antimonio al electrolito, que aún cuando sea en concentraciones bajas, son capaces de afctar la salud. Por este motivo podríamos inferir que hay una correlación entre la vida útil de las baterías y la aparición de síntomas de cáncer de próstata.</p>
+<p>Utilizaremos una hipótesis simple. El modelo de regresión lineal podría ayudarnos a predecir para esta población a que edad deberíamos comenzar el diagnóstico de antígeno prostático en el personal afectado a las tareas que se relacionan con las baterías.</p>
+<p>También realizaremos una comprobación basada en el modelo para saber si ha habido cambios significativos en los síntomas atribuibles al uso del antimonio.</p>
+<p>Como se puede ver, no recurrimos aún a la medicina, pero nos planteamos una hipótesis sobre las implicancias del antimonio y la salud y el objetivo es otorgarle al médico una recomendación para que tenga una alerta temprana, sin que esto afirme o desmienta hechos científicos sobre los que no tenemos capacidad para diagnostiras enfermedades y nos limitamos a prevenirlas.</p>
+</div>
+<div id="hipótesis-o-pregunta-de-investigación-1" class="section level2" number="4.11">
+<h2>
+<span class="header-section-number">4.11</span> Hipótesis o pregunta de investigación<a class="anchor" aria-label="anchor" href="#hip%C3%B3tesis-o-pregunta-de-investigaci%C3%B3n-1"><i class="fas fa-link"></i></a>
+</h2>
+<p>El proceso de investigación científica repetible parte de este tipo de premisa. Es un proceso iterativo de aproximación y revelación. Comenzaremos con una pregunta de investigación. <em>¿Será posible utilizar un modelo de regresión lineal para entender el comportamiento de estos datos?</em>. Esta pregunta con el tiempo podrá ser formulada como una afirmación. Este proceso debe tener una investigación preliminar. De esteo modo podríamos expresar algo como <em>El modelo de regresión lineal, que es muy utilizado en inteligencia artificial podrá darme respuestas a dos preguntas clave de este problema</em></p>
+<p>1- El modelo regresión lineal puede predecir la probabilidad de aparición temprana de cáncer.
+2- Es posible utilizar el modelo construido para comparar dos poblaciones.</p>
+</div>
+<div id="bases-de-un-modelo-ia-de-regresión-lienal-1" class="section level2" number="4.12">
+<h2>
+<span class="header-section-number">4.12</span> Bases de un modelo IA de regresión lienal<a class="anchor" aria-label="anchor" href="#bases-de-un-modelo-ia-de-regresi%C3%B3n-lienal-1"><i class="fas fa-link"></i></a>
+</h2>
+<p>Para trabajar en este sentido R-Cran tiene posibilidades de desarrollar modelos de regresión lineal en un sólo comando. A pesar de ello construiremos un modelo desde CERO para entender como se procede en Inteligencia Artificial.</p>
+<p>Todo modelo de regresión se basa en hallar los parámetros <span class="math inline">\(a\)</span> y <span class="math inline">\(b\)</span> de una ecuación de una recta.</p>
+<p><span class="math display">\[ y = a*x + b \]</span></p>
+<blockquote>
+<p>Donde: y es un número que varía entre 1 y 0</p>
+<p>1 señala que se trata de un caso probable positivo, en tanto que</p>
+<p>0 señala que es poco probable la aparición de cancer.</p>
+</blockquote>
+<p>Para poder hallar los valores de estas variable o <strong><em>parámetros del modelo</em></strong> deberíamos utilizar los datos. En realidad con solamente dos datos de la muestra podríamos encontrar una recta que pase por estos dos puntos. Lo más aconsejable es no utilizar sólo dos, sino todos los puntos.
+Esto implica plantear un problema de dos ecuaciones con dos incógnitas y en rigor el método de los mínimos cuadrados sería lo más indicado.</p>
+<p>Siguiendo con la idea de la construcción artesanal del modelo podemos decir que encontrando un punto significativo del modelo por el que pase la recta podremos agregar alguna estrategia para hallar la pendiente y con esos datos calcular <span class="math inline">\(a\)</span> y <span class="math inline">\(b\)</span>.</p>
+</div>
+<div id="puntos-significativos-de-modelo-1" class="section level2" number="4.13">
+<h2>
+<span class="header-section-number">4.13</span> Puntos significativos de modelo<a class="anchor" aria-label="anchor" href="#puntos-significativos-de-modelo-1"><i class="fas fa-link"></i></a>
+</h2>
+<p>Un punto significativo podría ser la moda de las edades y la moda de la variable categórica [1,0].
+Se puede demostrar que en el modelo de regresión de los mínimos cuadrados este punto es el promedio de <span class="math inline">\(\overline{x}\)</span> y el promedio de <span class="math inline">\(\overline{y}\)</span>.
+Pero existen otros valores <strong>verosímiles</strong> (Ver criterios de máxima verosimilitud <a href="https://es.wikipedia.org/wiki/M%C3%A1xima_verosimilitud">de Ronald Fisher</a>).</p>
+<div class="float">
+<img src="images/recta.png" alt="Modelos aproximado lineal"><div class="figcaption">Modelos aproximado lineal</div>
+</div>
+<div id="cácluo-de-x-e-y-significativos-1" class="section level3" number="4.13.1">
+<h3>
+<span class="header-section-number">4.13.1</span> Cácluo de x e y significativos<a class="anchor" aria-label="anchor" href="#c%C3%A1cluo-de-x-e-y-significativos-1"><i class="fas fa-link"></i></a>
+</h3>
+<blockquote>
+<p>Valor de y verosimil</p>
+</blockquote>
+<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">index_ymax</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.min.html">which.max</a></span><span class="op">(</span><span class="va">Muestra_75</span><span class="op">[</span> ,<span class="fl">3</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="va">ymax</span> <span class="op">&lt;-</span> <span class="va">Muestra_75</span><span class="op">[</span><span class="va">index_ymax</span>,<span class="fl">3</span><span class="op">]</span></span>
+<span></span>
+<span><span class="va">index_ymin</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.min.html">which.min</a></span><span class="op">(</span><span class="va">Muestra_75</span><span class="op">[</span> ,<span class="fl">3</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="va">ymin</span> <span class="op">&lt;-</span> <span class="va">Muestra_75</span><span class="op">[</span><span class="va">index_ymin</span>,<span class="fl">3</span><span class="op">]</span></span>
+<span></span>
+<span><span class="va">y_sig</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="va">ymax</span><span class="op">-</span><span class="va">ymin</span><span class="op">)</span> <span class="op">/</span><span class="fl">2</span></span>
+<span></span>
+<span><span class="va">y_sig</span> </span>
+<span><span class="co">#&gt; [1] 0.5</span></span></code></pre></div>
+<blockquote>
+<p>Valor de x verosimil</p>
+</blockquote>
+<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">index_xmax</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.min.html">which.max</a></span><span class="op">(</span><span class="va">Muestra_75</span><span class="op">[</span> ,<span class="fl">2</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="va">xmax</span> <span class="op">&lt;-</span> <span class="va">Muestra_75</span><span class="op">[</span><span class="va">index_xmax</span>,<span class="fl">2</span><span class="op">]</span></span>
+<span><span class="va">xmax</span></span>
+<span><span class="co">#&gt; [1] 66</span></span>
+<span><span class="va">index_xmin</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.min.html">which.min</a></span><span class="op">(</span><span class="va">Muestra_75</span><span class="op">[</span> ,<span class="fl">2</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="va">xmin</span> <span class="op">&lt;-</span> <span class="va">Muestra_75</span><span class="op">[</span><span class="va">index_xmin</span>,<span class="fl">2</span><span class="op">]</span></span>
+<span><span class="va">xmin</span></span>
+<span><span class="co">#&gt; [1] 17</span></span>
+<span></span>
+<span><span class="va">x_sig</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="va">xmax</span><span class="op">-</span><span class="va">xmin</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">x_sig</span> </span>
+<span><span class="co">#&gt; [1] 49</span></span></code></pre></div>
+<p>El punto de coordenadas [24.5 , 0.5] es un punto por el que debe pasar la recta que construiremos.</p>
+</div>
+<div id="cáclulo-de-la-pendiente-1" class="section level3" number="4.13.2">
+<h3>
+<span class="header-section-number">4.13.2</span> Cáclulo de la pendiente<a class="anchor" aria-label="anchor" href="#c%C3%A1clulo-de-la-pendiente-1"><i class="fas fa-link"></i></a>
+</h3>
+<p>em valor <span class="math inline">\(a\)</span> representa la pendiente de la recta. De modo que con los <span class="math inline">\(\Delta{x}\)</span> y <span class="math inline">\(\Delta{y}\)</span> podremos calcularlo facilmente</p>
+<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">a</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="op">(</span><span class="va">ymax</span><span class="op">-</span><span class="va">ymin</span><span class="op">)</span><span class="op">/</span><span class="op">(</span><span class="va">xmax</span><span class="op">-</span><span class="va">xmin</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">a</span></span>
+<span><span class="co">#&gt; [1] 0.02040816</span></span></code></pre></div>
+<blockquote>
+<p><span class="math inline">\(a\)</span> = valor de la pendiente es 0.02040816</p>
+</blockquote>
+<p>Pendiente en grados</p>
+<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Trig.html">atan</a></span><span class="op">(</span><span class="va">a</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 0.02040533</span></span></code></pre></div>
+</div>
+<div id="cáclulo-de-la-ordenada-al-origen.-1" class="section level3" number="4.13.3">
+<h3>
+<span class="header-section-number">4.13.3</span> Cáclulo de la ordenada al origen.<a class="anchor" aria-label="anchor" href="#c%C3%A1clulo-de-la-ordenada-al-origen.-1"><i class="fas fa-link"></i></a>
+</h3>
+<p>Para calcular la ordenada al origen basta con poner <span class="math inline">\(x=\overline{x}\)</span> del punto significativo que hemos adoptado en la formula de la recta usando el <span class="math inline">\(a\)</span> calculado y despejar <span class="math inline">\(b\)</span></p>
+<p><span class="math display">\[ y = a *x +b\]</span>
+<span class="math display">\[ b = y-a*x\]</span>
+Cáclulo de b</p>
+<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">y_sig</span></span>
+<span><span class="co">#&gt; [1] 0.5</span></span>
+<span><span class="va">x_sig</span></span>
+<span><span class="co">#&gt; [1] 49</span></span>
+<span><span class="va">a</span></span>
+<span><span class="co">#&gt; [1] 0.02040816</span></span>
+<span></span>
+<span><span class="va">b</span> <span class="op">&lt;-</span> <span class="va">y_sig</span><span class="op">-</span><span class="op">(</span><span class="va">a</span><span class="op">*</span><span class="va">x_sig</span><span class="op">)</span></span>
+<span><span class="va">b</span></span>
+<span><span class="co">#&gt; [1] -0.5</span></span></code></pre></div>
+</div>
+<div id="gráfica-1" class="section level3" number="4.13.4">
+<h3>
+<span class="header-section-number">4.13.4</span> Gráfica<a class="anchor" aria-label="anchor" href="#gr%C3%A1fica-1"><i class="fas fa-link"></i></a>
+</h3>
+<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">Muestra_75</span><span class="op">[</span> ,<span class="fl">2</span><span class="op">]</span>,<span class="va">Muestra_75</span><span class="op">[</span> ,<span class="fl">3</span><span class="op">]</span>, main <span class="op">=</span> <span class="st">"Dignóstico Preliminar"</span>, ylab<span class="op">=</span><span class="st">"Diagnóstico + -"</span>, xlab<span class="op">=</span><span class="st">"Edad"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span>h<span class="op">=</span><span class="va">y_sig</span>, col<span class="op">=</span><span class="st">"red"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span>v<span class="op">=</span><span class="va">x_sig</span>,col<span class="op">=</span><span class="st">"red"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span><span class="va">b</span>,<span class="va">a</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="02-Baterias_Autoelevador_files/figure-html/unnamed-chunk-22-1.png" width="672"></div>
+</div>
+</div>
+<div id="modelo-de-regresión-lineal-generalizado-1" class="section level2" number="4.14">
+<h2>
+<span class="header-section-number">4.14</span> Modelo de regresión lineal generalizado<a class="anchor" aria-label="anchor" href="#modelo-de-regresi%C3%B3n-lineal-generalizado-1"><i class="fas fa-link"></i></a>
+</h2>
+<p>En realidad este trabajo que hemos hecho puede ser realizado con solamente un comando en R-Cran.</p>
+<p>Construiremos el dataset</p>
+<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">x_muestra_75</span> <span class="op">&lt;-</span> <span class="va">Muestra_75</span><span class="op">[</span> ,<span class="fl">2</span><span class="op">]</span></span>
+<span><span class="va">y_muestra_75</span> <span class="op">&lt;-</span> <span class="va">Muestra_75</span><span class="op">[</span> ,<span class="fl">3</span><span class="op">]</span></span>
+<span><span class="va">mrlg</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="va">x_muestra_75</span>,<span class="va">y_muestra_75</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p>Construcción del modelo lineal</p>
+<div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">mi_formula</span> <span class="op">&lt;-</span> <span class="va">y_muestra_75</span> <span class="op">~</span> <span class="va">x_muestra_75</span></span>
+<span><span class="va">modelo_2</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span> <span class="op">(</span><span class="va">mi_formula</span>, data<span class="op">=</span><span class="va">mrlg</span><span class="op">)</span></span>
+<span><span class="va">modelo_2</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Call:</span></span>
+<span><span class="co">#&gt; lm(formula = mi_formula, data = mrlg)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Coefficients:</span></span>
+<span><span class="co">#&gt;  (Intercept)  x_muestra_75  </span></span>
+<span><span class="co">#&gt;     -0.61021       0.02178</span></span>
+<span><span class="va">modelo_2</span><span class="op">$</span><span class="va">coefficients</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span></span>
+<span><span class="co">#&gt; x_muestra_75 </span></span>
+<span><span class="co">#&gt;   0.02177616</span></span>
+<span><span class="va">modelo_2</span><span class="op">$</span><span class="va">coefficients</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span>
+<span><span class="co">#&gt; (Intercept) </span></span>
+<span><span class="co">#&gt;  -0.6102094</span></span></code></pre></div>
+<p>Como vemos nos dice que la ordenada al origen es -0.610 y la pendiente es 0.021 muy parecidas a los valores <span class="math inline">\(a\)</span> y <span class="math inline">\(b\)</span> que obtuvimos antes.</p>
+<div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">mrlg</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span><span class="va">modelo_2</span>,col<span class="op">=</span><span class="st">"blue"</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="02-Baterias_Autoelevador_files/figure-html/unnamed-chunk-25-1.png" width="672"></div>
+</div>
+<div id="modelo-de-regresión-logística-1" class="section level2" number="4.15">
+<h2>
+<span class="header-section-number">4.15</span> Modelo de regresión logística<a class="anchor" aria-label="anchor" href="#modelo-de-regresi%C3%B3n-log%C3%ADstica-1"><i class="fas fa-link"></i></a>
+</h2>
+<p>Una de las cosas destacables del uso de IA es que puedo recurrir a muchos modelos para interpretar o predecir el comportamiento de los datos. Puedo generar <strong>(entrenar)</strong> el modelo o modelos y utilizar algún mecanismo de medición de la calidad de cada modelo y en base a ello utilizar IA para seleccionar el que más se adapta a <strong><em>mis datos</em></strong>.</p>
+<p>Hay una distribución de probabilidades llamada <em>Distribución Logística</em> que puede utilizarse (del mismo modo que la distribución lineal se usa para el modelo de regresión lineal generalizado) para armar una regresión lineal logística.</p>
+<p>La forma típica de la distribución logística normalizada tiene la siguiente ecuación paramétrica y luce como se ve en el ejemplo.</p>
+<p><span class="math display">\[ \sigma(x)= \frac{e^x}{(e^x+1)} = \frac{1}{1+e^{-x}}\]</span></p>
+<div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/curve.html">curve</a></span><span class="op">(</span><span class="op">(</span><span class="fl">1</span><span class="op">/</span><span class="op">(</span><span class="fl">1</span><span class="op">+</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="op">-</span><span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,<span class="op">-</span><span class="fl">10</span>,<span class="fl">10</span>,col <span class="op">=</span><span class="st">"red"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span><span class="fl">0.5</span>,<span class="fl">0.05</span>,col<span class="op">=</span><span class="st">"green"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/text.html">text</a></span><span class="op">(</span><span class="op">-</span><span class="fl">8</span>,<span class="fl">0.2</span>,<span class="st">"Rergresion Lineal"</span>,col<span class="op">=</span><span class="st">"green"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/text.html">text</a></span><span class="op">(</span><span class="fl">6</span>,<span class="fl">0.8</span>,<span class="st">"Rergresion Logística"</span>,col<span class="op">=</span><span class="st">"red"</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="02-Baterias_Autoelevador_files/figure-html/unnamed-chunk-26-1.png" width="672"></div>
+<p>Como pude verse el modelo de regresión logística es mas sensible a los datos y proporcional resultados más verosímiles, pero aún mantienen error admisible. De todos modos esta análisis visual nos indica que ya tenemos una alternativa que es mejor que nuestro modelo lineal inicial.</p>
+<p>La función de distribución de probabilidad acumulada de la regresión logística es:</p>
+<p><span class="math display">\[g(F(x))=  ln \left[ \frac{F(x)}{1-F(x)} \right] = \beta^0 + \beta_1*x \]</span>
+Al igual que en la regresión lineal es posible (aplicando logaritmos) encontrar los parámetros <span class="math inline">\(\beta_0\)</span> y <span class="math inline">\(\beta_1\)</span> con solamente cuatro datos en la muestra. El error será inadmisible, pero es algo parecido a armar una regresión lineal con sólo dos muestras.</p>
+
+</div>
+</div>
+  <div class="chapter-nav">
+<div class="prev"><a href="repaso-de-estad%C3%ADstica.html"><span class="header-section-number">3</span> Repaso de Estadística</a></div>
+<div class="next"><a href="clasificaci%C3%B3n-con-knn.html"><span class="header-section-number">5</span> Clasificación con KNN</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#introducci%C3%B3n-1"><span class="header-section-number">4</span> Introducción</a></li>
+<li><a class="nav-link" href="#desambiguaci%C3%B3n-de-conceptos-1"><span class="header-section-number">4.1</span> Desambiguación de conceptos</a></li>
+<li><a class="nav-link" href="#data-analitycs-1"><span class="header-section-number">4.2</span> Data Analitycs</a></li>
+<li><a class="nav-link" href="#qu%C3%A9-dimensiones-engloba-el-concepto-de-ad-1"><span class="header-section-number">4.3</span> ¿Qué dimensiones engloba el concepto de AD?</a></li>
+<li>
+<a class="nav-link" href="#c%C3%B3mo-utilizar-la-anal%C3%ADtica-de-datos-el-proceso-anal%C3%ADtico-1"><span class="header-section-number">4.4</span> ¿Cómo utilizar la analítica de datos: el proceso analítico?</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#dataset-o-informaci%C3%B3n-base-1"><span class="header-section-number">4.4.1</span> Dataset o Información base</a></li></ul>
+</li>
+<li>
+<a class="nav-link" href="#tratamiento-y-captura-de-la-informaci%C3%B3n-1"><span class="header-section-number">4.5</span> Tratamiento y captura de la información</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#muestra-de-historial-de-carga-1"><span class="header-section-number">4.5.1</span> Muestra de Historial de Carga</a></li></ul>
+</li>
+<li><a class="nav-link" href="#histogramas-de-edades-1"><span class="header-section-number">4.6</span> Histogramas de Edades</a></li>
+<li>
+<a class="nav-link" href="#gr%C3%A1ficos-de-densidad-1"><span class="header-section-number">4.7</span> Gráficos de Densidad</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#gr%C3%A1fica-conjunta-de-histograma-y-densidad-1"><span class="header-section-number">4.7.1</span> Gráfica conjunta de Histograma y Densidad</a></li></ul>
+</li>
+<li><a class="nav-link" href="#varianza-de-muestra-y-poblaci%C3%B3n-1"><span class="header-section-number">4.8</span> Varianza de Muestra y Población</a></li>
+<li><a class="nav-link" href="#repetir-en-an%C3%A1lisis-para-la-muestra-siemens-1005-1"><span class="header-section-number">4.9</span> Repetir en análisis para la muestra Siemens 1005</a></li>
+<li><a class="nav-link" href="#construcci%C3%B3n-de-un-modelo-1"><span class="header-section-number">4.10</span> Construcción de un modelo</a></li>
+<li><a class="nav-link" href="#hip%C3%B3tesis-o-pregunta-de-investigaci%C3%B3n-1"><span class="header-section-number">4.11</span> Hipótesis o pregunta de investigación</a></li>
+<li><a class="nav-link" href="#bases-de-un-modelo-ia-de-regresi%C3%B3n-lienal-1"><span class="header-section-number">4.12</span> Bases de un modelo IA de regresión lienal</a></li>
+<li>
+<a class="nav-link" href="#puntos-significativos-de-modelo-1"><span class="header-section-number">4.13</span> Puntos significativos de modelo</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#c%C3%A1cluo-de-x-e-y-significativos-1"><span class="header-section-number">4.13.1</span> Cácluo de x e y significativos</a></li>
+<li><a class="nav-link" href="#c%C3%A1clulo-de-la-pendiente-1"><span class="header-section-number">4.13.2</span> Cáclulo de la pendiente</a></li>
+<li><a class="nav-link" href="#c%C3%A1clulo-de-la-ordenada-al-origen.-1"><span class="header-section-number">4.13.3</span> Cáclulo de la ordenada al origen.</a></li>
+<li><a class="nav-link" href="#gr%C3%A1fica-1"><span class="header-section-number">4.13.4</span> Gráfica</a></li>
+</ul>
+</li>
+<li><a class="nav-link" href="#modelo-de-regresi%C3%B3n-lineal-generalizado-1"><span class="header-section-number">4.14</span> Modelo de regresión lineal generalizado</a></li>
+<li><a class="nav-link" href="#modelo-de-regresi%C3%B3n-log%C3%ADstica-1"><span class="header-section-number">4.15</span> Modelo de regresión logística</a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+<li><a id="book-source" href="https://github.com/rstudio/bookdown-demo/blob/master/02-Baterias_Autoelevador.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/rstudio/bookdown-demo/edit/master/02-Baterias_Autoelevador.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>A Minimal Book Example</strong>" was written by John Doe. It was last built on 2023-06-29.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer><!-- dynamically load mathjax for compatibility with self-contained --><script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script><script type="text/x-mathjax-config">const popovers = document.querySelectorAll('a.footnote-ref[data-toggle="popover"]');
+for (let popover of popovers) {
+  const div = document.createElement('div');
+  div.setAttribute('style', 'position: absolute; top: 0, left:0; width:0, height:0, overflow: hidden; visibility: hidden;');
+  div.innerHTML = popover.getAttribute('data-content');
+
+  var has_math = div.querySelector("span.math");
+  if (has_math) {
+    document.body.appendChild(div);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
+    MathJax.Hub.Queue(function() {
+      popover.setAttribute('data-content', div.innerHTML);
+      document.body.removeChild(div);
+    })
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Chapter 2 Analítica de Datos enla Cadena de Suministros | Random Forest</title>
+<meta name="author" content="Ricardo R. Palma">
+<meta name="description" content='2.1 Carga de dataset y exploración library(readr) performance_scm &lt;- read_delim("https://themys.sid.uncu.edu.ar/rpalma/R-cran/scm_perform.csv",   delim = ";", escape_double = FALSE, col_types =...'>
+<meta name="generator" content="bookdown 0.33 with bs4_book()">
+<meta property="og:title" content="Chapter 2 Analítica de Datos enla Cadena de Suministros | Random Forest">
+<meta property="og:type" content="book">
+<meta property="og:description" content='2.1 Carga de dataset y exploración library(readr) performance_scm &lt;- read_delim("https://themys.sid.uncu.edu.ar/rpalma/R-cran/scm_perform.csv",   delim = ";", escape_double = FALSE, col_types =...'>
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Chapter 2 Analítica de Datos enla Cadena de Suministros | Random Forest">
+<meta name="twitter:description" content='2.1 Carga de dataset y exploración library(readr) performance_scm &lt;- read_delim("https://themys.sid.uncu.edu.ar/rpalma/R-cran/scm_perform.csv",   delim = ";", escape_double = FALSE, col_types =...'>
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.4.2/transition.js"></script><script src="libs/bs3compat-0.4.2/tabs.js"></script><script src="libs/bs3compat-0.4.2/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="libs/htmlwidgets-1.6.2/htmlwidgets.js"></script><script src="libs/d3-5.7.0/d3-5.15.0.min.js"></script><script src="libs/d3-regression-1.3.4/d3-regression.min.js"></script><link href="libs/scatterPlotMatrix-0.2/scatterPlotMatrix.css" rel="stylesheet">
+<script src="libs/scatterPlotMatrix-0.2/spm-msp.js"></script><script src="libs/scatterPlotMatrix-binding-0.2.0/scatterPlotMatrix.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">Random Forest</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html"><span class="header-section-number">1</span> About</a></li>
+<li><a class="active" href="anal%C3%ADtica-de-datos-enla-cadena-de-suministros.html"><span class="header-section-number">2</span> Analítica de Datos enla Cadena de Suministros</a></li>
+<li><a class="" href="anal%C3%ADtica-de-datos-industriales.html"><span class="header-section-number">3</span> Analítica de Datos Industriales</a></li>
+<li><a class="" href="introducci%C3%B3n.html"><span class="header-section-number">4</span> Introducción</a></li>
+<li><a class="" href="anal%C3%ADtica-de-datos-enla-cadena-de-suministros-1.html"><span class="header-section-number">5</span> Analítica de Datos enla Cadena de Suministros</a></li>
+<li><a class="" href="clusterizaci%C3%B3n.html"><span class="header-section-number">6</span> Clusterización</a></li>
+<li><a class="" href="references.html">References</a></li>
+<li><a class="" href="random-forest.html"><span class="header-section-number">7</span> Random Forest</a></li>
+</ul>
+
+        <div class="book-extra">
+          <p><a id="book-repo" href="https://github.com/rstudio/bookdown-demo">View book source <i class="fab fa-github"></i></a></p>
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="analítica-de-datos-enla-cadena-de-suministros" class="section level1" number="2">
+<h1>
+<span class="header-section-number">2</span> Analítica de Datos enla Cadena de Suministros<a class="anchor" aria-label="anchor" href="#anal%C3%ADtica-de-datos-enla-cadena-de-suministros"><i class="fas fa-link"></i></a>
+</h1>
+<div id="carga-de-dataset-y-exploración" class="section level2" number="2.1">
+<h2>
+<span class="header-section-number">2.1</span> Carga de dataset y exploración<a class="anchor" aria-label="anchor" href="#carga-de-dataset-y-exploraci%C3%B3n"><i class="fas fa-link"></i></a>
+</h2>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://readr.tidyverse.org">readr</a></span><span class="op">)</span></span>
+<span><span class="va">performance_scm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_delim</a></span><span class="op">(</span><span class="st">"https://themys.sid.uncu.edu.ar/rpalma/R-cran/scm_perform.csv"</span>,     delim <span class="op">=</span> <span class="st">";"</span>, escape_double <span class="op">=</span> <span class="cn">FALSE</span>, col_types <span class="op">=</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/cols.html">cols</a></span><span class="op">(</span>Performance <span class="op">=</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/parse_factor.html">col_factor</a></span><span class="op">(</span>levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"good"</span>, <span class="st">"fair"</span>, <span class="st">"poor"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>, locale <span class="op">=</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/locale.html">locale</a></span><span class="op">(</span>decimal_mark <span class="op">=</span> <span class="st">","</span>,         grouping_mark <span class="op">=</span> <span class="st">"."</span><span class="op">)</span>, trim_ws <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<p>Carga de Bibliotecas Utilizadas</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">e1071</span><span class="op">)</span> <span class="co"># svm navie bayes</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.stats.ox.ac.uk/pub/MASS4/">class</a></span><span class="op">)</span> <span class="co"># knn</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/topepo/caret/">caret</a></span><span class="op">)</span> <span class="co"># Construcción de Modelos</span></span>
+<span><span class="co">#&gt; Loading required package: ggplot2</span></span>
+<span><span class="co">#&gt; Loading required package: lattice</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/bips-hb/neuralnet">neuralnet</a></span><span class="op">)</span> <span class="co"># Redes Neuronales</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://www.stat.berkeley.edu/~breiman/RandomForests/">randomForest</a></span><span class="op">)</span> <span class="co"># Random Forest</span></span>
+<span><span class="co">#&gt; randomForest 4.7-1.1</span></span>
+<span><span class="co">#&gt; Type rfNews() to see new features/changes/bug fixes.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Attaching package: 'randomForest'</span></span>
+<span><span class="co">#&gt; The following object is masked from 'package:ggplot2':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     margin</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span> <span class="co"># Representacion del conocimiento</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">gridExtra</span><span class="op">)</span> <span class="co"># Ploteo</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Attaching package: 'gridExtra'</span></span>
+<span><span class="co">#&gt; The following object is masked from 'package:randomForest':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     combine</span></span></code></pre></div>
+</div>
+<div id="entrenamiento-y-prueba" class="section level2" number="2.2">
+<h2>
+<span class="header-section-number">2.2</span> Entrenamiento y prueba<a class="anchor" aria-label="anchor" href="#entrenamiento-y-prueba"><i class="fas fa-link"></i></a>
+</h2>
+<p>Separaremos los datos en dos conjuntos aleatorios</p>
+<ul>
+<li>Dataset de Entrenamiento</li>
+<li>Dataset de Prueba</li>
+</ul>
+<p>Los datos puede ser elegidos aleatoriamente con el comando sample.
+En nuestro caso emplearemos la proporción <span class="math inline">\(70/30\)</span>
+70% Para entrenar 30% para test (preuba). Esto debería dejaronos 105 observaciones en un conjunto y 45 en el otro.</p>
+<p>Para que podamos repetir el experimento con los mismos datos fijaremos la semilla y así obtener resultado parecidos</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">831</span><span class="op">)</span></span>
+<span><span class="va">inTrain.C</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/createDataPartition.html">createDataPartition</a></span><span class="op">(</span><span class="va">performance_scm</span><span class="op">$</span><span class="va">Performance</span>,p<span class="op">=</span><span class="fl">.7</span>,list <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<p>Ahora partiremos el dataset utilizando como índice inTrain.C</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">training.C</span> <span class="op">&lt;-</span> <span class="va">performance_scm</span><span class="op">[</span><span class="va">inTrain.C</span>, <span class="op">]</span></span>
+<span><span class="va">testing.C</span> <span class="op">&lt;-</span> <span class="va">performance_scm</span><span class="op">[</span><span class="op">-</span><span class="va">inTrain.C</span>, <span class="op">]</span></span></code></pre></div>
+<p>Podemos ver la tabla de resultados contenidos con este comando</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">training.C</span><span class="op">$</span><span class="va">Performance</span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; good fair poor </span></span>
+<span><span class="co">#&gt;   35   35   35</span></span></code></pre></div>
+<p>Del mismo modo podemos ver el dataset de pruebas</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">testing.C</span><span class="op">$</span><span class="va">Performance</span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; good fair poor </span></span>
+<span><span class="co">#&gt;   15   15   15</span></span></code></pre></div>
+</div>
+<div id="ajuste-del-modelo" class="section level2" number="2.3">
+<h2>
+<span class="header-section-number">2.3</span> Ajuste del modelo<a class="anchor" aria-label="anchor" href="#ajuste-del-modelo"><i class="fas fa-link"></i></a>
+</h2>
+<p>Realizaremos una tabla de contingencia o matriz de confusión</p>
+<div class="inline-table"><table class="table table-sm">
+<thead><tr class="header">
+<th></th>
+<th>Actual +</th>
+<th>Actual -</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><strong>Predic +</strong></td>
+<td>True Positivo</td>
+<td>False Positivo</td>
+</tr>
+<tr class="even">
+<td><strong>Predic -</strong></td>
+<td>False Positivo</td>
+<td>True Negativo</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div id="mediciones-model-level" class="section level2" number="2.4">
+<h2>
+<span class="header-section-number">2.4</span> Mediciones Model-level<a class="anchor" aria-label="anchor" href="#mediciones-model-level"><i class="fas fa-link"></i></a>
+</h2>
+<div id="accuracy" class="section level3" number="2.4.1">
+<h3>
+<span class="header-section-number">2.4.1</span> Accuracy<a class="anchor" aria-label="anchor" href="#accuracy"><i class="fas fa-link"></i></a>
+</h3>
+<p>Mide la proporción de predicciones correctas y no es extraño encontrarlo como porcentaje. Su rango va de 0 a 100% . A valor más alto mejor preformance del modelo</p>
+<p><span class="math display">\[Accuracy = \frac {TP + TN}{TP+TN+FP+FN} \]</span></p>
+</div>
+<div id="error-rate" class="section level3" number="2.4.2">
+<h3>
+<span class="header-section-number">2.4.2</span> Error-Rate<a class="anchor" aria-label="anchor" href="#error-rate"><i class="fas fa-link"></i></a>
+</h3>
+<p>Mide la proporción de instancias mal clasificadas sobre el total de instancias. También es frecuente su uso como porcentaje en el rango 0% a 100%. El valor más bajo es el más conveniente, al contrario que el de Acurracy</p>
+<p><span class="math display">\[ErorRate = \frac{FP + FN}{TP+TN+FP+FN} = 1- Accuracy\]</span></p>
+</div>
+</div>
+<div id="class-level-mesures" class="section level2" number="2.5">
+<h2>
+<span class="header-section-number">2.5</span> Class-Level Mesures<a class="anchor" aria-label="anchor" href="#class-level-mesures"><i class="fas fa-link"></i></a>
+</h2>
+<div id="precisión" class="section level3" number="2.5.1">
+<h3>
+<span class="header-section-number">2.5.1</span> Precisión<a class="anchor" aria-label="anchor" href="#precisi%C3%B3n"><i class="fas fa-link"></i></a>
+</h3>
+<p>Mide cuantas predicciones hechas fueron correctas respecto del total de predicciones emitidas.</p>
+<p><span class="math display">\[Precision = \frac{CorrectPredic}{TotalPredic}\]</span></p>
+</div>
+<div id="recall-o-rememoración" class="section level3" number="2.5.2">
+<h3>
+<span class="header-section-number">2.5.2</span> Recall o rememoración<a class="anchor" aria-label="anchor" href="#recall-o-rememoraci%C3%B3n"><i class="fas fa-link"></i></a>
+</h3>
+<p>Estima cuantas predicciones para una clase dada son correctas contra el total de casos predichos en la clase (entrenamiento y test)</p>
+<p><span class="math display">\[Recall = \frac{CorrectPredic}{TotalActual}\]</span>
+### Métrica-F
+Estima la bondad de clasificación para una clase dada. Se compara el total de casos correctamente clasificados contra el balance en la precisión y rememoración (recall). El valor máximo de F-Messure es igual a 1</p>
+<p><span class="math display">\[F1Messure = 2*\frac{Precision * Recall}{Precision * Recall} \]</span></p>
+</div>
+</div>
+<div id="subreentrenado-sobreentrenado" class="section level2" number="2.6">
+<h2>
+<span class="header-section-number">2.6</span> Subreentrenado Sobreentrenado<a class="anchor" aria-label="anchor" href="#subreentrenado-sobreentrenado"><i class="fas fa-link"></i></a>
+</h2>
+<div class="float">
+<img src="imagen/overfit.png" alt="Sobre y Sub entrenado"><div class="figcaption">Sobre y Sub entrenado</div>
+</div>
+</div>
+<div id="k-nearest-neighbor-knn" class="section level2" number="2.7">
+<h2>
+<span class="header-section-number">2.7</span> k Nearest Neighbor kNN<a class="anchor" aria-label="anchor" href="#k-nearest-neighbor-knn"><i class="fas fa-link"></i></a>
+</h2>
+<p>En kNN la similaridd o distancia entre observaciones es utilizada para clasificar los elementos de una muestra o población.
+Tipicamente usamos la distancia Euclídea en el espacio n dimensional. El modo más común de clasificación de un grupo es con el k-ésimo vecino(s) más próximo(s) en base a datos etiquetados.</p>
+<p>Se dice que kNN es una instanciación antes que un método basado en modelo, significando esto que en realidad no se crea un modelo para clasificar.</p>
+<div class="float">
+<img src="imagen/kNN.png" alt="Modelo básico de kNN"><div class="figcaption">Modelo básico de kNN</div>
+</div>
+<p>Eligiendo un k grande, se reduce el impacto de la varianza causada por el “ruido” aleatorio de los datos, pero esto puede sesgar el aprendizaje de ignorar patrones pequeños, pero significativos.</p>
+<p>Se suele utilizar una regla de facto para elegir k, que es la raíz cuadrada del número de observaciones del set de entrenamiento redondeado hacia arriba</p>
+<p><span class="math display">\[k =\sqrt{n_{training}}\]</span></p>
+<p>Para el dataset de performance logística se tiene</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">k.choice</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">ceiling</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">training.C</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">k.choice</span></span>
+<span><span class="co">#&gt; [1] 11</span></span></code></pre></div>
+<p>Utilizar un número impar para <span class="math inline">\(k\)</span> es una buena práctica, porque evita caer en empate al seleccionar la etiqueta dominante.</p>
+<p>Utilizaremos la función <span class="math inline">\(knn()\)</span> del paquete <span class="math inline">\(class\)</span> para construir lo que representaría el modelo.</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.stats.ox.ac.uk/pub/MASS4/">class</a></span><span class="op">)</span></span>
+<span><span class="va">knn.pred.C</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/class/man/knn.html">knn</a></span><span class="op">(</span>train<span class="op">=</span><span class="va">training.C</span><span class="op">[</span> ,<span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span> , test<span class="op">=</span><span class="va">testing.C</span><span class="op">[</span> , <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span>, cl<span class="op">=</span><span class="va">training.C</span><span class="op">$</span><span class="va">Performance</span>, k<span class="op">=</span><span class="va">k.choice</span><span class="op">)</span></span></code></pre></div>
+<div id="testeo-de-performace-del-algoritmo-entrenado" class="section level3" number="2.7.1">
+<h3>
+<span class="header-section-number">2.7.1</span> Testeo de Performace del Algoritmo entrenado<a class="anchor" aria-label="anchor" href="#testeo-de-performace-del-algoritmo-entrenado"><i class="fas fa-link"></i></a>
+</h3>
+<p>Dado que kNN no precide un modelo no podemos hacer una ponderación o medida de la bondad del ajuste en los datos de entrenamiento, por lo que debemos necesariamente aplicar el modelo a los datos de prueba.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">knn.test.acc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/confusionMatrix.html">confusionMatrix</a></span><span class="op">(</span><span class="va">knn.pred.C</span>,<span class="va">testing.C</span><span class="op">$</span><span class="va">Performance</span>, mode<span class="op">=</span><span class="st">"prec_recall"</span><span class="op">)</span></span>
+<span><span class="va">knn.test.acc</span></span>
+<span><span class="co">#&gt; Confusion Matrix and Statistics</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;           Reference</span></span>
+<span><span class="co">#&gt; Prediction good fair poor</span></span>
+<span><span class="co">#&gt;       good   15    0    0</span></span>
+<span><span class="co">#&gt;       fair    0   14    0</span></span>
+<span><span class="co">#&gt;       poor    0    1   15</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Overall Statistics</span></span>
+<span><span class="co">#&gt;                                           </span></span>
+<span><span class="co">#&gt;                Accuracy : 0.9778          </span></span>
+<span><span class="co">#&gt;                  95% CI : (0.8823, 0.9994)</span></span>
+<span><span class="co">#&gt;     No Information Rate : 0.3333          </span></span>
+<span><span class="co">#&gt;     P-Value [Acc &gt; NIR] : &lt; 2.2e-16       </span></span>
+<span><span class="co">#&gt;                                           </span></span>
+<span><span class="co">#&gt;                   Kappa : 0.9667          </span></span>
+<span><span class="co">#&gt;                                           </span></span>
+<span><span class="co">#&gt;  Mcnemar's Test P-Value : NA              </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Statistics by Class:</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;                      Class: good Class: fair Class: poor</span></span>
+<span><span class="co">#&gt; Precision                 1.0000      1.0000      0.9375</span></span>
+<span><span class="co">#&gt; Recall                    1.0000      0.9333      1.0000</span></span>
+<span><span class="co">#&gt; F1                        1.0000      0.9655      0.9677</span></span>
+<span><span class="co">#&gt; Prevalence                0.3333      0.3333      0.3333</span></span>
+<span><span class="co">#&gt; Detection Rate            0.3333      0.3111      0.3333</span></span>
+<span><span class="co">#&gt; Detection Prevalence      0.3333      0.3111      0.3556</span></span>
+<span><span class="co">#&gt; Balanced Accuracy         1.0000      0.9667      0.9833</span></span></code></pre></div>
+</div>
+</div>
+<div id="buenas-prácticas-en-knn" class="section level2" number="2.8">
+<h2>
+<span class="header-section-number">2.8</span> Buenas prácticas en kNN<a class="anchor" aria-label="anchor" href="#buenas-pr%C3%A1cticas-en-knn"><i class="fas fa-link"></i></a>
+</h2>
+<ul>
+<li>Nromalizar los calores</li>
+</ul>
+<p>Dado que kNN se basa en las distancias puede haber un error de influencia si una columna tiene magnitudes muy diferentes a otra.</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/boxplot.html">boxplot</a></span><span class="op">(</span><span class="va">performance_scm</span><span class="op">[</span> ,<span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="01-IA_Exploratorio_files/figure-html/unnamed-chunk-10-1.png" width="672"></div>
+<p>Basados en el gráfico boxplot deberíamos transfomar el recorrido de las variables al rango <span class="math inline">\([0,1]\)</span>.</p>
+<p><span class="math display">\[ \frac{x-min(x)}{max(x)-min(x)}\]</span>
+Noramlizaremos los datos</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">perf_escalado</span> <span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">performance_scm</span><span class="op">[</span> ,<span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span>, <span class="fl">2</span>, <span class="kw">function</span> <span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">(</span><span class="va">x</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">/</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op">)</span></span>
+<span><span class="va">perf_escalado</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="va">perf_escalado</span>, <span class="va">performance_scm</span><span class="op">$</span><span class="va">Performance</span><span class="op">)</span></span></code></pre></div>
+<p>Ahora podemos hacer el gráfico con los valores escalados</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/boxplot.html">boxplot</a></span><span class="op">(</span><span class="va">perf_escalado</span><span class="op">[</span> ,<span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span>, main<span class="op">=</span><span class="st">"Gráfico de cajas Predictores Escalados"</span>, las<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="01-IA_Exploratorio_files/figure-html/unnamed-chunk-12-1.png" width="672"></div>
+<p>Alternativamente de puede usar z-scores, que están estandarizados con la media entorno a 0 y el desvío estandard.</p>
+<p><span class="math display">\[Z= \frac{x-u}{\sigma} \]</span></p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">perf_z</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">performance_scm</span><span class="op">[</span> ,<span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span>,<span class="fl">2</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">(</span><span class="va">x</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op">/</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>  <span class="op">)</span></span>
+<span><span class="va">perf_z</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="va">perf_z</span>,<span class="va">performance_scm</span><span class="op">$</span><span class="va">Performance</span><span class="op">)</span></span></code></pre></div>
+<p>Vista del gráfico normalizado</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/boxplot.html">boxplot</a></span><span class="op">(</span><span class="va">perf_z</span><span class="op">[</span> ,<span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="01-IA_Exploratorio_files/figure-html/unnamed-chunk-14-1.png" width="672"></div>
+<div id="variando-k" class="section level3" number="2.8.1">
+<h3>
+<span class="header-section-number">2.8.1</span> Variando k<a class="anchor" aria-label="anchor" href="#variando-k"><i class="fas fa-link"></i></a>
+</h3>
+<p>Dado que kNN es un algoritmo de aprendizaje peresozo, pero eficiente a la hora de hacer predicciones (pues en realidad no hay aprendizaje formal), resulta interesante probar el efecto de variar los valores de k y ver cómo impacta en los resultados obtenidos y la performance de entrenamiento.</p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">save</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">25</span><span class="op">)</span><span class="op">{</span></span>
+<span>  <span class="va">knn.pred.C.l</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/class/man/knn.html">knn</a></span><span class="op">(</span>train <span class="op">=</span> <span class="va">training.C</span><span class="op">[</span> ,<span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span>, test<span class="op">=</span><span class="va">testing.C</span><span class="op">[</span> ,<span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span>, cl<span class="op">=</span><span class="va">training.C</span><span class="op">$</span><span class="va">Performance</span>, k<span class="op">=</span><span class="va">i</span><span class="op">)</span></span>
+<span>  <span class="va">save</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/pkg/caret/man/confusionMatrix.html">confusionMatrix</a></span><span class="op">(</span><span class="va">knn.pred.C.l</span>, <span class="va">testing.C</span><span class="op">$</span><span class="va">Performance</span>, mode<span class="op">=</span><span class="st">"prec_recall"</span><span class="op">)</span><span class="op">$</span><span class="va">overall</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> </span>
+<span>  </span>
+<span><span class="op">}</span></span>
+<span><span class="va">save</span> <span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span><span class="op">(</span><span class="va">rbind</span>,<span class="va">save</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">25</span>,<span class="va">save</span>, xlab<span class="op">=</span><span class="st">"k"</span>, ylab<span class="op">=</span><span class="st">"Accuracy"</span>, type<span class="op">=</span><span class="st">"o"</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="01-IA_Exploratorio_files/figure-html/unnamed-chunk-15-1.png" width="672"></div>
+
+</div>
+</div>
+</div>
+  <div class="chapter-nav">
+<div class="prev"><a href="index.html"><span class="header-section-number">1</span> About</a></div>
+<div class="next"><a href="anal%C3%ADtica-de-datos-industriales.html"><span class="header-section-number">3</span> Analítica de Datos Industriales</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#anal%C3%ADtica-de-datos-enla-cadena-de-suministros"><span class="header-section-number">2</span> Analítica de Datos enla Cadena de Suministros</a></li>
+<li><a class="nav-link" href="#carga-de-dataset-y-exploraci%C3%B3n"><span class="header-section-number">2.1</span> Carga de dataset y exploración</a></li>
+<li><a class="nav-link" href="#entrenamiento-y-prueba"><span class="header-section-number">2.2</span> Entrenamiento y prueba</a></li>
+<li><a class="nav-link" href="#ajuste-del-modelo"><span class="header-section-number">2.3</span> Ajuste del modelo</a></li>
+<li>
+<a class="nav-link" href="#mediciones-model-level"><span class="header-section-number">2.4</span> Mediciones Model-level</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#accuracy"><span class="header-section-number">2.4.1</span> Accuracy</a></li>
+<li><a class="nav-link" href="#error-rate"><span class="header-section-number">2.4.2</span> Error-Rate</a></li>
+</ul>
+</li>
+<li>
+<a class="nav-link" href="#class-level-mesures"><span class="header-section-number">2.5</span> Class-Level Mesures</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#precisi%C3%B3n"><span class="header-section-number">2.5.1</span> Precisión</a></li>
+<li><a class="nav-link" href="#recall-o-rememoraci%C3%B3n"><span class="header-section-number">2.5.2</span> Recall o rememoración</a></li>
+</ul>
+</li>
+<li><a class="nav-link" href="#subreentrenado-sobreentrenado"><span class="header-section-number">2.6</span> Subreentrenado Sobreentrenado</a></li>
+<li>
+<a class="nav-link" href="#k-nearest-neighbor-knn"><span class="header-section-number">2.7</span> k Nearest Neighbor kNN</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#testeo-de-performace-del-algoritmo-entrenado"><span class="header-section-number">2.7.1</span> Testeo de Performace del Algoritmo entrenado</a></li></ul>
+</li>
+<li>
+<a class="nav-link" href="#buenas-pr%C3%A1cticas-en-knn"><span class="header-section-number">2.8</span> Buenas prácticas en kNN</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#variando-k"><span class="header-section-number">2.8.1</span> Variando k</a></li></ul>
+</li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+<li><a id="book-source" href="https://github.com/rstudio/bookdown-demo/blob/master/01-IA_Exploratorio.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/rstudio/bookdown-demo/edit/master/01-IA_Exploratorio.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>Random Forest</strong>" was written by Ricardo R. Palma. It was last built on 2023-06-27.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer><!-- dynamically load mathjax for compatibility with self-contained --><script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script><script type="text/x-mathjax-config">const popovers = document.querySelectorAll('a.footnote-ref[data-toggle="popover"]');
+for (let popover of popovers) {
+  const div = document.createElement('div');
+  div.setAttribute('style', 'position: absolute; top: 0, left:0; width:0, height:0, overflow: hidden; visibility: hidden;');
+  div.innerHTML = popover.getAttribute('data-content');
+
+  var has_math = div.querySelector("span.math");
+  if (has_math) {
+    document.body.appendChild(div);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
+    MathJax.Hub.Queue(function() {
+      popover.setAttribute('data-content', div.innerHTML);
+      document.body.removeChild(div);
+    })
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,1624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Capítulo 2 Patrones de asociación | Analítica de Datos 4.0</title>
+<meta name="author" content="Ricardo R. Palma">
+<meta name="description" content="2.1 Introducción Los algoritmos de reglas de asociación tienen como objetivo encontrar relaciones dentro un conjunto de transacciones, en concreto, items o atributos que tienden a ocurrir de forma...">
+<meta name="generator" content="bookdown 0.33 with bs4_book()">
+<meta property="og:title" content="Capítulo 2 Patrones de asociación | Analítica de Datos 4.0">
+<meta property="og:type" content="book">
+<meta property="og:description" content="2.1 Introducción Los algoritmos de reglas de asociación tienen como objetivo encontrar relaciones dentro un conjunto de transacciones, en concreto, items o atributos que tienden a ocurrir de forma...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Capítulo 2 Patrones de asociación | Analítica de Datos 4.0">
+<meta name="twitter:description" content="2.1 Introducción Los algoritmos de reglas de asociación tienen como objetivo encontrar relaciones dentro un conjunto de transacciones, en concreto, items o atributos que tienden a ocurrir de forma...">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.4.2/transition.js"></script><script src="libs/bs3compat-0.4.2/tabs.js"></script><script src="libs/bs3compat-0.4.2/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="libs/htmlwidgets-1.6.2/htmlwidgets.js"></script><script src="libs/d3-5.7.0/d3-5.15.0.min.js"></script><script src="libs/d3-regression-1.3.4/d3-regression.min.js"></script><link href="libs/scatterPlotMatrix-0.2/scatterPlotMatrix.css" rel="stylesheet">
+<script src="libs/scatterPlotMatrix-0.2/spm-msp.js"></script><script src="libs/scatterPlotMatrix-binding-0.2.0/scatterPlotMatrix.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+<style type="text/css">
+    /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+        }
+    .hanging div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }
+  </style>
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">Analítica de Datos 4.0</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html">Acerca de este curso</a></li>
+<li><a class="" href="data_analitics.html"><span class="header-section-number">1</span> Data_Analitics</a></li>
+<li><a class="active" href="patrones-de-asociaci%C3%B3n.html"><span class="header-section-number">2</span> Patrones de asociación</a></li>
+<li><a class="" href="clasificaci%C3%B3n-con-knn.html"><span class="header-section-number">3</span> Clasificación con KNN</a></li>
+<li><a class="" href="algoritmo-del-vecino-m%C3%A1s-pr%C3%B3ximo.html"><span class="header-section-number">4</span> Algoritmo del vecino más próximo</a></li>
+<li><a class="" href="agrupaci%C3%B3n-k-means.html"><span class="header-section-number">5</span> Agrupación K-Means</a></li>
+<li><a class="" href="clusterizaci%C3%B3n.html"><span class="header-section-number">6</span> Clusterización</a></li>
+<li><a class="" href="redes-neuronales-artificiales.html"><span class="header-section-number">7</span> Redes Neuronales artificiales</a></li>
+<li><a class="" href="%C3%A1rboles-de-decisi%C3%B3n.html"><span class="header-section-number">8</span> Árboles de decisión</a></li>
+<li><a class="" href="random-forest.html"><span class="header-section-number">9</span> Random Forest</a></li>
+<li><a class="" href="bibliograf%C3%ADa.html">Bibliografía</a></li>
+</ul>
+
+        <div class="book-extra">
+          <p><a id="book-repo" href="https://ricardorpalma.github.io/MCSC_Op_4.0/Cap_1/">View book source <i class="fab fa-gitlab"></i></a></p>
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="patrones-de-asociación" class="section level1" number="2">
+<h1>
+<span class="header-section-number">Capítulo 2</span> Patrones de asociación<a class="anchor" aria-label="anchor" href="#patrones-de-asociaci%C3%B3n"><i class="fas fa-link"></i></a>
+</h1>
+<div id="introducción" class="section level2" number="2.1">
+<h2>
+<span class="header-section-number">2.1</span> Introducción<a class="anchor" aria-label="anchor" href="#introducci%C3%B3n"><i class="fas fa-link"></i></a>
+</h2>
+<p>Los algoritmos de reglas de asociación tienen como objetivo encontrar relaciones dentro un conjunto de transacciones, en concreto, items o atributos que tienden a ocurrir de forma conjunta. En este contexto, el término transacción hace referencia a cada grupo de eventos que están asociados de alguna forma, por ejemplo:</p>
+<ul>
+<li><p>El pedido de la compra en un supermercado.</p></li>
+<li><p>Los libros que compra un cliente en una librería.</p></li>
+<li><p>Las páginas web visitadas por un usuario.</p></li>
+<li><p>Las características que aparecen de forma conjunta.</p></li>
+<li><p>Cómo ordenar los repuestos en el almacén de un taller de mantenimiento</p></li>
+<li><p>Disposición de insumos para la ayuda humanitaria</p></li>
+<li><p>El protfolio de iniciativas de innovación (Metodo TRIZ)</p></li>
+</ul>
+</div>
+<div id="formatos-del-dataset" class="section level2" number="2.2">
+<h2>
+<span class="header-section-number">2.2</span> Formatos del dataset<a class="anchor" aria-label="anchor" href="#formatos-del-dataset"><i class="fas fa-link"></i></a>
+</h2>
+<p>Los datos que se necesitan pueden venir especificados en dos formatos denominados lista corta o lista larga (matricial)</p>
+<div id="lista-corta" class="section level3" number="2.2.1">
+<h3>
+<span class="header-section-number">2.2.1</span> Lista corta<a class="anchor" aria-label="anchor" href="#lista-corta"><i class="fas fa-link"></i></a>
+</h3>
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">datos_crudo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">3</span>,<span class="st">"5W40"</span>,<span class="st">"Filtro Aceite"</span>,<span class="st">"Filtro Aire"</span>,<span class="st">"Correa Distr"</span>,<span class="st">"Bomba de Agua"</span>,<span class="st">"Filtro Nafta"</span>,<span class="st">"Limpia Inyectores"</span><span class="op">)</span></span>
+<span><span class="va">lista_corta</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="va">datos_crudo</span>,ncol<span class="op">=</span><span class="fl">2</span>, byrow<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/dimnames.html">dimnames</a></span><span class="op">(</span><span class="va">lista_corta</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>salida <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">4</span>,<span class="fl">5</span>,<span class="fl">6</span>,<span class="fl">7</span><span class="op">)</span> , producto <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"ticket"</span>,<span class="st">"producto"</span><span class="op">)</span> <span class="op">)</span></span>
+<span><span class="va">lista_corta</span></span>
+<span><span class="co">#&gt;       producto</span></span>
+<span><span class="co">#&gt; salida ticket producto           </span></span>
+<span><span class="co">#&gt;      1 "1"    "5W40"             </span></span>
+<span><span class="co">#&gt;      2 "1"    "Filtro Aceite"    </span></span>
+<span><span class="co">#&gt;      3 "1"    "Filtro Aire"      </span></span>
+<span><span class="co">#&gt;      4 "2"    "Correa Distr"     </span></span>
+<span><span class="co">#&gt;      5 "2"    "Bomba de Agua"    </span></span>
+<span><span class="co">#&gt;      6 "3"    "Filtro Nafta"     </span></span>
+<span><span class="co">#&gt;      7 "3"    "Limpia Inyectores"</span></span></code></pre></div>
+<p>Este el el formato utilizado habitualmente por las bases de datos de salida de almacenes, especialmente utilizado en los archivos csv de SAP.</p>
+</div>
+<div id="lista-corta-1" class="section level3" number="2.2.2">
+<h3>
+<span class="header-section-number">2.2.2</span> Lista corta<a class="anchor" aria-label="anchor" href="#lista-corta-1"><i class="fas fa-link"></i></a>
+</h3>
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">datos_m</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">0</span>, <span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">0</span>,<span class="fl">0</span>, <span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span></span>
+<span><span class="va">lista_larga</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="va">datos_m</span>,nrow<span class="op">=</span><span class="fl">3</span>,byrow<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">lista_larga</span></span>
+<span><span class="co">#&gt;      [,1] [,2] [,3] [,4] [,5] [,6] [,7]</span></span>
+<span><span class="co">#&gt; [1,]    1    1    1    0    0    0    0</span></span>
+<span><span class="co">#&gt; [2,]    0    0    0    1    1    0    0</span></span>
+<span><span class="co">#&gt; [3,]    0    0    0    0    0    1    1</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/dimnames.html">dimnames</a></span><span class="op">(</span><span class="va">lista_larga</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>ticket <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span><span class="op">)</span> , producto <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"5W40"</span>,<span class="st">"Filtro Aceite"</span>,<span class="st">"Filtro Aire"</span>,<span class="st">"Correa Distr"</span>,<span class="st">"Bomba de Agua"</span>,<span class="st">"Filtro Nafta"</span>,<span class="st">"Limpia Inyectores"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">lista_larga</span></span>
+<span><span class="co">#&gt;       producto</span></span>
+<span><span class="co">#&gt; ticket 5W40 Filtro Aceite Filtro Aire Correa Distr</span></span>
+<span><span class="co">#&gt;      1    1             1           1            0</span></span>
+<span><span class="co">#&gt;      2    0             0           0            1</span></span>
+<span><span class="co">#&gt;      3    0             0           0            0</span></span>
+<span><span class="co">#&gt;       producto</span></span>
+<span><span class="co">#&gt; ticket Bomba de Agua Filtro Nafta Limpia Inyectores</span></span>
+<span><span class="co">#&gt;      1             0            0                 0</span></span>
+<span><span class="co">#&gt;      2             1            0                 0</span></span>
+<span><span class="co">#&gt;      3             0            1                 1</span></span></code></pre></div>
+<p>A cada uno de los eventos o elementos que forman parte de una transacción (ticket) se le conoce como item y a un conjunto de ellos itemset. Una transacción puede estar formada por uno o varios items, en el caso de ser varios, cada posible subconjunto de ellos es un itemset distinto. Por ejemplo, la transacción <span class="math inline">\(T = {A,B,C}\)</span> está formada por 3 items <strong>(A, B y C)</strong> y sus posibles itemsets son: <em>{A,B,C}, {A,B}, {B,C}, {A,C}, {A}, {B} y {C}</em>.</p>
+<p>Una regla de asociación se define como una implicación del tipo “si <span class="math inline">\(X entonces Y” (X⇒Y )\)</span>, donde <span class="math inline">\(X e Y\)</span> son itemsets o items individuales. El lado izquierdo de la regla recibe el nombre de antecedente o lenft-hand-side (LHS) y el lado derecho el nombre de consecuente o right-hand-side (RHS). Por ejemplo, la regla <em>{A,B} =&gt; {C}</em> significa que, cuando ocurren A y B, también ocurre C.</p>
+<p>Existen varios algoritmos diseñados para identificar itemsets frecuentes y reglas de asociación. A continuación, se describen algunos de los más utilizados.</p>
+</div>
+</div>
+<div id="apriori" class="section level2" number="2.3">
+<h2>
+<span class="header-section-number">2.3</span> Apriori<a class="anchor" aria-label="anchor" href="#apriori"><i class="fas fa-link"></i></a>
+</h2>
+<p>Apriori fue uno de los primeros algoritmos desarrollados para la búsqueda de reglas de asociación y sigue siendo uno de los más empleados, tiene dos etapas:</p>
+<p>Identificar todos los itemsets que ocurren con una frecuencia por encima de un determinado límite (itemsets frecuentes).</p>
+<p>Convertir esos itemsets frecuentes en reglas de asociación.</p>
+<p>Con la finalidad de ilustrar el funcionamiento del algoritmo, se emplea un ejemplo sencillo. Supóngase la siguiente base de datos de un centro comercial en la que cada fila es una transacción. En este caso, el término transacción hace referencia a todos los productos comprados bajo un mismo ticket (misma cesta de la compra). Las letras A, B, C y D hacen referencia a 4 productos (items) distintos.</p>
+</div>
+<div id="transacción" class="section level2" number="2.4">
+<h2>
+<span class="header-section-number">2.4</span> Transacción<a class="anchor" aria-label="anchor" href="#transacci%C3%B3n"><i class="fas fa-link"></i></a>
+</h2>
+<ul>
+<li>{A, B, C, D}</li>
+<li>{A, B, D}</li>
+<li>{A, B}</li>
+<li>{B, C, D}</li>
+<li>{B, C}</li>
+<li>{C, D}</li>
+<li>{B, D}</li>
+</ul>
+<p>Antes de entrar en los detalles del algoritmo, conviene definir una serie de conceptos:</p>
+<p>Soporte: El soporte del item o itemset X es el número de transacciones que contienen X dividido entre el total de transacciones.</p>
+<p><span class="math display">\[ Sop_x = \frac{itemset_x}{itemset_{total}}\]</span></p>
+<p>Confianza: La confianza de una regla “Si X entonces Y” se define acorde a la ecuación</p>
+<p><span class="math display">\[confianza(X=&gt;Y)=\frac{soporte(unión(X,Y))}{soporte(X)},\]</span>
+donde unión(XY) es el itemset que contienen todos los items de X y de Y. La confianza se interpreta como la probabilidad <span class="math inline">\(P(Y|X)\)</span>, es decir, la probabilidad de que una transacción que contiene los items de <span class="math inline">\(X\)</span>, también contenga los items de <span class="math inline">\(Y\)</span>.</p>
+<p>Volviendo al ejemplo del centro comercial, puede observarse que, el artículo A, aparece en 3 de las 7 transacciones, el artículo B en 6 y ambos artículos juntos en 3. El soporte del item {A} es por lo tanto del 43%, el del item {B} del 86% y del itemset {A, B} del 43%. De las 3 transacciones que incluyen A, las 3 incluyen B, por lo tanto, la regla “clientes que compran el artículo A también compran B”, se cumple, acorde a los datos, un 100% de las veces. Esto significa que la confianza de la regla {A =&gt; B} es del 100%.</p>
+<p>Encontrar itemsets frecuentes (itemsets con una frecuencia mayor o igual a un determinado soporte mínimo) no es un proceso trivial debido la explosión combinatoria de posibilidades, sin embargo, una vez identificados, es relativamente directo generar reglas de asociación que presenten una confianza mínima. El algoritmo Apriori hace una búsqueda exhaustiva por niveles de complejidad (de menor a mayor tamaño de itemsets). Para reducir el espacio de búsqueda aplica la norma de “si un itemset no es frecuente, ninguno de sus supersets (itemsets de mayor tamaño que contengan al primero) puede ser frecuente”. Visto de otra forma, si un conjunto es infrecuente, entonces, todos los conjuntos donde este último se encuentre, también son infrecuentes. Por ejemplo, si el itemset {A,B} es infrecuente, entonces, {A,B,C} y {A,B,E} también son infrecuentes ya que todos ellos contienen {A,B}.</p>
+<p>El funcionamiento del algoritmo es sencillo, se inicia identificando los items individuales que aparecen en el total de transacciones con una frecuencia por encima de un mínimo establecido por el usuario. A continuación, se sigue una estrategia bottom-up en la que se extienden los candidatos añadiendo un nuevo item y se eliminan aquellos que contienen un subconjunto infrecuente o que no alcanzan el soporte mínimo. Este proceso se repite hasta que el algoritmo no encuentra más ampliaciones exitosas de los itemsets previos o cuando se alcanza un tamaño máximo.</p>
+<p>Se procede a identificar los itemsets frecuentes y, a partir de ellos, crear reglas de asociación.</p>
+<p>Transacción</p>
+<ul>
+<li>{A, B, C, D}</li>
+<li>{A, B, D}</li>
+<li>{A, B}</li>
+<li>{B, C, D}</li>
+<li>{B, C}</li>
+<li>{C, D}</li>
+<li>{B, D}</li>
+</ul>
+<p>Para este problema se considera que un item o itemset es frecuente si aparece en un mínimo de 3 transacciones, es decir, su soporte debe de ser igual o superior a 3/7 = 0.43. Se inicia el algoritmo identificando todos los items individuales (itemsets de un único item) y calculando su soporte.</p>
+<p><strong>Itemset (k=1) Ocurrencias Soporte</strong></p>
+<div class="inline-table"><table class="table table-sm">
+<thead><tr class="header">
+<th>Itemset</th>
+<th>Ocurrencia</th>
+<th>Soporte</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>{A}</td>
+<td>3</td>
+<td>0.43</td>
+</tr>
+<tr class="even">
+<td>{B}</td>
+<td>6</td>
+<td>0.86</td>
+</tr>
+<tr class="odd">
+<td>{C}</td>
+<td>4</td>
+<td>0.57</td>
+</tr>
+<tr class="even">
+<td>{D}</td>
+<td>5</td>
+<td>0.71</td>
+</tr>
+</tbody>
+</table></div>
+<p>Todos los itemsets de tamaño k = 1 tienen un soporte igual o superior al mínimo establecido, por lo que todos superan la fase de filtrado (poda).</p>
+<p>A continuación, se generan todos los posibles itemsets de tamaño k = 2 que se pueden crear con los itemsets que han superado el paso anterior y se calcula su soporte.</p>
+<p>Itemset (k=2) Ocurrencias Soporte</p>
+<div class="inline-table"><table class="table table-sm">
+<thead><tr class="header">
+<th>Itemset</th>
+<th>Ocurrencia</th>
+<th>Soporte</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>{A, B}</td>
+<td>3</td>
+<td>0.43</td>
+</tr>
+<tr class="even">
+<td>{A, C}</td>
+<td>1</td>
+<td>0.14</td>
+</tr>
+<tr class="odd">
+<td>{A, D}</td>
+<td>2</td>
+<td>0.29</td>
+</tr>
+<tr class="even">
+<td>{B, C}</td>
+<td>3</td>
+<td>0.43</td>
+</tr>
+<tr class="odd">
+<td>{B, D}</td>
+<td>4</td>
+<td>0.57</td>
+</tr>
+<tr class="even">
+<td>{C, D}</td>
+<td>3</td>
+<td>0.43</td>
+</tr>
+</tbody>
+</table></div>
+<p>Los itemsets {A, B}, {B, C}, {B, D} y {C, D} superan el límite de soporte, por lo que son frecuentes. Los itemsets {A, C} y {A, D} no superan el soporte mínimo por lo que se descartan. Además, cualquier futuro itemset que los contenga también será descartado ya que no puede ser frecuente por el hecho de que contiene un subconjunto infrecuente.</p>
+<p>Itemset (k=2) Ocurrencias Soporte</p>
+<div class="inline-table"><table class="table table-sm">
+<thead><tr class="header">
+<th>Itemset</th>
+<th>Ocurrencia</th>
+<th>Soporte</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>{A, B}</td>
+<td>3</td>
+<td>0.43</td>
+</tr>
+<tr class="even">
+<td>{B, C}</td>
+<td>3</td>
+<td>0.43</td>
+</tr>
+<tr class="odd">
+<td>{B, D}</td>
+<td>4</td>
+<td>0.57</td>
+</tr>
+<tr class="even">
+<td>{C, D}</td>
+<td>3</td>
+<td>0.43</td>
+</tr>
+</tbody>
+</table></div>
+<p>Se repite el proceso, esta vez creando itemsets de tamaño k = 3.</p>
+<p>Itemset (k=3)</p>
+<div class="inline-table"><table class="table table-sm">
+<thead><tr class="header">
+<th>Itemset</th>
+<th>Ocurrencia</th>
+<th>Soporte</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>{A, B, C}</td>
+<td>etc.</td>
+<td>etc.</td>
+</tr>
+<tr class="even">
+<td>{A, B, D}</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>{B, C, D}</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>{C, D, A}</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
+<p>Los itemsets {A, B, C}, {A, B, D} y {C, D, A} contienen subconjuntos infrecuentes, por lo que son descartados. Para los restantes se calcula su soporte.</p>
+<p>Itemset (k=3) Ocurrencias Soporte</p>
+<div class="inline-table"><table class="table table-sm">
+<thead><tr class="header">
+<th>Itemset</th>
+<th>Ocurrencia</th>
+<th>Soporte</th>
+</tr></thead>
+<tbody><tr class="odd">
+<td>{B, C, D}</td>
+<td>2</td>
+<td>0.29</td>
+</tr></tbody>
+</table></div>
+<p>El items {B, C, D} no supera el soporte mínimo por lo que se considera infrecuente. Al no haber ningún nuevo itemset frecuente, se detiene el algoritmo.</p>
+<p>Como resultado de la búsqueda se han identificado los siguientes itemsets frecuentes:</p>
+<p>Itemset frecuentes</p>
+<ul>
+<li>{A, B}</li>
+<li>{B, C}</li>
+<li>{B, D}</li>
+<li>{C, D}</li>
+</ul>
+<p>El siguiente paso es crear las reglas de asociación a partir de cada uno de los itemsets frecuentes. De nuevo, se produce una explosión combinatoria de posibles reglas ya que, de cada itemset frecuente, se generan tantas reglas como posibles particiones binarias. En concreto, el proceso seguido es el siguiente:</p>
+<p>Por cada itemset frecuente I, obtener todos los posibles subsets de I.</p>
+<p>1.1 Para cada subset s de I, crear la regla <span class="math inline">\(“s =&gt; (I-s)”\)</span></p>
+<p>Descartar todas las reglas que no superen un mínimo de confianza.</p>
+<p>Supóngase que se desean únicamente reglas con una confianza igual o superior a 0.7, es decir, que la regla se cumpla un 70% de las veces. Tal y como se describió anteriormente, la confianza de una regla se calcula como el soporte del itemset formado por todos los items que participan en la regla, dividido por el soporte del itemset formado por los items del antecedente.</p>
+</div>
+<div id="reglas-confianza-confianza" class="section level2" number="2.5">
+<h2>
+<span class="header-section-number">2.5</span> Reglas Confianza Confianza<a class="anchor" aria-label="anchor" href="#reglas-confianza-confianza"><i class="fas fa-link"></i></a>
+</h2>
+<div class="inline-table"><table class="table table-sm">
+<thead><tr class="header">
+<th>Regla</th>
+<th>Ecuación</th>
+<th>Valor</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>{A} =&gt; {B}</td>
+<td>soporte{A, B} / soporte {A}</td>
+<td>0.43 / 0.43 = 1</td>
+</tr>
+<tr class="even">
+<td>{B} =&gt; {A}</td>
+<td>soporte{A, B} / soporte {B}</td>
+<td>0.43 / 0.86 = 0.5</td>
+</tr>
+<tr class="odd">
+<td>{B} =&gt; {C}</td>
+<td>soporte{B, C} / soporte {B}</td>
+<td>0.43 / 0.86 = 0.5</td>
+</tr>
+<tr class="even">
+<td>{C} =&gt; {B}</td>
+<td>soporte{B, C} / soporte {C}</td>
+<td>0.43 / 0.57 = 0.75</td>
+</tr>
+<tr class="odd">
+<td>{B} =&gt; {D}</td>
+<td>soporte{B, D} / soporte {B}</td>
+<td>0.43 / 0.86 = 0.5</td>
+</tr>
+<tr class="even">
+<td>{D} =&gt; {B}</td>
+<td>soporte{B, D} / soporte {D}</td>
+<td>0.43 / 0.71 = 0.6</td>
+</tr>
+<tr class="odd">
+<td>{C} =&gt; {D}</td>
+<td>soporte{C, D} / soporte {C}</td>
+<td>0.43 / 0.57 = 0.75</td>
+</tr>
+<tr class="even">
+<td>{D} =&gt; {C}</td>
+<td>soporte{C, D} / soporte {D}</td>
+<td>0.43 / 0.71 = 0.6</td>
+</tr>
+</tbody>
+</table></div>
+<p>De todas las posibles reglas, únicamente {C} =&gt; {D} y {C} =&gt; {B} superan el límite de confianza.</p>
+<p>La principal desventaja de algoritmo Apriori es el número de veces que se tienen que escanear los datos en busca de los itemsets frecuentes, en concreto, el algoritmo escanea todas las transacciones un total de kmax
++1, donde:</p>
+<p><strong>kmax</strong> es el tamaño máximo de itemset permitido. Esto hace que el algoritmo Apriori no pueda aplicarse en situaciones con millones de registros, sin embargo, se han desarrollado adaptaciones (FP-growth, Eclat, Hash-Based, partitioning, etc) que solucionan esta limitación.</p>
+</div>
+<div id="fp-growth" class="section level2" number="2.6">
+<h2>
+<span class="header-section-number">2.6</span> FP-Growth<a class="anchor" aria-label="anchor" href="#fp-growth"><i class="fas fa-link"></i></a>
+</h2>
+<p>Los investigadores Han et al. propusieron en el 2000 un nuevo algoritmo llamado FP-Growth que permite extraer reglas de asociación a partir de itemsets frecuentes pero, a diferencia del algoritmo Apriori, estos se identifican sin necesidad de generar candidatos para cada tamaño.</p>
+<p>En términos generales, el algoritmo emplea una estructura de árbol (Frequent Pattern Tree) donde almacena toda la información de las transacciones. Esta estructura permite comprimir la información de una base de datos de transacciones hasta 200 veces, haciendo posible que pueda ser cargada en memoria RAM. Una vez que la base de datos ha sido comprimida en una estructura FP-Tree, se divide en varias bases de datos condicionales, cada una asociada con un patrón frecuente. Finalmente, cada partición se analiza de forma separada y se concatenan los resultados obtenidos. En la mayoría de casos, FP-Growth es más rápido que Apriori.</p>
+</div>
+<div id="eclat" class="section level2" number="2.7">
+<h2>
+<span class="header-section-number">2.7</span> Eclat<a class="anchor" aria-label="anchor" href="#eclat"><i class="fas fa-link"></i></a>
+</h2>
+<p>En el 2000, Zaki propuso un nuevo algoritmo para encontrar patrones frecuentes (itemsets frecuentes) llamado Equivalence Class Transformation (Eclat). La principal diferencia entre este algoritmo y Apriori es la forma en que se escanean y analizan los datos. El algoritmo Apriori emplea transacciones almacenadas de forma horizontal, es decir, todos los elementos que forman una misma transacción están en la misma línea. El algoritmo Eclat, sin embargo, analiza las transacciones en formato vertical, donde cada línea contiene un item y las transacciones en las que aparece ese item.</p>
+<p>Para ilustrar el funcionamiento del algoritmo Eclat, se muestra un ejemplo simplificado. La siguiente tabla contiene la información de las transacciones en formato horizontal. El soporte mínimo para considerar un itemset frecuente es del 20%.</p>
+<div class="inline-table"><table class="table table-sm">
+<thead><tr class="header">
+<th>Transacción</th>
+<th>Items</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>T1</td>
+<td>i4,i5</td>
+</tr>
+<tr class="even">
+<td>T2</td>
+<td>i1,i3,i4,i5</td>
+</tr>
+<tr class="odd">
+<td>T3</td>
+<td>i1,i3,i5</td>
+</tr>
+<tr class="even">
+<td>T4</td>
+<td>i3,i4</td>
+</tr>
+<tr class="odd">
+<td>T5</td>
+<td>i3,i4</td>
+</tr>
+<tr class="even">
+<td>T6</td>
+<td>i4,i5</td>
+</tr>
+<tr class="odd">
+<td>T7</td>
+<td>i2,i3,i5</td>
+</tr>
+<tr class="even">
+<td>T8</td>
+<td>i2,i5</td>
+</tr>
+<tr class="odd">
+<td>T9</td>
+<td>i3,i4,i5</td>
+</tr>
+</tbody>
+</table></div>
+<p>En primer lugar, el algoritmo identifica los items que aparecen en el conjunto de todas las transacciones y los emplea para crear la primera columna de una nueva tabla. A continuación, se añade a cada item el identificador de las transacciones en las que aparece y se calcula su soporte. La siguiente tabla muestra el resultado de reestructurar los datos de formato horizontal a vertical.</p>
+<p>Itemset (k = 1) Transacciones Soporte</p>
+<div class="inline-table"><table class="table table-sm">
+<thead><tr class="header">
+<th>Itemset</th>
+<th>Ocurrencia</th>
+<th>Soporte</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>{i1}</td>
+<td>T2,T3</td>
+<td>0.22</td>
+</tr>
+<tr class="even">
+<td>{i2}</td>
+<td>T7,T8</td>
+<td>0.22</td>
+</tr>
+<tr class="odd">
+<td>{i3}</td>
+<td>T2,T3,T4,T5,T7,T9</td>
+<td>0.66</td>
+</tr>
+<tr class="even">
+<td>{i4}</td>
+<td>T1,T2,T4,T5,T6,T9</td>
+<td>0.66</td>
+</tr>
+<tr class="odd">
+<td>{i5}</td>
+<td>T1,T2,T3,T6,T7,T8,T9</td>
+<td>0.77</td>
+</tr>
+</tbody>
+</table></div>
+<p>Calculando todas las posibles intersecciones de la columna Transacciones de la tabla k=1 se obtienen los itemsets de longitud k+1.</p>
+<p>Itemset (k = 2) Transacciones Soporte</p>
+<div class="inline-table"><table class="table table-sm">
+<thead><tr class="header">
+<th>Itemset</th>
+<th>Ocurrencia</th>
+<th>Soporte</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>{i1,i3}</td>
+<td>T2,T3</td>
+<td>0.22</td>
+</tr>
+<tr class="even">
+<td>{i1,i4}</td>
+<td>T2</td>
+<td>0.11</td>
+</tr>
+<tr class="odd">
+<td>{i1,i5}</td>
+<td>T2,T3</td>
+<td>0.22</td>
+</tr>
+<tr class="even">
+<td>{i2,i3}</td>
+<td>T7</td>
+<td>0.11</td>
+</tr>
+<tr class="odd">
+<td>{i2,i5}</td>
+<td>T7,T8</td>
+<td>0.22</td>
+</tr>
+<tr class="even">
+<td>{i3,i4}</td>
+<td>T2,T4,T5,T9</td>
+<td>0.44</td>
+</tr>
+<tr class="odd">
+<td>{i3,i5}</td>
+<td>T2,T3,T7,T9</td>
+<td>0.44</td>
+</tr>
+<tr class="even">
+<td>{i4,i5}</td>
+<td>T1,T2,T6,T9</td>
+<td>0.44</td>
+</tr>
+</tbody>
+</table></div>
+<p>De nuevo, con las intersecciones de las transacciones de la tabla Itemset (k = 2) se obtienen los itemsets k = 3. Gracias al principio downward closure, no es necesario realizar la intersección de {i1,i5} e {i4,i5} ya que {i1,i4} no es frecuente y por lo tanto tampoco lo es {i1,i4,i5}.</p>
+<p>Itemset (k = 3) Transacciones Soporte</p>
+<div class="inline-table"><table class="table table-sm">
+<thead><tr class="header">
+<th>Itemset</th>
+<th>Ocurrencia</th>
+<th>Soporte</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>{i1,i3,i5}</td>
+<td>T2,T3</td>
+<td>0.22</td>
+</tr>
+<tr class="even">
+<td>{i3,i4,i5}</td>
+<td>T2,T9</td>
+<td>0.22</td>
+</tr>
+</tbody>
+</table></div>
+<p>El algoritmo finaliza cuando no hay más itemsets frecuentes.</p>
+<p>Cabe destacar que, el algoritmo Eclat, permite la identificación de itemsets frecuentes pero no genera reglas de asociación. A pesar de ello, una vez identificados los itemsets frecuentes, se puede aplicar la segunda parte del algoritmo Apriori para obtenerlas.</p>
+</div>
+<div id="arules-package-de-r-cran" class="section level2" number="2.8">
+<h2>
+<span class="header-section-number">2.8</span> Arules package de R-Cran<a class="anchor" aria-label="anchor" href="#arules-package-de-r-cran"><i class="fas fa-link"></i></a>
+</h2>
+<p>El paquete de R arules implementa el algoritmo Apriori para la identificación de itemsets frecuentes y la creación de reglas de asociación a través de la función apriori(). También implementa el algoritmo Eclat con la función eclat().</p>
+<p>Tanto <span class="math inline">\(apriori()\)</span> como <span class="math inline">\(eclat()\)</span> reciben como argumento un objeto transaction con los datos de las transacciones, un argumento parameter que determina las características de los itemsets o reglas generadas (por ejemplo, el soporte mínimo) y un argumento control que determina el comportamiento del algoritmo (por ejemplo, ordenación de los resultados). La función apriori() también se incluye el argumento aparence que impone restricciones sobre las reglas generadas, por ejemplo, crear solo reglas que contengan un determinado item. El resultado de ambas funciones es un objeto de tipo association que puede ser manipulado con toda una serie de funciones que ofrece arules. Entre las principales destacan:</p>
+<p><strong>summary():</strong> muestra un resumen de los resultados.</p>
+<p><strong>inspect():</strong> muestra los resultados.</p>
+<p><strong>length():</strong> número de elementos (reglas o itemsets) almacenados.</p>
+<p><strong>items():</strong> extrae los items que forman un itemset o una regla. En el caso de reglas, combina los items de antecedente (LHS) y del consecuente (RHS). .</p>
+<p><strong>sort():</strong> ordena los resultados.</p>
+<p><strong>subset:</strong> filtrado de los resultados.</p>
+</div>
+<div id="ejemplo-ticket-de-supermercado" class="section level2" number="2.9">
+<h2>
+<span class="header-section-number">2.9</span> Ejemplo ticket de supermercado<a class="anchor" aria-label="anchor" href="#ejemplo-ticket-de-supermercado"><i class="fas fa-link"></i></a>
+</h2>
+<p>Supóngase que se dispone del registro de todas las compras que se han realizado en un supermercado. El objetivo del análisis es identificar productos que tiendan a comprarse de forma conjunta para así poder situarlos en posiciones cercanas dentro de la tienda y maximizar la probabilidad de que los clientes compren.</p>
+<p>Para este ejemplo se emplea el set de datos Groceries del paquete arules, que contiene un registro de todas las ventas realizadas por un supermercado durante 30 días. En total se dispone de 9835 transacciones formadas por combinaciones de 169 productos. El objeto Groceries almacena la información en un formato propio de este paquete (descrito más adelante). Para representar mejor lo que suele ocurrir en la práctica, se ha reestructurado la información en formato de tabla. Los datos pueden encontrarse en Github.</p>
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; ── Attaching packages ─────────────────── tidyverse 1.3.1 ──</span></span>
+<span><span class="co">#&gt; ✔ ggplot2 3.4.2     ✔ purrr   1.0.1</span></span>
+<span><span class="co">#&gt; ✔ tibble  3.2.1     ✔ dplyr   1.1.1</span></span>
+<span><span class="co">#&gt; ✔ tidyr   1.3.0     ✔ stringr 1.5.0</span></span>
+<span><span class="co">#&gt; ✔ readr   2.1.2     ✔ forcats 0.5.1</span></span>
+<span><span class="co">#&gt; ── Conflicts ────────────────────── tidyverse_conflicts() ──</span></span>
+<span><span class="co">#&gt; ✖ dplyr::filter() masks stats::filter()</span></span>
+<span><span class="co">#&gt; ✖ dplyr::lag()    masks stats::lag()</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://readr.tidyverse.org">readr</a></span><span class="op">)</span></span>
+<span><span class="va">datos</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="st">"https://themys.sid.uncu.edu.ar/rpalma/R-cran/Analitica_Industrial/datos_groceries.csv"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Rows: 43367 Columns: 2</span></span>
+<span><span class="co">#&gt; ── Column specification ────────────────────────────────────</span></span>
+<span><span class="co">#&gt; Delimiter: ","</span></span>
+<span><span class="co">#&gt; chr (1): item</span></span>
+<span><span class="co">#&gt; dbl (1): id_compra</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ℹ Use `spec()` to retrieve the full column specification for this data.</span></span>
+<span><span class="co">#&gt; ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</span></span>
+<span></span>
+<span><span class="co"># datos &lt;- read_csv(file = "datos_groceries.csv", col_names = TRUE)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">datos</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 2</span></span>
+<span><span class="co">#&gt;   id_compra item               </span></span>
+<span><span class="co">#&gt;       &lt;dbl&gt; &lt;chr&gt;              </span></span>
+<span><span class="co">#&gt; 1         1 citrus fruit       </span></span>
+<span><span class="co">#&gt; 2         1 semi-finished bread</span></span>
+<span><span class="co">#&gt; 3         1 margarine          </span></span>
+<span><span class="co">#&gt; 4         1 ready soups        </span></span>
+<span><span class="co">#&gt; 5         2 tropical fruit     </span></span>
+<span><span class="co">#&gt; 6         2 yogurt</span></span></code></pre></div>
+<p>Cada línea del archivo contiene la información de un item y el identificador de la transacción (compra) a la que pertenece. Esta es la estructura en la que comúnmente se almacenan los datos dentro de una base de datos y que, en el ámbito de las transacciones, recibe el nombre de tabla larga o single. Otra forma en la que se pueden encontrar los datos de transacciones es en formato matriz o tabla ancha, en el que cada fila contiene todos los items que forman parte de una misma transacción, este formato recibe el nombre de cesta o basket.</p>
+<p>Tal y como se ha definido previamente, el concepto de transacción hace referencia al conjunto de items o eventos que ocurren de forma conjunta. Para este caso de estudio, compras de supermercado, cada transacción está formada por todos los productos que se compran a la vez, es decir, el vínculo de unión no es el cliente sino cada una de las “cestas de la compra”. Por ejemplo, la transacción con id_compra == 14 está formada por 3 items.</p>
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">datos</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">id_compra</span> <span class="op">==</span> <span class="fl">14</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span><span class="op">(</span><span class="va">item</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "frankfurter" "rolls/buns"  "soda"</span></span></code></pre></div>
+<div id="lectura-de-datos" class="section level3" number="2.9.1">
+<h3>
+<span class="header-section-number">2.9.1</span> Lectura de datos<a class="anchor" aria-label="anchor" href="#lectura-de-datos"><i class="fas fa-link"></i></a>
+</h3>
+<p>Con la función read.transactions() se pueden leer directamente los datos de archivos tipo texto y almacenarlos en un objeto de tipo transactions, que es la estructura de almacenamiento que emplea arules. Esta función tiene los siguientes argumentos:</p>
+<p><strong>file:</strong> nombre del archivo que se quiere leer.</p>
+<p><strong>format:</strong> estructura en la que se encuentran almacenados los datos, “basket” si cada línea del archivo es una transacción completa, o “single” si cada línea representa un item.</p>
+<p><strong>sep:</strong> tipo de separación de los campos.</p>
+<p><strong>cols:</strong> si el formato es de tipo “basket”, un entero que indica la columna que contiene el identificador de las transacciones. Para el formato “single”, es un vector con los nombres (o posiciones) de las dos columnas que identifican las transacciones y los items, respectivamente.</p>
+<p><strong>rm.duplicates:</strong> valor lógico indicando si se eliminan los items duplicados en una misma transacción. Por lo general, es conveniente eliminarlos, el interés suele estar en qué items ocurren de forma conjunta, no en qué cantidad.</p>
+<p><strong>quote:</strong> carácter que se utiliza como comillas.</p>
+<p><strong>skip:</strong> número de líneas que hay que saltar desde el comienzo del fichero.</p>
+<p>Es importante recordar que los objetos de tipo transactions solo trabajan con información booleana, es decir, con la presencia o no de cada uno de los items en la transacción. Por lo tanto, si el set de datos contiene variables numéricas, estas deben de ser discretizadas en intervalos o niveles. Para discretizar una variable numérica, se puede emplear la función discretize() o bien otras alternativas como la función case_when() del paquete dplyr.</p>
+<p>Los objetos transactions, se almacenan internamente como un tipo de matriz binaria. Se trata de una matriz de valores 0/1, con una fila por cada transacción, en este caso cada compra, y una columna por cada posible item, en este caso productos. La posición de la matriz (i,j) tiene el valor 1 si la transacción i contiene el item j.</p>
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># IMPORTACIÓN DIRECTA DE LOS DATOS A UN OBJETO TIPO TRANSACTION</span></span>
+<span><span class="co"># ==============================================================================</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/mhahsler/arules">arules</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; Loading required package: Matrix</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Attaching package: 'Matrix'</span></span>
+<span><span class="co">#&gt; The following objects are masked from 'package:tidyr':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     expand, pack, unpack</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Attaching package: 'arules'</span></span>
+<span><span class="co">#&gt; The following object is masked from 'package:dplyr':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     recode</span></span>
+<span><span class="co">#&gt; The following objects are masked from 'package:base':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     abbreviate, write</span></span>
+<span><span class="va">transacciones</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/arules/man/read.html">read.transactions</a></span><span class="op">(</span>file <span class="op">=</span> <span class="st">"datos_groceries.csv"</span>,</span>
+<span>                                   format <span class="op">=</span> <span class="st">"single"</span>,</span>
+<span>                                   sep <span class="op">=</span> <span class="st">","</span>,</span>
+<span>                                   header <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                                   cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"id_compra"</span>, <span class="st">"item"</span><span class="op">)</span>,</span>
+<span>                                   rm.duplicates <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">transacciones</span></span>
+<span><span class="co">#&gt; transactions in sparse format with</span></span>
+<span><span class="co">#&gt;  9835 transactions (rows) and</span></span>
+<span><span class="co">#&gt;  169 items (columns)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">transacciones</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span>
+<span><span class="co">#&gt; [1] "abrasive cleaner" "artif. sweetener" "baby cosmetics"  </span></span>
+<span><span class="co">#&gt; [4] "baby food"        "bags"</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">transacciones</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span>
+<span><span class="co">#&gt; [1] "1"    "10"   "100"  "1000" "1001"</span></span></code></pre></div>
+<p>También es posible convertir un objeto dataframe en uno de tipo transactions con la función as(dataframe, “transactions”). Para lograrlo, primero hay que convertir el dataframe en una lista en la que cada elemento contiene los items de una transacción. Este proceso puede ser muy lento si el dataframe tiene muchos registros, por lo que suele ser mejor crear un archivo de texto con los datos e importarlo mediante read.transactions().</p>
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># CONVERSIÓN DE UN DATAFRAME A UN OBJETO TIPO TRANSACTION</span></span>
+<span><span class="co"># ==============================================================================</span></span>
+<span><span class="co"># Se convierte el dataframe a una lista en la que cada elemento  contiene los</span></span>
+<span><span class="co"># items de una transacción</span></span>
+<span><span class="va">datos_split</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/split.html">split</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">datos</span><span class="op">$</span><span class="va">item</span>, f <span class="op">=</span> <span class="va">datos</span><span class="op">$</span><span class="va">id_compra</span><span class="op">)</span></span>
+<span><span class="va">transacciones</span> <span class="op">&lt;-</span> <span class="fu">as</span><span class="op">(</span><span class="va">datos_split</span>, Class <span class="op">=</span> <span class="st">"transactions"</span><span class="op">)</span></span>
+<span><span class="va">transacciones</span></span>
+<span><span class="co">#&gt; transactions in sparse format with</span></span>
+<span><span class="co">#&gt;  9835 transactions (rows) and</span></span>
+<span><span class="co">#&gt;  169 items (columns)</span></span></code></pre></div>
+<p>Otra alternativa es convertir el dataframe en una matriz 0/1 en la que cada fila es una transacción y cada columna uno de los posibles items.</p>
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span></span>
+<span><span class="co"># CONVERSIÓN DE UNA MATRIZ A UN OBJETO TIPO TRANSACTION</span></span>
+<span><span class="co"># ==============================================================================</span></span>
+<span><span class="va">datos_matriz</span> <span class="op">&lt;-</span> <span class="va">datos</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>                <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>                <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>valor <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>                <span class="fu"><a href="https://tidyr.tidyverse.org/reference/spread.html">spread</a></span><span class="op">(</span>key <span class="op">=</span> <span class="va">item</span>, value <span class="op">=</span> <span class="va">valor</span>, fill <span class="op">=</span> <span class="fl">0</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>                <span class="fu"><a href="https://tibble.tidyverse.org/reference/rownames.html">column_to_rownames</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"id_compra"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>                <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">as.matrix</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">transacciones</span> <span class="op">&lt;-</span> <span class="fu">as</span><span class="op">(</span><span class="va">datos_matriz</span>, Class <span class="op">=</span> <span class="st">"transactions"</span><span class="op">)</span></span>
+<span><span class="va">transacciones</span></span>
+<span><span class="co">#&gt; transactions in sparse format with</span></span>
+<span><span class="co">#&gt;  9835 transactions (rows) and</span></span>
+<span><span class="co">#&gt;  169 items (columns)</span></span></code></pre></div>
+<p>Exploración de items</p>
+<p>Uno de los primeros análisis que conviene realizar cuando se trabaja con transacciones es explorar su contenido y tamaño, es decir, el número de items que las forman y cuáles son. Mediante la función inspect() se muestran los items que forman cada transacción.</p>
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/arules/man/inspect.html">inspect</a></span><span class="op">(</span><span class="va">transacciones</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="co">#&gt;     items                       transactionID</span></span>
+<span><span class="co">#&gt; [1] {citrus fruit,                           </span></span>
+<span><span class="co">#&gt;      margarine,                              </span></span>
+<span><span class="co">#&gt;      ready soups,                            </span></span>
+<span><span class="co">#&gt;      semi-finished bread}                   1</span></span>
+<span><span class="co">#&gt; [2] {coffee,                                 </span></span>
+<span><span class="co">#&gt;      tropical fruit,                         </span></span>
+<span><span class="co">#&gt;      yogurt}                                2</span></span>
+<span><span class="co">#&gt; [3] {whole milk}                            3</span></span>
+<span><span class="co">#&gt; [4] {cream cheese,                           </span></span>
+<span><span class="co">#&gt;      meat spreads,                           </span></span>
+<span><span class="co">#&gt;      pip fruit,                              </span></span>
+<span><span class="co">#&gt;      yogurt}                                4</span></span>
+<span><span class="co">#&gt; [5] {condensed milk,                         </span></span>
+<span><span class="co">#&gt;      long life bakery product,               </span></span>
+<span><span class="co">#&gt;      other vegetables,                       </span></span>
+<span><span class="co">#&gt;      whole milk}                            5</span></span></code></pre></div>
+<p>También es posible mostrar los resultados en formato de dataframe con la función DATAFRAME() o con as(transacciones, “dataframe”).</p>
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">df_transacciones</span> <span class="op">&lt;-</span> <span class="fu">as</span><span class="op">(</span><span class="va">transacciones</span>, Class <span class="op">=</span> <span class="st">"data.frame"</span><span class="op">)</span></span>
+<span><span class="co"># Para que el tamaño de la tabla se ajuste mejor, se convierte el dataframe a tibble</span></span>
+<span><span class="fu"><a href="https://tibble.tidyverse.org/reference/deprecated.html">as.tibble</a></span><span class="op">(</span><span class="va">df_transacciones</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: `as.tibble()` was deprecated in tibble 2.0.0.</span></span>
+<span><span class="co">#&gt; ℹ Please use `as_tibble()` instead.</span></span>
+<span><span class="co">#&gt; ℹ The signature and semantics have changed, see</span></span>
+<span><span class="co">#&gt;   `?as_tibble`.</span></span>
+<span><span class="co">#&gt; This warning is displayed once every 8 hours.</span></span>
+<span><span class="co">#&gt; Call `lifecycle::last_lifecycle_warnings()` to see where</span></span>
+<span><span class="co">#&gt; this warning was generated.</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 2</span></span>
+<span><span class="co">#&gt;   items                                        transactionID</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;                                        &lt;chr&gt;        </span></span>
+<span><span class="co">#&gt; 1 {citrus fruit,margarine,ready soups,semi-fi… 1            </span></span>
+<span><span class="co">#&gt; 2 {coffee,tropical fruit,yogurt}               2            </span></span>
+<span><span class="co">#&gt; 3 {whole milk}                                 3            </span></span>
+<span><span class="co">#&gt; 4 {cream cheese,meat spreads,pip fruit,yogurt} 4            </span></span>
+<span><span class="co">#&gt; 5 {condensed milk,long life bakery product,ot… 5            </span></span>
+<span><span class="co">#&gt; 6 {abrasive cleaner,butter,rice,whole milk,yo… 6</span></span></code></pre></div>
+<p>Para extraer el tamaño de cada transacción se emplea la función size().</p>
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">tamanyos</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/arules/man/size.html">size</a></span><span class="op">(</span><span class="va">transacciones</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">tamanyos</span><span class="op">)</span></span>
+<span><span class="co">#&gt;    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span></span>
+<span><span class="co">#&gt;   1.000   2.000   3.000   4.409   6.000  32.000</span></span></code></pre></div>
+<p>Cuantiles</p>
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/quantile.html">quantile</a></span><span class="op">(</span><span class="va">tamanyos</span>, probs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">0.1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   0%  10%  20%  30%  40%  50%  60%  70%  80%  90% 100% </span></span>
+<span><span class="co">#&gt;    1    1    1    2    3    3    4    5    7    9   32</span></span></code></pre></div>
+<p>Tamaños</p>
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="va">tamanyos</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">tamanyos</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html">geom_histogram</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Distribución del tamaño de las transacciones"</span>,</span>
+<span>       x <span class="op">=</span> <span class="st">"Tamaño"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; `stat_bin()` using `bins = 30`. Pick better value with</span></span>
+<span><span class="co">#&gt; `binwidth`.</span></span></code></pre></div>
+<div class="inline-figure"><img src="01-C_arules_files/figure-html/unnamed-chunk-12-1.png" width="672"></div>
+<p>La gran mayoría de clientes compra entre 3 y 4 productos y el 90% de ellos compra como máximo 9.</p>
+<p>El siguiente análisis básico consiste en identificar cuáles son los items más frecuentes (los que tienen mayor soporte) dentro del conjunto de todas las transacciones. Con la función itemFrequency() se puede extraer esta información de un objeto tipo transactions. El nombre de esta función puede causar confusión. Por “frecuencia” se hace referencia al soporte de cada item, que es la fracción de transacciones que contienen dicho item respecto al total de todas las transacciones. Esto es distinto a la frecuencia de un item respecto al total de items, de ahí que la suma de todos los soportes no sea 1.</p>
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">frecuencia_items</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/arules/man/itemFrequency.html">itemFrequency</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">transacciones</span>, type <span class="op">=</span> <span class="st">"relative"</span><span class="op">)</span></span>
+<span><span class="va">frecuencia_items</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/arules/man/sort.html">sort</a></span><span class="op">(</span>decreasing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></span>
+<span><span class="co">#&gt;       whole milk other vegetables       rolls/buns </span></span>
+<span><span class="co">#&gt;        0.2555160        0.1934926        0.1839349 </span></span>
+<span><span class="co">#&gt;             soda           yogurt </span></span>
+<span><span class="co">#&gt;        0.1743772        0.1395018</span></span></code></pre></div>
+<p>Si se indica el argumento type = “absolute”, la función itemFrequency() devuelve el número de transacciones en las que aparece cada item.</p>
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">frecuencia_items</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/arules/man/itemFrequency.html">itemFrequency</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">transacciones</span>, type <span class="op">=</span> <span class="st">"absolute"</span><span class="op">)</span></span>
+<span><span class="va">frecuencia_items</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/arules/man/sort.html">sort</a></span><span class="op">(</span>decreasing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></span>
+<span><span class="co">#&gt;       whole milk other vegetables       rolls/buns </span></span>
+<span><span class="co">#&gt;             2513             1903             1809 </span></span>
+<span><span class="co">#&gt;             soda           yogurt </span></span>
+<span><span class="co">#&gt;             1715             1372</span></span></code></pre></div>
+<p>El listado anterior muestra que los 5 productos que más se venden son: whole milk, other vegetables, rolls/buns y soda.</p>
+<p>Es muy importante estudiar cómo se distribuye el soporte de los items individuales en un conjunto de transacciones antes identificar itemsets frecuentes o crear reglas de asociación, ya que, dependiendo del caso, tendrá sentido emplear un límite de soporte u otro. Por lo general, cuando el número de posibles items es muy grande (varios miles) prácticamente todos los artículos son raros, por lo que los soportes son muy bajos.</p>
+</div>
+<div id="itemsets" class="section level3" number="2.9.2">
+<h3>
+<span class="header-section-number">2.9.2</span> Itemsets<a class="anchor" aria-label="anchor" href="#itemsets"><i class="fas fa-link"></i></a>
+</h3>
+<p>Con la función apriori() se puede aplicar el algoritmo Apriori a un objeto de tipo transactions y extraer tanto itemsets frecuentes como reglas de asociación que superen un determinado soporte y confianza. Los argumentos de esta función son:</p>
+<p><strong>data:</strong> un objeto del tipo transactions o un objeto que pueda ser convertido a tipo transactions, por ejemplo un dataframe o una matriz binaria.</p>
+<p><strong>parameter:</strong> lista en la que se indican los parámetros del algoritmo.</p>
+<p><strong>support:</strong> soporte mínimo que debe tener un itemset para ser considerado frecuente. Por defecto es 0.1.</p>
+<p><strong>minlen:</strong> número mínimo de items que debe tener un itemset para ser incluido en los resultados. Por defecto 1.</p>
+<p><strong>maxlen:</strong> número máximo de items que puede tener un itemset para ser incluido en los resultados. Por defecto 10.</p>
+<p><strong>target:</strong> tipo de resultados que debe de generar el algoritmo, pueden ser “frequent itemsets”, “maximally frequent itemsets”, “closed frequent itemsets”, “rules” o “hyperedgesets”.</p>
+<p><strong>confidence:</strong> confianza mínima que debe de tener una regla para ser incluida en los resultados. Por defecto 0.8.</p>
+<p><strong>maxtime:</strong> tiempo máximo que puede estar el algoritmo buscando subsets. Por defecto 5 segundos.</p>
+<p><strong>appearance:</strong> lista que permite definir patrones para restringir el espacio de búsqueda, por ejemplo, especificando qué items pueden o no pueden aparecer.</p>
+<p><strong>control:</strong> lista que permite modificar aspectos internos de algoritmo como la ordenación de los itemsets, si se construye un árbol con las transacciones, aspectos relacionados con el uso de memoria, etc.</p>
+<p>Se procede a extraer aquellos itemsets, incluidos los formados por un único item, que hayan sido comprados al menos 30 veces. En un caso real, este valor sería excesivamente bajo si se tiene en cuenta la cantidad total de transacciones, sin embargo, se emplea 30 para que en los resultados aparezcan un número suficiente de itemsets y reglas de asociación que permitan mostrar las posibilidades de análisis que ofrece el paquete arules.</p>
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">soporte</span> <span class="op">&lt;-</span> <span class="fl">30</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">transacciones</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span>
+<span><span class="va">itemsets</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/arules/man/apriori.html">apriori</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">transacciones</span>,</span>
+<span>                    parameter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>support <span class="op">=</span> <span class="va">soporte</span>,</span>
+<span>                                     minlen <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>                                     maxlen <span class="op">=</span> <span class="fl">20</span>,</span>
+<span>                                     target <span class="op">=</span> <span class="st">"frequent itemset"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Apriori</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Parameter specification:</span></span>
+<span><span class="co">#&gt;  confidence minval smax arem  aval originalSupport maxtime</span></span>
+<span><span class="co">#&gt;          NA    0.1    1 none FALSE            TRUE       5</span></span>
+<span><span class="co">#&gt;     support minlen maxlen            target  ext</span></span>
+<span><span class="co">#&gt;  0.00305033      1     20 frequent itemsets TRUE</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Algorithmic control:</span></span>
+<span><span class="co">#&gt;  filter tree heap memopt load sort verbose</span></span>
+<span><span class="co">#&gt;     0.1 TRUE TRUE  FALSE TRUE    2    TRUE</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Absolute minimum support count: 30 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; set item appearances ...[0 item(s)] done [0.00s].</span></span>
+<span><span class="co">#&gt; set transactions ...[169 item(s), 9835 transaction(s)] done [0.01s].</span></span>
+<span><span class="co">#&gt; sorting and recoding items ... [136 item(s)] done [0.00s].</span></span>
+<span><span class="co">#&gt; creating transaction tree ... done [0.01s].</span></span>
+<span><span class="co">#&gt; checking subsets of size 1 2 3 4 5 done [0.01s].</span></span>
+<span><span class="co">#&gt; sorting transactions ... done [0.00s].</span></span>
+<span><span class="co">#&gt; writing ... [2226 set(s)] done [0.00s].</span></span>
+<span><span class="co">#&gt; creating S4 object  ... done [0.00s].</span></span></code></pre></div>
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">itemsets</span><span class="op">)</span></span>
+<span><span class="co">#&gt; set of 2226 itemsets</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; most frequent items:</span></span>
+<span><span class="co">#&gt;       whole milk other vegetables           yogurt </span></span>
+<span><span class="co">#&gt;              556              468              316 </span></span>
+<span><span class="co">#&gt;  root vegetables       rolls/buns          (Other) </span></span>
+<span><span class="co">#&gt;              251              241             3536 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; element (itemset/transaction) length distribution:sizes</span></span>
+<span><span class="co">#&gt;    1    2    3    4    5 </span></span>
+<span><span class="co">#&gt;  136 1140  850   98    2 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span></span>
+<span><span class="co">#&gt;   1.000   2.000   2.000   2.412   3.000   5.000 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; summary of quality measures:</span></span>
+<span><span class="co">#&gt;     support             count        </span></span>
+<span><span class="co">#&gt;  Min.   :0.003050   Min.   :  30.00  </span></span>
+<span><span class="co">#&gt;  1st Qu.:0.003660   1st Qu.:  36.00  </span></span>
+<span><span class="co">#&gt;  Median :0.004779   Median :  47.00  </span></span>
+<span><span class="co">#&gt;  Mean   :0.007879   Mean   :  77.49  </span></span>
+<span><span class="co">#&gt;  3rd Qu.:0.007219   3rd Qu.:  71.00  </span></span>
+<span><span class="co">#&gt;  Max.   :0.255516   Max.   :2513.00  </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; includes transaction ID lists: FALSE </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; mining info:</span></span>
+<span><span class="co">#&gt;           data ntransactions    support confidence</span></span>
+<span><span class="co">#&gt;  transacciones          9835 0.00305033          1</span></span>
+<span><span class="co">#&gt;                                                                                                                      call</span></span>
+<span><span class="co">#&gt;  apriori(data = transacciones, parameter = list(support = soporte, minlen = 1, maxlen = 20, target = "frequent itemset"))</span></span></code></pre></div>
+<p>Se han encontrado un total de 2226 itemsets frecuentes que superan el soporte mínimo de 0.003908286, la mayoría de ellos (1140) formados por dos items. En el siguiente listado se muestran los 20 itemsets con mayor soporte que, como cabe esperar, son los formados por items individuales (los itemsets de menor tamaño).</p>
+<p>Se muestran los top 20 itemsets de mayor a menor soporte</p>
+<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">top_20_itemsets</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/arules/man/sort.html">sort</a></span><span class="op">(</span><span class="va">itemsets</span>, by <span class="op">=</span> <span class="st">"support"</span>, decreasing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">20</span><span class="op">]</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/arules/man/inspect.html">inspect</a></span><span class="op">(</span><span class="va">top_20_itemsets</span><span class="op">)</span></span>
+<span><span class="co">#&gt;      items                          support    count</span></span>
+<span><span class="co">#&gt; [1]  {whole milk}                   0.25551601 2513 </span></span>
+<span><span class="co">#&gt; [2]  {other vegetables}             0.19349263 1903 </span></span>
+<span><span class="co">#&gt; [3]  {rolls/buns}                   0.18393493 1809 </span></span>
+<span><span class="co">#&gt; [4]  {soda}                         0.17437722 1715 </span></span>
+<span><span class="co">#&gt; [5]  {yogurt}                       0.13950178 1372 </span></span>
+<span><span class="co">#&gt; [6]  {bottled water}                0.11052364 1087 </span></span>
+<span><span class="co">#&gt; [7]  {root vegetables}              0.10899847 1072 </span></span>
+<span><span class="co">#&gt; [8]  {tropical fruit}               0.10493137 1032 </span></span>
+<span><span class="co">#&gt; [9]  {shopping bags}                0.09852567  969 </span></span>
+<span><span class="co">#&gt; [10] {sausage}                      0.09395018  924 </span></span>
+<span><span class="co">#&gt; [11] {pastry}                       0.08896797  875 </span></span>
+<span><span class="co">#&gt; [12] {citrus fruit}                 0.08276563  814 </span></span>
+<span><span class="co">#&gt; [13] {bottled beer}                 0.08052872  792 </span></span>
+<span><span class="co">#&gt; [14] {newspapers}                   0.07981698  785 </span></span>
+<span><span class="co">#&gt; [15] {canned beer}                  0.07768175  764 </span></span>
+<span><span class="co">#&gt; [16] {pip fruit}                    0.07564820  744 </span></span>
+<span><span class="co">#&gt; [17] {other vegetables, whole milk} 0.07483477  736 </span></span>
+<span><span class="co">#&gt; [18] {fruit/vegetable juice}        0.07229283  711 </span></span>
+<span><span class="co">#&gt; [19] {whipped/sour cream}           0.07168277  705 </span></span>
+<span><span class="co">#&gt; [20] {brown bread}                  0.06487036  638</span></span></code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">as</span><span class="op">(</span><span class="va">top_20_itemsets</span>, Class <span class="op">=</span> <span class="st">"data.frame"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/reorder.factor.html">reorder</a></span><span class="op">(</span><span class="va">items</span>, <span class="va">support</span><span class="op">)</span>, y <span class="op">=</span> <span class="va">support</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_col</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html">coord_flip</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Itemsets más frecuentes"</span>, x <span class="op">=</span> <span class="st">"itemsets"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="01-C_arules_files/figure-html/unnamed-chunk-18-1.png" width="672"></div>
+<p>Si se quieren excluir del análisis los itemsets formados únicamente por un solo item, se puede, o bien aplicar de nuevo la función apriori() especificando minlen = 2, o filtrar los resultados con la función size().
+Se muestran los 20 itemsets más frecuentes formados por más de un item.</p>
+<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/arules/man/inspect.html">inspect</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/arules/man/sort.html">sort</a></span><span class="op">(</span><span class="va">itemsets</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/arules/man/size.html">size</a></span><span class="op">(</span><span class="va">itemsets</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">1</span><span class="op">]</span>, decreasing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">20</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="co">#&gt;      items                               support    count</span></span>
+<span><span class="co">#&gt; [1]  {other vegetables, whole milk}      0.07483477 736  </span></span>
+<span><span class="co">#&gt; [2]  {rolls/buns, whole milk}            0.05663447 557  </span></span>
+<span><span class="co">#&gt; [3]  {whole milk, yogurt}                0.05602440 551  </span></span>
+<span><span class="co">#&gt; [4]  {root vegetables, whole milk}       0.04890696 481  </span></span>
+<span><span class="co">#&gt; [5]  {other vegetables, root vegetables} 0.04738180 466  </span></span>
+<span><span class="co">#&gt; [6]  {other vegetables, yogurt}          0.04341637 427  </span></span>
+<span><span class="co">#&gt; [7]  {other vegetables, rolls/buns}      0.04260295 419  </span></span>
+<span><span class="co">#&gt; [8]  {tropical fruit, whole milk}        0.04229792 416  </span></span>
+<span><span class="co">#&gt; [9]  {soda, whole milk}                  0.04006101 394  </span></span>
+<span><span class="co">#&gt; [10] {rolls/buns, soda}                  0.03833249 377  </span></span>
+<span><span class="co">#&gt; [11] {other vegetables, tropical fruit}  0.03589222 353  </span></span>
+<span><span class="co">#&gt; [12] {bottled water, whole milk}         0.03436706 338  </span></span>
+<span><span class="co">#&gt; [13] {rolls/buns, yogurt}                0.03436706 338  </span></span>
+<span><span class="co">#&gt; [14] {pastry, whole milk}                0.03324860 327  </span></span>
+<span><span class="co">#&gt; [15] {other vegetables, soda}            0.03274021 322  </span></span>
+<span><span class="co">#&gt; [16] {whipped/sour cream, whole milk}    0.03223183 317  </span></span>
+<span><span class="co">#&gt; [17] {rolls/buns, sausage}               0.03060498 301  </span></span>
+<span><span class="co">#&gt; [18] {citrus fruit, whole milk}          0.03050330 300  </span></span>
+<span><span class="co">#&gt; [19] {pip fruit, whole milk}             0.03009659 296  </span></span>
+<span><span class="co">#&gt; [20] {domestic eggs, whole milk}         0.02999492 295</span></span></code></pre></div>
+</div>
+</div>
+<div id="filtrado-de-itemsets" class="section level2" number="2.10">
+<h2>
+<span class="header-section-number">2.10</span> Filtrado de itemsets<a class="anchor" aria-label="anchor" href="#filtrado-de-itemsets"><i class="fas fa-link"></i></a>
+</h2>
+<p>Una vez que los itemsets frecuentes han sido identificados mediante el algoritmo Apripori, pueden ser filtrados con la función subset(). Esta función recibe dos argumentos: un objeto itemset o rules y una condición lógica que tienen que cumplir las reglas/itemsets para ser seleccionados. La siguiente tabla muestra los operadores permitidos:</p>
+<div class="inline-table"><table class="table table-sm">
+<thead><tr class="header">
+<th>Operador</th>
+<th>Significado</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>&amp;</td>
+<td>AND</td>
+</tr>
+<tr class="even">
+<td>%in%</td>
+<td>contiene cualquier de los siguientes elementos</td>
+</tr>
+<tr class="odd">
+<td>%ain%</td>
+<td>contiene todos de los siguientes elementos</td>
+</tr>
+<tr class="even">
+<td>%pin%</td>
+<td>contiene parcialmente los siguientes elementos</td>
+</tr>
+</tbody>
+</table></div>
+<p>Como esta función tiene el mismo nombre que una función del paquete básico de R, para evitar errores, es conveniente especificar el paquete donde se encuentra.</p>
+<p>Se procede a identificar aquellos itemsets frecuentes que contienen el item newspapers.</p>
+<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">itemsets_filtrado</span> <span class="op">&lt;-</span> <span class="fu">arules</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/arules/man/subset.html">subset</a></span><span class="op">(</span><span class="va">itemsets</span>,</span>
+<span>                                    subset <span class="op">=</span> <span class="va">items</span> <span class="op"><a href="https://rdrr.io/pkg/arules/man/match.html">%in%</a></span> <span class="st">"newspapers"</span><span class="op">)</span></span>
+<span><span class="va">itemsets_filtrado</span></span>
+<span><span class="co">#&gt; set of 80 itemsets</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/arules/man/inspect.html">inspect</a></span><span class="op">(</span><span class="va">itemsets_filtrado</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="co">#&gt;      items                                  support    </span></span>
+<span><span class="co">#&gt; [1]  {newspapers}                           0.079816980</span></span>
+<span><span class="co">#&gt; [2]  {meat, newspapers}                     0.003050330</span></span>
+<span><span class="co">#&gt; [3]  {newspapers, sliced cheese}            0.003152008</span></span>
+<span><span class="co">#&gt; [4]  {newspapers, UHT-milk}                 0.004270463</span></span>
+<span><span class="co">#&gt; [5]  {newspapers, oil}                      0.003152008</span></span>
+<span><span class="co">#&gt; [6]  {newspapers, onions}                   0.003152008</span></span>
+<span><span class="co">#&gt; [7]  {hygiene articles, newspapers}         0.003050330</span></span>
+<span><span class="co">#&gt; [8]  {newspapers, sugar}                    0.003152008</span></span>
+<span><span class="co">#&gt; [9]  {newspapers, waffles}                  0.004168785</span></span>
+<span><span class="co">#&gt; [10] {long life bakery product, newspapers} 0.003457041</span></span>
+<span><span class="co">#&gt;      count</span></span>
+<span><span class="co">#&gt; [1]  785  </span></span>
+<span><span class="co">#&gt; [2]   30  </span></span>
+<span><span class="co">#&gt; [3]   31  </span></span>
+<span><span class="co">#&gt; [4]   42  </span></span>
+<span><span class="co">#&gt; [5]   31  </span></span>
+<span><span class="co">#&gt; [6]   31  </span></span>
+<span><span class="co">#&gt; [7]   30  </span></span>
+<span><span class="co">#&gt; [8]   31  </span></span>
+<span><span class="co">#&gt; [9]   41  </span></span>
+<span><span class="co">#&gt; [10]  34</span></span></code></pre></div>
+<p>Se repite el proceso pero, esta vez, con aquellos itemsets que contienen newspapers y whole milk.</p>
+<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">itemsets_filtrado</span> <span class="op">&lt;-</span> <span class="fu">arules</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/arules/man/subset.html">subset</a></span><span class="op">(</span><span class="va">itemsets</span>,</span>
+<span>                                    subset <span class="op">=</span> <span class="va">items</span> <span class="op"><a href="https://rdrr.io/pkg/arules/man/match.html">%ain%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"newspapers"</span>, <span class="st">"whole milk"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">itemsets_filtrado</span></span>
+<span><span class="co">#&gt; set of 16 itemsets</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/arules/man/inspect.html">inspect</a></span><span class="op">(</span><span class="va">itemsets_filtrado</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="co">#&gt;      items                                    support    </span></span>
+<span><span class="co">#&gt; [1]  {newspapers, whole milk}                 0.027351296</span></span>
+<span><span class="co">#&gt; [2]  {chocolate, newspapers, whole milk}      0.003152008</span></span>
+<span><span class="co">#&gt; [3]  {brown bread, newspapers, whole milk}    0.004067107</span></span>
+<span><span class="co">#&gt; [4]  {margarine, newspapers, whole milk}      0.003152008</span></span>
+<span><span class="co">#&gt; [5]  {butter, newspapers, whole milk}         0.003152008</span></span>
+<span><span class="co">#&gt; [6]  {newspapers, pastry, whole milk}         0.003863752</span></span>
+<span><span class="co">#&gt; [7]  {citrus fruit, newspapers, whole milk}   0.003355363</span></span>
+<span><span class="co">#&gt; [8]  {newspapers, sausage, whole milk}        0.003050330</span></span>
+<span><span class="co">#&gt; [9]  {bottled water, newspapers, whole milk}  0.004067107</span></span>
+<span><span class="co">#&gt; [10] {newspapers, tropical fruit, whole milk} 0.005083884</span></span>
+<span><span class="co">#&gt;      count</span></span>
+<span><span class="co">#&gt; [1]  269  </span></span>
+<span><span class="co">#&gt; [2]   31  </span></span>
+<span><span class="co">#&gt; [3]   40  </span></span>
+<span><span class="co">#&gt; [4]   31  </span></span>
+<span><span class="co">#&gt; [5]   31  </span></span>
+<span><span class="co">#&gt; [6]   38  </span></span>
+<span><span class="co">#&gt; [7]   33  </span></span>
+<span><span class="co">#&gt; [8]   30  </span></span>
+<span><span class="co">#&gt; [9]   40  </span></span>
+<span><span class="co">#&gt; [10]  50</span></span></code></pre></div>
+<p>Puede observarse que muchos itemsets están a su vez contenidos en itemsets de orden superior, es decir, existen itemsets que son subsets de otros. Para identificar cuáles son, o cuales no lo son, se puede emplear la función is.subset(). Encontrar los itemsets que son subsets de otros itemsets implica comparar todos los pares de itemsets y determinar si uno está contenido en el otro. La función is.subset() realiza comparaciones entre dos conjuntos de itemsets y devuelve una matriz lógica que determina si el itemset de la fila está contenido en cada itemset de las columnas.</p>
+<p>Para encontrar los subsets dentro de un conjunto de itemsets, se compara el
+conjunto de itemsets con sigo mismo.</p>
+<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">subsets</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/arules/man/is.superset.html">is.subset</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">itemsets</span>, y <span class="op">=</span> <span class="va">itemsets</span>, sparse <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Para conocer el total de itemsets que son subsets de otros itemsets se cuenta el número total de TRUE en la matriz resultante.</span></span>
+<span></span>
+<span><span class="co"># La suma de una matriz lógica devuelve el número de TRUEs</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">subsets</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 11038</span></span></code></pre></div>
+</div>
+<div id="reglas-de-asociación" class="section level2" number="2.11">
+<h2>
+<span class="header-section-number">2.11</span> Reglas de asociación<a class="anchor" aria-label="anchor" href="#reglas-de-asociaci%C3%B3n"><i class="fas fa-link"></i></a>
+</h2>
+<p>Para crear las reglas de asociación se sigue el mismo proceso que para obtener itemsets frecuentes pero, además de especificar un soporte mínimo, se tiene que establecer una confianza mínima para que una regla se incluya en los resultados. En este caso, se emplea una confianza mínima del 70%.</p>
+<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">soporte</span> <span class="op">&lt;-</span> <span class="fl">30</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">transacciones</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span>
+<span><span class="va">reglas</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/arules/man/apriori.html">apriori</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">transacciones</span>,</span>
+<span>                  parameter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>support <span class="op">=</span> <span class="va">soporte</span>,</span>
+<span>                                   confidence <span class="op">=</span> <span class="fl">0.70</span>,</span>
+<span>                                   <span class="co"># Se especifica que se creen reglas</span></span>
+<span>                                   target <span class="op">=</span> <span class="st">"rules"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Apriori</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Parameter specification:</span></span>
+<span><span class="co">#&gt;  confidence minval smax arem  aval originalSupport maxtime</span></span>
+<span><span class="co">#&gt;         0.7    0.1    1 none FALSE            TRUE       5</span></span>
+<span><span class="co">#&gt;     support minlen maxlen target  ext</span></span>
+<span><span class="co">#&gt;  0.00305033      1     10  rules TRUE</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Algorithmic control:</span></span>
+<span><span class="co">#&gt;  filter tree heap memopt load sort verbose</span></span>
+<span><span class="co">#&gt;     0.1 TRUE TRUE  FALSE TRUE    2    TRUE</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Absolute minimum support count: 30 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; set item appearances ...[0 item(s)] done [0.00s].</span></span>
+<span><span class="co">#&gt; set transactions ...[169 item(s), 9835 transaction(s)] done [0.01s].</span></span>
+<span><span class="co">#&gt; sorting and recoding items ... [136 item(s)] done [0.00s].</span></span>
+<span><span class="co">#&gt; creating transaction tree ... done [0.01s].</span></span>
+<span><span class="co">#&gt; checking subsets of size 1 2 3 4 5 done [0.01s].</span></span>
+<span><span class="co">#&gt; writing ... [19 rule(s)] done [0.00s].</span></span>
+<span><span class="co">#&gt; creating S4 object  ... done [0.00s].</span></span>
+<span></span>
+<span><span class="va">reglas</span></span>
+<span><span class="co">#&gt; set of 19 rules</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">reglas</span><span class="op">)</span></span>
+<span><span class="co">#&gt; set of 19 rules</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; rule length distribution (lhs + rhs):sizes</span></span>
+<span><span class="co">#&gt; 3 4 5 </span></span>
+<span><span class="co">#&gt; 7 9 3 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span></span>
+<span><span class="co">#&gt;   3.000   3.000   4.000   3.789   4.000   5.000 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; summary of quality measures:</span></span>
+<span><span class="co">#&gt;     support           confidence        coverage       </span></span>
+<span><span class="co">#&gt;  Min.   :0.003050   Min.   :0.7000   Min.   :0.003559  </span></span>
+<span><span class="co">#&gt;  1st Qu.:0.003203   1st Qu.:0.7047   1st Qu.:0.004525  </span></span>
+<span><span class="co">#&gt;  Median :0.003559   Median :0.7164   Median :0.004982  </span></span>
+<span><span class="co">#&gt;  Mean   :0.003767   Mean   :0.7373   Mean   :0.005143  </span></span>
+<span><span class="co">#&gt;  3rd Qu.:0.004169   3rd Qu.:0.7500   3rd Qu.:0.005592  </span></span>
+<span><span class="co">#&gt;  Max.   :0.005694   Max.   :0.8857   Max.   :0.008134  </span></span>
+<span><span class="co">#&gt;       lift           count      </span></span>
+<span><span class="co">#&gt;  Min.   :2.740   Min.   :30.00  </span></span>
+<span><span class="co">#&gt;  1st Qu.:2.758   1st Qu.:31.50  </span></span>
+<span><span class="co">#&gt;  Median :2.804   Median :35.00  </span></span>
+<span><span class="co">#&gt;  Mean   :3.044   Mean   :37.05  </span></span>
+<span><span class="co">#&gt;  3rd Qu.:2.984   3rd Qu.:41.00  </span></span>
+<span><span class="co">#&gt;  Max.   :4.578   Max.   :56.00  </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; mining info:</span></span>
+<span><span class="co">#&gt;           data ntransactions    support confidence</span></span>
+<span><span class="co">#&gt;  transacciones          9835 0.00305033        0.7</span></span>
+<span><span class="co">#&gt;                                                                                                    call</span></span>
+<span><span class="co">#&gt;  apriori(data = transacciones, parameter = list(support = soporte, confidence = 0.7, target = "rules"))</span></span></code></pre></div>
+<p>Se han identificado un total de 19 reglas, la mayoría de ellas formadas por 4 items en el antecedente (parte izquierda de la regla).</p>
+<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/arules/man/inspect.html">inspect</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/arules/man/sort.html">sort</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">reglas</span>, decreasing <span class="op">=</span> <span class="cn">TRUE</span>, by <span class="op">=</span> <span class="st">"confidence"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;      lhs                      rhs                    support confidence    coverage     lift count</span></span>
+<span><span class="co">#&gt; [1]  {citrus fruit,                                                                               </span></span>
+<span><span class="co">#&gt;       root vegetables,                                                                            </span></span>
+<span><span class="co">#&gt;       tropical fruit,                                                                             </span></span>
+<span><span class="co">#&gt;       whole milk}          =&gt; {other vegetables} 0.003152008  0.8857143 0.003558719 4.577509    31</span></span>
+<span><span class="co">#&gt; [2]  {butter,                                                                                     </span></span>
+<span><span class="co">#&gt;       root vegetables,                                                                            </span></span>
+<span><span class="co">#&gt;       yogurt}              =&gt; {whole milk}       0.003050330  0.7894737 0.003863752 3.089723    30</span></span>
+<span><span class="co">#&gt; [3]  {citrus fruit,                                                                               </span></span>
+<span><span class="co">#&gt;       root vegetables,                                                                            </span></span>
+<span><span class="co">#&gt;       tropical fruit}      =&gt; {other vegetables} 0.004473818  0.7857143 0.005693950 4.060694    44</span></span>
+<span><span class="co">#&gt; [4]  {brown bread,                                                                                </span></span>
+<span><span class="co">#&gt;       other vegetables,                                                                           </span></span>
+<span><span class="co">#&gt;       root vegetables}     =&gt; {whole milk}       0.003152008  0.7750000 0.004067107 3.033078    31</span></span>
+<span><span class="co">#&gt; [5]  {butter,                                                                                     </span></span>
+<span><span class="co">#&gt;       onions}              =&gt; {whole milk}       0.003050330  0.7500000 0.004067107 2.935237    30</span></span>
+<span><span class="co">#&gt; [6]  {curd,                                                                                       </span></span>
+<span><span class="co">#&gt;       tropical fruit,                                                                             </span></span>
+<span><span class="co">#&gt;       yogurt}              =&gt; {whole milk}       0.003965430  0.7500000 0.005287239 2.935237    39</span></span>
+<span><span class="co">#&gt; [7]  {curd,                                                                                       </span></span>
+<span><span class="co">#&gt;       domestic eggs}       =&gt; {whole milk}       0.004778851  0.7343750 0.006507372 2.874086    47</span></span>
+<span><span class="co">#&gt; [8]  {butter,                                                                                     </span></span>
+<span><span class="co">#&gt;       tropical fruit,                                                                             </span></span>
+<span><span class="co">#&gt;       yogurt}              =&gt; {whole milk}       0.003355363  0.7333333 0.004575496 2.870009    33</span></span>
+<span><span class="co">#&gt; [9]  {root vegetables,                                                                            </span></span>
+<span><span class="co">#&gt;       tropical fruit,                                                                             </span></span>
+<span><span class="co">#&gt;       whipped/sour cream}  =&gt; {other vegetables} 0.003355363  0.7333333 0.004575496 3.789981    33</span></span>
+<span><span class="co">#&gt; [10] {butter,                                                                                     </span></span>
+<span><span class="co">#&gt;       curd}                =&gt; {whole milk}       0.004880529  0.7164179 0.006812405 2.803808    48</span></span>
+<span><span class="co">#&gt; [11] {domestic eggs,                                                                              </span></span>
+<span><span class="co">#&gt;       sugar}               =&gt; {whole milk}       0.003558719  0.7142857 0.004982206 2.795464    35</span></span>
+<span><span class="co">#&gt; [12] {other vegetables,                                                                           </span></span>
+<span><span class="co">#&gt;       root vegetables,                                                                            </span></span>
+<span><span class="co">#&gt;       tropical fruit,                                                                             </span></span>
+<span><span class="co">#&gt;       yogurt}              =&gt; {whole milk}       0.003558719  0.7142857 0.004982206 2.795464    35</span></span>
+<span><span class="co">#&gt; [13] {baking powder,                                                                              </span></span>
+<span><span class="co">#&gt;       yogurt}              =&gt; {whole milk}       0.003253686  0.7111111 0.004575496 2.783039    32</span></span>
+<span><span class="co">#&gt; [14] {tropical fruit,                                                                             </span></span>
+<span><span class="co">#&gt;       whipped/sour cream,                                                                         </span></span>
+<span><span class="co">#&gt;       yogurt}              =&gt; {whole milk}       0.004372140  0.7049180 0.006202339 2.758802    43</span></span>
+<span><span class="co">#&gt; [15] {citrus fruit,                                                                               </span></span>
+<span><span class="co">#&gt;       other vegetables,                                                                           </span></span>
+<span><span class="co">#&gt;       root vegetables,                                                                            </span></span>
+<span><span class="co">#&gt;       tropical fruit}      =&gt; {whole milk}       0.003152008  0.7045455 0.004473818 2.757344    31</span></span>
+<span><span class="co">#&gt; [16] {butter,                                                                                     </span></span>
+<span><span class="co">#&gt;       pork}                =&gt; {whole milk}       0.003863752  0.7037037 0.005490595 2.754049    38</span></span>
+<span><span class="co">#&gt; [17] {butter,                                                                                     </span></span>
+<span><span class="co">#&gt;       coffee}              =&gt; {whole milk}       0.003355363  0.7021277 0.004778851 2.747881    33</span></span>
+<span><span class="co">#&gt; [18] {domestic eggs,                                                                              </span></span>
+<span><span class="co">#&gt;       other vegetables,                                                                           </span></span>
+<span><span class="co">#&gt;       whipped/sour cream}  =&gt; {whole milk}       0.003558719  0.7000000 0.005083884 2.739554    35</span></span>
+<span><span class="co">#&gt; [19] {root vegetables,                                                                            </span></span>
+<span><span class="co">#&gt;       tropical fruit,                                                                             </span></span>
+<span><span class="co">#&gt;       yogurt}              =&gt; {whole milk}       0.005693950  0.7000000 0.008134215 2.739554    56</span></span></code></pre></div>
+</div>
+<div id="evaluación-de-las-reglas" class="section level2" number="2.12">
+<h2>
+<span class="header-section-number">2.12</span> Evaluación de las reglas<a class="anchor" aria-label="anchor" href="#evaluaci%C3%B3n-de-las-reglas"><i class="fas fa-link"></i></a>
+</h2>
+<p>Además de la confianza y el soporte, existen otras métricas que permiten cuantificar la calidad de las reglas y la probabilidad de que reflejen relaciones reales. Algunas de las más empleadas son:</p>
+<p><strong>Lift:</strong> el estadístico lift compara la frecuencia observada de una regla con la frecuencia esperada simplemente por azar (si la regla no existe realmente). El valor lift de una regla “si X, entonces Y” se obtiene acorde a la siguiente ecuación:
+soporte(union(X,Y))soporte(X) * soporte(Y)
+Cuanto más se aleje el valor de lift de 1, más evidencias de que la regla no se debe a un artefacto aleatorio, es decir, mayor la evidencia de que la regla representa un patrón real.</p>
+<p><strong>Coverage:</strong> es el soporte de la parte izquierda de la regla (antecedente). Se interpreta como la frecuencia con la que el antecedente aparece en el conjunto de transacciones.</p>
+<p><strong>Fisher exact test:</strong> devuelve el p-value asociado a la probabilidad de observar la regla solo por azar.</p>
+<p>Con la función interestMeasure() se pueden calcular más de 20 métricas distintas para un conjunto de reglas creadas con la función apriori().</p>
+<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">metricas</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/arules/man/interestMeasure.html">interestMeasure</a></span><span class="op">(</span><span class="va">reglas</span>, measure <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"coverage"</span>, <span class="st">"fishersExactTest"</span><span class="op">)</span>,</span>
+<span>                            transactions <span class="op">=</span> <span class="va">transacciones</span><span class="op">)</span></span>
+<span><span class="va">metricas</span></span>
+<span><span class="co">#&gt;       coverage fishersExactTest</span></span>
+<span><span class="co">#&gt; 1  0.004575496     1.775138e-10</span></span>
+<span><span class="co">#&gt; 2  0.004067107     7.502990e-11</span></span>
+<span><span class="co">#&gt; 3  0.004982206     1.990017e-11</span></span>
+<span><span class="co">#&gt; 4  0.004778851     1.582670e-10</span></span>
+<span><span class="co">#&gt; 5  0.006812405     2.857678e-15</span></span>
+<span><span class="co">#&gt; 6  0.006507372     1.142131e-15</span></span>
+<span><span class="co">#&gt; 7  0.005490595     5.673757e-12</span></span>
+<span><span class="co">#&gt; 8  0.005287239     1.003422e-13</span></span>
+<span><span class="co">#&gt; 9  0.004067107     8.092894e-12</span></span>
+<span><span class="co">#&gt; 10 0.004575496     2.336708e-11</span></span>
+<span><span class="co">#&gt; 11 0.003863752     7.584014e-12</span></span>
+<span><span class="co">#&gt; 12 0.005083884     5.006888e-11</span></span>
+<span><span class="co">#&gt; 13 0.004575496     5.680562e-15</span></span>
+<span><span class="co">#&gt; 14 0.006202339     2.037822e-13</span></span>
+<span><span class="co">#&gt; 15 0.005693950     1.301061e-21</span></span>
+<span><span class="co">#&gt; 16 0.008134215     7.433712e-17</span></span>
+<span><span class="co">#&gt; 17 0.004473818     5.003096e-10</span></span>
+<span><span class="co">#&gt; 18 0.003558719     1.459542e-18</span></span>
+<span><span class="co">#&gt; 19 0.004982206     1.990017e-11</span></span>
+<span><span class="va">coverage</span></span>
+<span><span class="co">#&gt; standardGeneric for "coverage" defined from package "arules"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; function (x, transactions = NULL, reuse = TRUE) </span></span>
+<span><span class="co">#&gt; standardGeneric("coverage")</span></span>
+<span><span class="co">#&gt; &lt;bytecode: 0x561e295cf9a8&gt;</span></span>
+<span><span class="co">#&gt; &lt;environment: 0x561e295bd580&gt;</span></span>
+<span><span class="co">#&gt; Methods may be defined for arguments: x, transactions, reuse</span></span>
+<span><span class="co">#&gt; Use  showMethods(coverage)  for currently available ones.</span></span></code></pre></div>
+<p>Estas nuevas métricas pueden añadirse al objeto que contiene las reglas.</p>
+<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/arules/man/associations-class.html">quality</a></span><span class="op">(</span><span class="va">reglas</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/arules/man/associations-class.html">quality</a></span><span class="op">(</span><span class="va">reglas</span><span class="op">)</span>, <span class="va">metricas</span><span class="op">)</span></span>
+<span><span class="co"># inspect(sort(x = reglas, decreasing = TRUE, by = "confidence"))</span></span>
+<span><span class="va">df_reglas</span> <span class="op">&lt;-</span> <span class="fu">as</span><span class="op">(</span><span class="va">reglas</span>, Class <span class="op">=</span> <span class="st">"data.frame"</span><span class="op">)</span> </span>
+<span><span class="va">df_reglas</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/deprecated.html">as.tibble</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html">desc</a></span><span class="op">(</span><span class="va">confidence</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 8</span></span>
+<span><span class="co">#&gt;   rules   support confidence coverage  lift count coverage.1</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;     &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt;      &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 {citru… 0.00315      0.886  0.00356  4.58    31    0.00356</span></span>
+<span><span class="co">#&gt; 2 {butte… 0.00305      0.789  0.00386  3.09    30    0.00386</span></span>
+<span><span class="co">#&gt; 3 {citru… 0.00447      0.786  0.00569  4.06    44    0.00569</span></span>
+<span><span class="co">#&gt; 4 {brown… 0.00315      0.775  0.00407  3.03    31    0.00407</span></span>
+<span><span class="co">#&gt; 5 {butte… 0.00305      0.75   0.00407  2.94    30    0.00407</span></span>
+<span><span class="co">#&gt; 6 {curd,… 0.00397      0.75   0.00529  2.94    39    0.00529</span></span>
+<span><span class="co">#&gt; # ℹ 1 more variable: fishersExactTest &lt;dbl&gt;</span></span>
+<span><span class="va">rules</span></span>
+<span><span class="co">#&gt; function (rhs, lhs, itemLabels = NULL, quality = data.frame()) </span></span>
+<span><span class="co">#&gt; {</span></span>
+<span><span class="co">#&gt;     if (!is(lhs, "itemMatrix")) </span></span>
+<span><span class="co">#&gt;         lhs &lt;- encode(lhs, itemLabels = itemLabels)</span></span>
+<span><span class="co">#&gt;     if (!is(rhs, "itemMatrix")) </span></span>
+<span><span class="co">#&gt;         rhs &lt;- encode(rhs, itemLabels = itemLabels)</span></span>
+<span><span class="co">#&gt;     new("rules", lhs = lhs, rhs = rhs, quality = quality)</span></span>
+<span><span class="co">#&gt; }</span></span>
+<span><span class="co">#&gt; &lt;bytecode: 0x561e1fd7e578&gt;</span></span>
+<span><span class="co">#&gt; &lt;environment: namespace:arules&gt;</span></span></code></pre></div>
+</div>
+<div id="filtrado-de-reglas" class="section level2" number="2.13">
+<h2>
+<span class="header-section-number">2.13</span> Filtrado de reglas<a class="anchor" aria-label="anchor" href="#filtrado-de-reglas"><i class="fas fa-link"></i></a>
+</h2>
+<p>Cuando se crean reglas de asociación, pueden ser interesantes únicamente aquellas que contienen un determinado conjunto de items en el antecedente o en el consecuente. Con arules existen varias formas de seleccionar solo determinadas reglas.</p>
+<div id="restringir-las-reglas-que-se-crean" class="section level3" number="2.13.1">
+<h3>
+<span class="header-section-number">2.13.1</span> Restringir las reglas que se crean<a class="anchor" aria-label="anchor" href="#restringir-las-reglas-que-se-crean"><i class="fas fa-link"></i></a>
+</h3>
+<p>Es posible restringir los items que aparecen en el lado izquierdo y/o derecho de la reglas a la hora de crearlas, por ejemplo, supóngase que solo son de interés reglas que muestren productos que se vendan junto con other vegetables. Esto significa que el item other vegetables, debe aparecer en el lado derecho (rhs).</p>
+<div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">soporte</span> <span class="op">&lt;-</span> <span class="fl">30</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">transacciones</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span>
+<span><span class="va">reglas_vegetables</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/arules/man/apriori.html">apriori</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">transacciones</span>,</span>
+<span>                             parameter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>support <span class="op">=</span> <span class="va">soporte</span>,</span>
+<span>                                              confidence <span class="op">=</span> <span class="fl">0.70</span>,</span>
+<span>                                              <span class="co"># Se especifica que se creen reglas</span></span>
+<span>                                              target <span class="op">=</span> <span class="st">"rules"</span><span class="op">)</span>,</span>
+<span>                             appearance <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>rhs <span class="op">=</span> <span class="st">"other vegetables"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Apriori</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Parameter specification:</span></span>
+<span><span class="co">#&gt;  confidence minval smax arem  aval originalSupport maxtime</span></span>
+<span><span class="co">#&gt;         0.7    0.1    1 none FALSE            TRUE       5</span></span>
+<span><span class="co">#&gt;     support minlen maxlen target  ext</span></span>
+<span><span class="co">#&gt;  0.00305033      1     10  rules TRUE</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Algorithmic control:</span></span>
+<span><span class="co">#&gt;  filter tree heap memopt load sort verbose</span></span>
+<span><span class="co">#&gt;     0.1 TRUE TRUE  FALSE TRUE    2    TRUE</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Absolute minimum support count: 30 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; set item appearances ...[1 item(s)] done [0.00s].</span></span>
+<span><span class="co">#&gt; set transactions ...[169 item(s), 9835 transaction(s)] done [0.01s].</span></span>
+<span><span class="co">#&gt; sorting and recoding items ... [136 item(s)] done [0.00s].</span></span>
+<span><span class="co">#&gt; creating transaction tree ... done [0.01s].</span></span>
+<span><span class="co">#&gt; checking subsets of size 1 2 3 4 5 done [0.01s].</span></span>
+<span><span class="co">#&gt; writing ... [3 rule(s)] done [0.00s].</span></span>
+<span><span class="co">#&gt; creating S4 object  ... done [0.00s].</span></span></code></pre></div>
+<div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">reglas_vegetables</span><span class="op">)</span></span>
+<span><span class="co">#&gt; set of 3 rules</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; rule length distribution (lhs + rhs):sizes</span></span>
+<span><span class="co">#&gt; 4 5 </span></span>
+<span><span class="co">#&gt; 2 1 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span></span>
+<span><span class="co">#&gt;   4.000   4.000   4.000   4.333   4.500   5.000 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; summary of quality measures:</span></span>
+<span><span class="co">#&gt;     support           confidence        coverage       </span></span>
+<span><span class="co">#&gt;  Min.   :0.003152   Min.   :0.7333   Min.   :0.003559  </span></span>
+<span><span class="co">#&gt;  1st Qu.:0.003254   1st Qu.:0.7595   1st Qu.:0.004067  </span></span>
+<span><span class="co">#&gt;  Median :0.003355   Median :0.7857   Median :0.004575  </span></span>
+<span><span class="co">#&gt;  Mean   :0.003660   Mean   :0.8016   Mean   :0.004609  </span></span>
+<span><span class="co">#&gt;  3rd Qu.:0.003915   3rd Qu.:0.8357   3rd Qu.:0.005135  </span></span>
+<span><span class="co">#&gt;  Max.   :0.004474   Max.   :0.8857   Max.   :0.005694  </span></span>
+<span><span class="co">#&gt;       lift           count     </span></span>
+<span><span class="co">#&gt;  Min.   :3.790   Min.   :31.0  </span></span>
+<span><span class="co">#&gt;  1st Qu.:3.925   1st Qu.:32.0  </span></span>
+<span><span class="co">#&gt;  Median :4.061   Median :33.0  </span></span>
+<span><span class="co">#&gt;  Mean   :4.143   Mean   :36.0  </span></span>
+<span><span class="co">#&gt;  3rd Qu.:4.319   3rd Qu.:38.5  </span></span>
+<span><span class="co">#&gt;  Max.   :4.578   Max.   :44.0  </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; mining info:</span></span>
+<span><span class="co">#&gt;           data ntransactions    support confidence</span></span>
+<span><span class="co">#&gt;  transacciones          9835 0.00305033        0.7</span></span>
+<span><span class="co">#&gt;                                                                                                                                                 call</span></span>
+<span><span class="co">#&gt;  apriori(data = transacciones, parameter = list(support = soporte, confidence = 0.7, target = "rules"), appearance = list(rhs = "other vegetables"))</span></span></code></pre></div>
+<div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/arules/man/inspect.html">inspect</a></span><span class="op">(</span><span class="va">reglas_vegetables</span><span class="op">)</span></span>
+<span><span class="co">#&gt;     lhs                     rhs                    support confidence    coverage     lift count</span></span>
+<span><span class="co">#&gt; [1] {root vegetables,                                                                           </span></span>
+<span><span class="co">#&gt;      tropical fruit,                                                                            </span></span>
+<span><span class="co">#&gt;      whipped/sour cream} =&gt; {other vegetables} 0.003355363  0.7333333 0.004575496 3.789981    33</span></span>
+<span><span class="co">#&gt; [2] {citrus fruit,                                                                              </span></span>
+<span><span class="co">#&gt;      root vegetables,                                                                           </span></span>
+<span><span class="co">#&gt;      tropical fruit}     =&gt; {other vegetables} 0.004473818  0.7857143 0.005693950 4.060694    44</span></span>
+<span><span class="co">#&gt; [3] {citrus fruit,                                                                              </span></span>
+<span><span class="co">#&gt;      root vegetables,                                                                           </span></span>
+<span><span class="co">#&gt;      tropical fruit,                                                                            </span></span>
+<span><span class="co">#&gt;      whole milk}         =&gt; {other vegetables} 0.003152008  0.8857143 0.003558719 4.577509    31</span></span></code></pre></div>
+<p>Esto mismo puede hacerse con el lado izquierdo (lhs) o en ambos (both).</p>
+</div>
+</div>
+<div id="filtrar-reglas-creadas" class="section level2" number="2.14">
+<h2>
+<span class="header-section-number">2.14</span> Filtrar reglas creadas<a class="anchor" aria-label="anchor" href="#filtrar-reglas-creadas"><i class="fas fa-link"></i></a>
+</h2>
+<p>También es posible filtrar las reglas una vez que han sido creadas. Por ejemplo, se procede a filtrar aquellas reglas que contienen other vegetables y citrus fruit en el antecedente.</p>
+<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">filtrado_reglas</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/arules/man/subset.html">subset</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">reglas</span>,</span>
+<span>                          subset <span class="op">=</span> <span class="va">lhs</span> <span class="op"><a href="https://rdrr.io/pkg/arules/man/match.html">%ain%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"other vegetables"</span>,<span class="st">"citrus fruit"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/arules/man/inspect.html">inspect</a></span><span class="op">(</span><span class="va">filtrado_reglas</span><span class="op">)</span></span>
+<span><span class="co">#&gt;     lhs                    rhs              support confidence    coverage     lift count    coverage fishersExactTest</span></span>
+<span><span class="co">#&gt; [1] {citrus fruit,                                                                                                    </span></span>
+<span><span class="co">#&gt;      other vegetables,                                                                                                </span></span>
+<span><span class="co">#&gt;      root vegetables,                                                                                                 </span></span>
+<span><span class="co">#&gt;      tropical fruit}    =&gt; {whole milk} 0.003152008  0.7045455 0.004473818 2.757344    31 0.004473818     5.003096e-10</span></span></code></pre></div>
+</div>
+<div id="reglas-maximales" class="section level2" number="2.15">
+<h2>
+<span class="header-section-number">2.15</span> Reglas maximales<a class="anchor" aria-label="anchor" href="#reglas-maximales"><i class="fas fa-link"></i></a>
+</h2>
+<p>Un itemset es maximal si no existe otro itemset que sea su superset. Una regla de asociación se define como regla maximal si está generada con un itemset maximal. Con la función is.maximal() se pueden identificar las reglas maximales.</p>
+<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">reglas_maximales</span> <span class="op">&lt;-</span> <span class="va">reglas</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/arules/man/is.maximal.html">is.maximal</a></span><span class="op">(</span><span class="va">reglas</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="va">reglas_maximales</span></span>
+<span><span class="co">#&gt; set of 17 rules</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/arules/man/inspect.html">inspect</a></span><span class="op">(</span><span class="va">reglas_maximales</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="co">#&gt;      lhs                    rhs              support confidence    coverage     lift count    coverage fishersExactTest</span></span>
+<span><span class="co">#&gt; [1]  {baking powder,                                                                                                   </span></span>
+<span><span class="co">#&gt;       yogurt}            =&gt; {whole milk} 0.003253686  0.7111111 0.004575496 2.783039    32 0.004575496     1.775138e-10</span></span>
+<span><span class="co">#&gt; [2]  {butter,                                                                                                          </span></span>
+<span><span class="co">#&gt;       onions}            =&gt; {whole milk} 0.003050330  0.7500000 0.004067107 2.935237    30 0.004067107     7.502990e-11</span></span>
+<span><span class="co">#&gt; [3]  {domestic eggs,                                                                                                   </span></span>
+<span><span class="co">#&gt;       sugar}             =&gt; {whole milk} 0.003558719  0.7142857 0.004982206 2.795464    35 0.004982206     1.990017e-11</span></span>
+<span><span class="co">#&gt; [4]  {butter,                                                                                                          </span></span>
+<span><span class="co">#&gt;       coffee}            =&gt; {whole milk} 0.003355363  0.7021277 0.004778851 2.747881    33 0.004778851     1.582670e-10</span></span>
+<span><span class="co">#&gt; [5]  {butter,                                                                                                          </span></span>
+<span><span class="co">#&gt;       curd}              =&gt; {whole milk} 0.004880529  0.7164179 0.006812405 2.803808    48 0.006812405     2.857678e-15</span></span>
+<span><span class="co">#&gt; [6]  {curd,                                                                                                            </span></span>
+<span><span class="co">#&gt;       domestic eggs}     =&gt; {whole milk} 0.004778851  0.7343750 0.006507372 2.874086    47 0.006507372     1.142131e-15</span></span>
+<span><span class="co">#&gt; [7]  {butter,                                                                                                          </span></span>
+<span><span class="co">#&gt;       pork}              =&gt; {whole milk} 0.003863752  0.7037037 0.005490595 2.754049    38 0.005490595     5.673757e-12</span></span>
+<span><span class="co">#&gt; [8]  {curd,                                                                                                            </span></span>
+<span><span class="co">#&gt;       tropical fruit,                                                                                                  </span></span>
+<span><span class="co">#&gt;       yogurt}            =&gt; {whole milk} 0.003965430  0.7500000 0.005287239 2.935237    39 0.005287239     1.003422e-13</span></span>
+<span><span class="co">#&gt; [9]  {brown bread,                                                                                                     </span></span>
+<span><span class="co">#&gt;       other vegetables,                                                                                                </span></span>
+<span><span class="co">#&gt;       root vegetables}   =&gt; {whole milk} 0.003152008  0.7750000 0.004067107 3.033078    31 0.004067107     8.092894e-12</span></span>
+<span><span class="co">#&gt; [10] {butter,                                                                                                          </span></span>
+<span><span class="co">#&gt;       tropical fruit,                                                                                                  </span></span>
+<span><span class="co">#&gt;       yogurt}            =&gt; {whole milk} 0.003355363  0.7333333 0.004575496 2.870009    33 0.004575496     2.336708e-11</span></span></code></pre></div>
+</div>
+<div id="reglas-redundantes" class="section level2" number="2.16">
+<h2>
+<span class="header-section-number">2.16</span> Reglas redundantes<a class="anchor" aria-label="anchor" href="#reglas-redundantes"><i class="fas fa-link"></i></a>
+</h2>
+<p>Dos reglas son idénticas si tienen el mismo antecedente (parte izquierda) y consecuente (parte derecha). Supóngase ahora que una de estas reglas tiene en su antecedente los mismos items que forman el antecedente de la otra, junto con algunos items más. La regla más genérica se considera redundante, ya que no aporta información adicional. En concreto, se considera que una regla X =&gt; Y es redundante si existe un subset X’ tal que existe una regla X’ =&gt; Y cuyo soporte es mayor.</p>
+<p><span class="math inline">\(X =&gt; Y\)</span> es redundante si existe un subset X’ tal que: conf(X’ -&gt; Y) &gt;= conf(X -&gt; Y)</p>
+<div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">reglas_redundantes</span> <span class="op">&lt;-</span> <span class="va">reglas</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/arules/man/is.redundant.html">is.redundant</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">reglas</span>, measure <span class="op">=</span> <span class="st">"confidence"</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="va">reglas_redundantes</span></span>
+<span><span class="co">#&gt; set of 0 rules</span></span></code></pre></div>
+<p>Para este ejemplo no se detectan reglas redundantes.</p>
+</div>
+<div id="transacciones-que-verifican-una-determinada-regla" class="section level2" number="2.17">
+<h2>
+<span class="header-section-number">2.17</span> Transacciones que verifican una determinada regla<a class="anchor" aria-label="anchor" href="#transacciones-que-verifican-una-determinada-regla"><i class="fas fa-link"></i></a>
+</h2>
+<p>Una vez identificada una determinada regla, puede ser interesante recuperar todas aquellas transacciones en las que se cumple. A continuación, se recuperan aquellas transacciones para las que se cumple la regla con mayor confianza de entre todas las encontradas.</p>
+<div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Se identifica la regla con mayor confianza</span></span>
+<span><span class="fu">as</span><span class="op">(</span><span class="va">reglas</span>, <span class="st">"data.frame"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html">desc</a></span><span class="op">(</span><span class="va">confidence</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span><span class="op">(</span><span class="va">rules</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "{citrus fruit,root vegetables,tropical fruit,whole milk} =&gt; {other vegetables}"</span></span></code></pre></div>
+<p>Las transacciones que cumplen esta regla son todas aquellas que contienen los items: citrus fruit, root vegetables, tropical fruit, whole milk y other vegetables.</p>
+<div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">filtrado_transacciones</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/arules/man/subset.html">subset</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">transacciones</span>,</span>
+<span>                                 subset <span class="op">=</span> <span class="va">items</span> <span class="op"><a href="https://rdrr.io/pkg/arules/man/match.html">%ain%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"citrus fruit"</span>,</span>
+<span>                                                        <span class="st">"root vegetables"</span>,</span>
+<span>                                                        <span class="st">"tropical fruit"</span>,</span>
+<span>                                                        <span class="st">"whole milk"</span>,</span>
+<span>                                                        <span class="st">"other vegetables"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">filtrado_transacciones</span></span>
+<span><span class="co">#&gt; transactions in sparse format with</span></span>
+<span><span class="co">#&gt;  31 transactions (rows) and</span></span>
+<span><span class="co">#&gt;  169 items (columns)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/arules/man/inspect.html">inspect</a></span><span class="op">(</span><span class="va">filtrado_transacciones</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="co">#&gt;     items                    transactionID</span></span>
+<span><span class="co">#&gt; [1] {berries,                             </span></span>
+<span><span class="co">#&gt;      bottled water,                       </span></span>
+<span><span class="co">#&gt;      butter,                              </span></span>
+<span><span class="co">#&gt;      citrus fruit,                        </span></span>
+<span><span class="co">#&gt;      hygiene articles,                    </span></span>
+<span><span class="co">#&gt;      napkins,                             </span></span>
+<span><span class="co">#&gt;      other vegetables,                    </span></span>
+<span><span class="co">#&gt;      root vegetables,                     </span></span>
+<span><span class="co">#&gt;      rubbing alcohol,                     </span></span>
+<span><span class="co">#&gt;      tropical fruit,                      </span></span>
+<span><span class="co">#&gt;      whole milk}                      596 </span></span>
+<span><span class="co">#&gt; [2] {bottled water,                       </span></span>
+<span><span class="co">#&gt;      citrus fruit,                        </span></span>
+<span><span class="co">#&gt;      curd,                                </span></span>
+<span><span class="co">#&gt;      dessert,                             </span></span>
+<span><span class="co">#&gt;      frozen meals,                        </span></span>
+<span><span class="co">#&gt;      frozen vegetables,                   </span></span>
+<span><span class="co">#&gt;      fruit/vegetable juice,               </span></span>
+<span><span class="co">#&gt;      grapes,                              </span></span>
+<span><span class="co">#&gt;      napkins,                             </span></span>
+<span><span class="co">#&gt;      other vegetables,                    </span></span>
+<span><span class="co">#&gt;      pip fruit,                           </span></span>
+<span><span class="co">#&gt;      root vegetables,                     </span></span>
+<span><span class="co">#&gt;      specialty chocolate,                 </span></span>
+<span><span class="co">#&gt;      tropical fruit,                      </span></span>
+<span><span class="co">#&gt;      UHT-milk,                            </span></span>
+<span><span class="co">#&gt;      whipped/sour cream,                  </span></span>
+<span><span class="co">#&gt;      whole milk}                      1122</span></span>
+<span><span class="co">#&gt; [3] {beef,                                </span></span>
+<span><span class="co">#&gt;      beverages,                           </span></span>
+<span><span class="co">#&gt;      butter,                              </span></span>
+<span><span class="co">#&gt;      candles,                             </span></span>
+<span><span class="co">#&gt;      chicken,                             </span></span>
+<span><span class="co">#&gt;      citrus fruit,                        </span></span>
+<span><span class="co">#&gt;      cream cheese,                        </span></span>
+<span><span class="co">#&gt;      curd,                                </span></span>
+<span><span class="co">#&gt;      domestic eggs,                       </span></span>
+<span><span class="co">#&gt;      flour,                               </span></span>
+<span><span class="co">#&gt;      frankfurter,                         </span></span>
+<span><span class="co">#&gt;      ham,                                 </span></span>
+<span><span class="co">#&gt;      hard cheese,                         </span></span>
+<span><span class="co">#&gt;      hygiene articles,                    </span></span>
+<span><span class="co">#&gt;      liver loaf,                          </span></span>
+<span><span class="co">#&gt;      margarine,                           </span></span>
+<span><span class="co">#&gt;      mayonnaise,                          </span></span>
+<span><span class="co">#&gt;      other vegetables,                    </span></span>
+<span><span class="co">#&gt;      pasta,                               </span></span>
+<span><span class="co">#&gt;      roll products,                       </span></span>
+<span><span class="co">#&gt;      rolls/buns,                          </span></span>
+<span><span class="co">#&gt;      root vegetables,                     </span></span>
+<span><span class="co">#&gt;      sausage,                             </span></span>
+<span><span class="co">#&gt;      skin care,                           </span></span>
+<span><span class="co">#&gt;      soft cheese,                         </span></span>
+<span><span class="co">#&gt;      soups,                               </span></span>
+<span><span class="co">#&gt;      specialty fat,                       </span></span>
+<span><span class="co">#&gt;      sugar,                               </span></span>
+<span><span class="co">#&gt;      tropical fruit,                      </span></span>
+<span><span class="co">#&gt;      whipped/sour cream,                  </span></span>
+<span><span class="co">#&gt;      whole milk,                          </span></span>
+<span><span class="co">#&gt;      yogurt}                          1217</span></span></code></pre></div>
+</div>
+<div id="información-sesión" class="section level2" number="2.18">
+<h2>
+<span class="header-section-number">2.18</span> Información sesión<a class="anchor" aria-label="anchor" href="#informaci%C3%B3n-sesi%C3%B3n"><i class="fas fa-link"></i></a>
+</h2>
+<div class="sourceCode" id="cb62"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">sesion_info</span> <span class="op">&lt;-</span> <span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://r-lib.github.io/sessioninfo/reference/session_info.html">session_info</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span></span>
+<span>  <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span><span class="va">sesion_info</span><span class="op">$</span><span class="va">packages</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">package</span>, <span class="va">loadedversion</span>, <span class="va">source</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 95 × 3</span></span>
+<span><span class="co">#&gt;    package    loadedversion source        </span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;      &lt;chr&gt;         &lt;chr&gt;         </span></span>
+<span><span class="co">#&gt;  1 arules     1.7-6         CRAN (R 4.1.2)</span></span>
+<span><span class="co">#&gt;  2 assertthat 0.2.1         CRAN (R 4.0.1)</span></span>
+<span><span class="co">#&gt;  3 backports  1.4.1         CRAN (R 4.1.2)</span></span>
+<span><span class="co">#&gt;  4 bit        4.0.4         CRAN (R 4.0.2)</span></span>
+<span><span class="co">#&gt;  5 bit64      4.0.5         CRAN (R 4.0.2)</span></span>
+<span><span class="co">#&gt;  6 bookdown   0.33          CRAN (R 4.1.2)</span></span>
+<span><span class="co">#&gt;  7 broom      0.7.12        CRAN (R 4.1.2)</span></span>
+<span><span class="co">#&gt;  8 bslib      0.4.2         CRAN (R 4.1.2)</span></span>
+<span><span class="co">#&gt;  9 cachem     1.0.7         CRAN (R 4.1.2)</span></span>
+<span><span class="co">#&gt; 10 callr      3.7.3         CRAN (R 4.1.2)</span></span>
+<span><span class="co">#&gt; # ℹ 85 more rows</span></span></code></pre></div>
+</div>
+<div id="visualizacion-de-las-reglas" class="section level2" number="2.19">
+<h2>
+<span class="header-section-number">2.19</span> Visualizacion de las reglas<a class="anchor" aria-label="anchor" href="#visualizacion-de-las-reglas"><i class="fas fa-link"></i></a>
+</h2>
+<p>para visualizar los graficos interactivos utiliza la funcion</p>
+<pre><code><a href="https://github.com/mhahsler/arulesViz">library(arulesViz)
+
+plot(reglas)</a></code></pre>
+<div class="float">
+<img src="images/aruleViz3.png" alt="plot reglas"><div class="figcaption">plot reglas</div>
+</div>
+<pre><code>plot(reglas, method = "graph")</code></pre>
+<div class="float">
+<img src="images/aruleViz1.png" alt="plot reglas"><div class="figcaption">plot reglas</div>
+</div>
+<p>Basado en el texto de:</p>
+<p>Reglas de asociación y algoritmo Apriori con R by Joaquín Amat Rodrigo, available under a Attribution 4.0 International (CC BY 4.0) at <a href="https://www.cienciadedatos.net/documentos/43_reglas_de_asociacion" class="uri">https://www.cienciadedatos.net/documentos/43_reglas_de_asociacion</a></p>
+
+</div>
+</div>
+  <div class="chapter-nav">
+<div class="prev"><a href="data_analitics.html"><span class="header-section-number">1</span> Data_Analitics</a></div>
+<div class="next"><a href="clasificaci%C3%B3n-con-knn.html"><span class="header-section-number">3</span> Clasificación con KNN</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#patrones-de-asociaci%C3%B3n"><span class="header-section-number">2</span> Patrones de asociación</a></li>
+<li><a class="nav-link" href="#introducci%C3%B3n"><span class="header-section-number">2.1</span> Introducción</a></li>
+<li>
+<a class="nav-link" href="#formatos-del-dataset"><span class="header-section-number">2.2</span> Formatos del dataset</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#lista-corta"><span class="header-section-number">2.2.1</span> Lista corta</a></li>
+<li><a class="nav-link" href="#lista-corta-1"><span class="header-section-number">2.2.2</span> Lista corta</a></li>
+</ul>
+</li>
+<li><a class="nav-link" href="#apriori"><span class="header-section-number">2.3</span> Apriori</a></li>
+<li><a class="nav-link" href="#transacci%C3%B3n"><span class="header-section-number">2.4</span> Transacción</a></li>
+<li><a class="nav-link" href="#reglas-confianza-confianza"><span class="header-section-number">2.5</span> Reglas Confianza Confianza</a></li>
+<li><a class="nav-link" href="#fp-growth"><span class="header-section-number">2.6</span> FP-Growth</a></li>
+<li><a class="nav-link" href="#eclat"><span class="header-section-number">2.7</span> Eclat</a></li>
+<li><a class="nav-link" href="#arules-package-de-r-cran"><span class="header-section-number">2.8</span> Arules package de R-Cran</a></li>
+<li>
+<a class="nav-link" href="#ejemplo-ticket-de-supermercado"><span class="header-section-number">2.9</span> Ejemplo ticket de supermercado</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#lectura-de-datos"><span class="header-section-number">2.9.1</span> Lectura de datos</a></li>
+<li><a class="nav-link" href="#itemsets"><span class="header-section-number">2.9.2</span> Itemsets</a></li>
+</ul>
+</li>
+<li><a class="nav-link" href="#filtrado-de-itemsets"><span class="header-section-number">2.10</span> Filtrado de itemsets</a></li>
+<li><a class="nav-link" href="#reglas-de-asociaci%C3%B3n"><span class="header-section-number">2.11</span> Reglas de asociación</a></li>
+<li><a class="nav-link" href="#evaluaci%C3%B3n-de-las-reglas"><span class="header-section-number">2.12</span> Evaluación de las reglas</a></li>
+<li>
+<a class="nav-link" href="#filtrado-de-reglas"><span class="header-section-number">2.13</span> Filtrado de reglas</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#restringir-las-reglas-que-se-crean"><span class="header-section-number">2.13.1</span> Restringir las reglas que se crean</a></li></ul>
+</li>
+<li><a class="nav-link" href="#filtrar-reglas-creadas"><span class="header-section-number">2.14</span> Filtrar reglas creadas</a></li>
+<li><a class="nav-link" href="#reglas-maximales"><span class="header-section-number">2.15</span> Reglas maximales</a></li>
+<li><a class="nav-link" href="#reglas-redundantes"><span class="header-section-number">2.16</span> Reglas redundantes</a></li>
+<li><a class="nav-link" href="#transacciones-que-verifican-una-determinada-regla"><span class="header-section-number">2.17</span> Transacciones que verifican una determinada regla</a></li>
+<li><a class="nav-link" href="#informaci%C3%B3n-sesi%C3%B3n"><span class="header-section-number">2.18</span> Información sesión</a></li>
+<li><a class="nav-link" href="#visualizacion-de-las-reglas"><span class="header-section-number">2.19</span> Visualizacion de las reglas</a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+<li><a id="book-source" href="https://ricardorpalma.github.io/MCSC_Op_4.0/Cap_1//blob/master/01-C_arules.Rmd">View source <i class="fab fa-gitlab"></i></a></li>
+          <li><a id="book-edit" href="https://ricardorpalma.github.io/MCSC_Op_4.0/Cap_1//edit/master/01-C_arules.Rmd">Edit this page <i class="fab fa-gitlab"></i></a></li>
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>Analítica de Datos 4.0</strong>" was written by Ricardo R. Palma. It was last built on 2023-06-30.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer><!-- dynamically load mathjax for compatibility with self-contained --><script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script><script type="text/x-mathjax-config">const popovers = document.querySelectorAll('a.footnote-ref[data-toggle="popover"]');
+for (let popover of popovers) {
+  const div = document.createElement('div');
+  div.setAttribute('style', 'position: absolute; top: 0, left:0; width:0, height:0, overflow: hidden; visibility: hidden;');
+  div.innerHTML = popover.getAttribute('data-content');
+
+  var has_math = div.querySelector("span.math");
+  if (has_math) {
+    document.body.appendChild(div);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
+    MathJax.Hub.Queue(function() {
+      popover.setAttribute('data-content', div.innerHTML);
+      document.body.removeChild(div);
+    })
+  }
+}
+</script>
+</body>
+</html>

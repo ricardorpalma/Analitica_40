@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Chapter 5 Analítica de Datos enla Cadena de Suministros | Random Forest</title>
+<meta name="author" content="Ricardo R. Palma">
+<meta name="description" content='5.1 Carga de dataset y exploración library(readr) performance_scm &lt;- read_delim("https://themys.sid.uncu.edu.ar/rpalma/R-cran/scm_perform.csv",   delim = ";", escape_double = FALSE, col_types =...'>
+<meta name="generator" content="bookdown 0.33 with bs4_book()">
+<meta property="og:title" content="Chapter 5 Analítica de Datos enla Cadena de Suministros | Random Forest">
+<meta property="og:type" content="book">
+<meta property="og:description" content='5.1 Carga de dataset y exploración library(readr) performance_scm &lt;- read_delim("https://themys.sid.uncu.edu.ar/rpalma/R-cran/scm_perform.csv",   delim = ";", escape_double = FALSE, col_types =...'>
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Chapter 5 Analítica de Datos enla Cadena de Suministros | Random Forest">
+<meta name="twitter:description" content='5.1 Carga de dataset y exploración library(readr) performance_scm &lt;- read_delim("https://themys.sid.uncu.edu.ar/rpalma/R-cran/scm_perform.csv",   delim = ";", escape_double = FALSE, col_types =...'>
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.4.2/transition.js"></script><script src="libs/bs3compat-0.4.2/tabs.js"></script><script src="libs/bs3compat-0.4.2/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="libs/htmlwidgets-1.6.2/htmlwidgets.js"></script><script src="libs/d3-5.7.0/d3-5.15.0.min.js"></script><script src="libs/d3-regression-1.3.4/d3-regression.min.js"></script><link href="libs/scatterPlotMatrix-0.2/scatterPlotMatrix.css" rel="stylesheet">
+<script src="libs/scatterPlotMatrix-0.2/spm-msp.js"></script><script src="libs/scatterPlotMatrix-binding-0.2.0/scatterPlotMatrix.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">Random Forest</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html"><span class="header-section-number">1</span> About</a></li>
+<li><a class="" href="anal%C3%ADtica-de-datos-enla-cadena-de-suministros.html"><span class="header-section-number">2</span> Analítica de Datos enla Cadena de Suministros</a></li>
+<li><a class="" href="anal%C3%ADtica-de-datos-industriales.html"><span class="header-section-number">3</span> Analítica de Datos Industriales</a></li>
+<li><a class="" href="introducci%C3%B3n.html"><span class="header-section-number">4</span> Introducción</a></li>
+<li><a class="active" href="anal%C3%ADtica-de-datos-enla-cadena-de-suministros-1.html"><span class="header-section-number">5</span> Analítica de Datos enla Cadena de Suministros</a></li>
+<li><a class="" href="clusterizaci%C3%B3n.html"><span class="header-section-number">6</span> Clusterización</a></li>
+<li><a class="" href="references.html">References</a></li>
+<li><a class="" href="random-forest.html"><span class="header-section-number">7</span> Random Forest</a></li>
+</ul>
+
+        <div class="book-extra">
+          <p><a id="book-repo" href="https://github.com/rstudio/bookdown-demo">View book source <i class="fab fa-github"></i></a></p>
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="analítica-de-datos-enla-cadena-de-suministros-1" class="section level1" number="5">
+<h1>
+<span class="header-section-number">5</span> Analítica de Datos enla Cadena de Suministros<a class="anchor" aria-label="anchor" href="#anal%C3%ADtica-de-datos-enla-cadena-de-suministros-1"><i class="fas fa-link"></i></a>
+</h1>
+<div id="carga-de-dataset-y-exploración-1" class="section level2" number="5.1">
+<h2>
+<span class="header-section-number">5.1</span> Carga de dataset y exploración<a class="anchor" aria-label="anchor" href="#carga-de-dataset-y-exploraci%C3%B3n-1"><i class="fas fa-link"></i></a>
+</h2>
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://readr.tidyverse.org">readr</a></span><span class="op">)</span></span>
+<span><span class="va">performance_scm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_delim</a></span><span class="op">(</span><span class="st">"https://themys.sid.uncu.edu.ar/rpalma/R-cran/scm_perform.csv"</span>,     delim <span class="op">=</span> <span class="st">";"</span>, escape_double <span class="op">=</span> <span class="cn">FALSE</span>, col_types <span class="op">=</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/cols.html">cols</a></span><span class="op">(</span>Performance <span class="op">=</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/parse_factor.html">col_factor</a></span><span class="op">(</span>levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"good"</span>, <span class="st">"fair"</span>, <span class="st">"poor"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>, locale <span class="op">=</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/locale.html">locale</a></span><span class="op">(</span>decimal_mark <span class="op">=</span> <span class="st">","</span>,         grouping_mark <span class="op">=</span> <span class="st">"."</span><span class="op">)</span>, trim_ws <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<p>Carga de Bibliotecas Utilizadas</p>
+<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">e1071</span><span class="op">)</span> <span class="co"># svm navie bayes</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.stats.ox.ac.uk/pub/MASS4/">class</a></span><span class="op">)</span> <span class="co"># knn</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/topepo/caret/">caret</a></span><span class="op">)</span> <span class="co"># Construcción de Modelos</span></span>
+<span><span class="co">#&gt; Loading required package: ggplot2</span></span>
+<span><span class="co">#&gt; Loading required package: lattice</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/bips-hb/neuralnet">neuralnet</a></span><span class="op">)</span> <span class="co"># Redes Neuronales</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://www.stat.berkeley.edu/~breiman/RandomForests/">randomForest</a></span><span class="op">)</span> <span class="co"># Random Forest</span></span>
+<span><span class="co">#&gt; randomForest 4.7-1.1</span></span>
+<span><span class="co">#&gt; Type rfNews() to see new features/changes/bug fixes.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Attaching package: 'randomForest'</span></span>
+<span><span class="co">#&gt; The following object is masked from 'package:ggplot2':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     margin</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span> <span class="co"># Representacion del conocimiento</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">gridExtra</span><span class="op">)</span> <span class="co"># Ploteo</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Attaching package: 'gridExtra'</span></span>
+<span><span class="co">#&gt; The following object is masked from 'package:randomForest':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     combine</span></span></code></pre></div>
+</div>
+<div id="entrenamiento-y-prueba-1" class="section level2" number="5.2">
+<h2>
+<span class="header-section-number">5.2</span> Entrenamiento y prueba<a class="anchor" aria-label="anchor" href="#entrenamiento-y-prueba-1"><i class="fas fa-link"></i></a>
+</h2>
+<p>Separaremos los datos en dos conjuntos aleatorios</p>
+<ul>
+<li>Dataset de Entrenamiento</li>
+<li>Dataset de Prueba</li>
+</ul>
+<p>Los datos puede ser elegidos aleatoriamente con el comando sample.
+En nuestro caso emplearemos la proporción <span class="math inline">\(70/30\)</span>
+70% Para entrenar 30% para test (preuba). Esto debería dejaronos 105 observaciones en un conjunto y 45 en el otro.</p>
+<p>Para que podamos repetir el experimento con los mismos datos fijaremos la semilla y así obtener resultado parecidos</p>
+<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">831</span><span class="op">)</span></span>
+<span><span class="va">inTrain.C</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/createDataPartition.html">createDataPartition</a></span><span class="op">(</span><span class="va">performance_scm</span><span class="op">$</span><span class="va">Performance</span>,p<span class="op">=</span><span class="fl">.7</span>,list <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<p>Ahora partiremos el dataset utilizando como índice inTrain.C</p>
+<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">training.C</span> <span class="op">&lt;-</span> <span class="va">performance_scm</span><span class="op">[</span><span class="va">inTrain.C</span>, <span class="op">]</span></span>
+<span><span class="va">testing.C</span> <span class="op">&lt;-</span> <span class="va">performance_scm</span><span class="op">[</span><span class="op">-</span><span class="va">inTrain.C</span>, <span class="op">]</span></span></code></pre></div>
+<p>Podemos ver la tabla de resultados contenidos con este comando</p>
+<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">training.C</span><span class="op">$</span><span class="va">Performance</span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; good fair poor </span></span>
+<span><span class="co">#&gt;   35   35   35</span></span></code></pre></div>
+<p>Del mismo modo podemos ver el dataset de pruebas</p>
+<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">testing.C</span><span class="op">$</span><span class="va">Performance</span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; good fair poor </span></span>
+<span><span class="co">#&gt;   15   15   15</span></span></code></pre></div>
+</div>
+<div id="ajuste-del-modelo-1" class="section level2" number="5.3">
+<h2>
+<span class="header-section-number">5.3</span> Ajuste del modelo<a class="anchor" aria-label="anchor" href="#ajuste-del-modelo-1"><i class="fas fa-link"></i></a>
+</h2>
+<p>Realizaremos una tabla de contingencia o matriz de confusión</p>
+<div class="inline-table"><table class="table table-sm">
+<thead><tr class="header">
+<th></th>
+<th>Actual +</th>
+<th>Actual -</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><strong>Predic +</strong></td>
+<td>True Positivo</td>
+<td>False Positivo</td>
+</tr>
+<tr class="even">
+<td><strong>Predic -</strong></td>
+<td>False Positivo</td>
+<td>True Negativo</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div id="mediciones-model-level-1" class="section level2" number="5.4">
+<h2>
+<span class="header-section-number">5.4</span> Mediciones Model-level<a class="anchor" aria-label="anchor" href="#mediciones-model-level-1"><i class="fas fa-link"></i></a>
+</h2>
+<div id="accuracy-1" class="section level3" number="5.4.1">
+<h3>
+<span class="header-section-number">5.4.1</span> Accuracy<a class="anchor" aria-label="anchor" href="#accuracy-1"><i class="fas fa-link"></i></a>
+</h3>
+<p>Mide la proporción de predicciones correctas y no es extraño encontrarlo como porcentaje. Su rango va de 0 a 100% . A valor más alto mejor preformance del modelo</p>
+<p><span class="math display">\[Accuracy = \frac {TP + TN}{TP+TN+FP+FN} \]</span></p>
+</div>
+<div id="error-rate-1" class="section level3" number="5.4.2">
+<h3>
+<span class="header-section-number">5.4.2</span> Error-Rate<a class="anchor" aria-label="anchor" href="#error-rate-1"><i class="fas fa-link"></i></a>
+</h3>
+<p>Mide la proporción de instancias mal clasificadas sobre el total de instancias. También es frecuente su uso como porcentaje en el rango 0% a 100%. El valor más bajo es el más conveniente, al contrario que el de Acurracy</p>
+<p><span class="math display">\[ErrorRate = \frac{FP + FN}{TP+TN+FP+FN} = 1- Accuracy\]</span></p>
+</div>
+</div>
+<div id="class-level-mesures-1" class="section level2" number="5.5">
+<h2>
+<span class="header-section-number">5.5</span> Class-Level Mesures<a class="anchor" aria-label="anchor" href="#class-level-mesures-1"><i class="fas fa-link"></i></a>
+</h2>
+<div id="precisión-1" class="section level3" number="5.5.1">
+<h3>
+<span class="header-section-number">5.5.1</span> Precisión<a class="anchor" aria-label="anchor" href="#precisi%C3%B3n-1"><i class="fas fa-link"></i></a>
+</h3>
+<p>Mide cuantas predicciones hechas fueron correctas respecto del total de predicciones emitidas.</p>
+<p><span class="math display">\[Precision = \frac{CorrectPredic}{TotalPredic}\]</span></p>
+</div>
+<div id="recall-o-rememoración-1" class="section level3" number="5.5.2">
+<h3>
+<span class="header-section-number">5.5.2</span> Recall o rememoración<a class="anchor" aria-label="anchor" href="#recall-o-rememoraci%C3%B3n-1"><i class="fas fa-link"></i></a>
+</h3>
+<p>Estima cuantas predicciones para una clase dada son correctas contra el total de casos predichos en la clase (entrenamiento y test)</p>
+<p><span class="math display">\[Recall = \frac{CorrectPredic}{TotalActual}\]</span>
+### Métrica-F
+Estima la bondad de clasificación para una clase dada. Se compara el total de casos correctamente clasificados contra el balance en la precisión y rememoración (recall). El valor máximo de F-Messure es igual a 1</p>
+<p><span class="math display">\[F1Messure = 2*\frac{Precision - Recall}{Precision * Recall} \]</span></p>
+</div>
+</div>
+<div id="subreentrenado-sobreentrenado-1" class="section level2" number="5.6">
+<h2>
+<span class="header-section-number">5.6</span> Subreentrenado Sobreentrenado<a class="anchor" aria-label="anchor" href="#subreentrenado-sobreentrenado-1"><i class="fas fa-link"></i></a>
+</h2>
+<div class="float">
+<img src="imagen/overfit.png" alt="Sobre y Sub entrenado"><div class="figcaption">Sobre y Sub entrenado</div>
+</div>
+</div>
+<div id="k-nearest-neighbor-knn-1" class="section level2" number="5.7">
+<h2>
+<span class="header-section-number">5.7</span> k Nearest Neighbor kNN<a class="anchor" aria-label="anchor" href="#k-nearest-neighbor-knn-1"><i class="fas fa-link"></i></a>
+</h2>
+<p>En kNN la similaridd o distancia entre observaciones es utilizada para clasificar los elementos de una muestra o población.
+Tipicamente usamos la distancia Euclídea en el espacio n dimensional. El modo más común de clasificación de un grupo es con el k-ésimo vecino(s) más próximo(s) en base a datos etiquetados.</p>
+<p>Se dice que kNN es una instanciación antes que un método basado en modelo, significando esto que en realidad no se crea un modelo para clasificar.</p>
+<div class="float">
+<img src="imagen/kNN.png" alt="Modelo básico de kNN"><div class="figcaption">Modelo básico de kNN</div>
+</div>
+<p>Eligiendo un k grande, se reduce el impacto de la varianza causada por el “ruido” aleatorio de los datos, pero esto puede sesgar el aprendizaje de ignorar patrones pequeños, pero significativos.</p>
+<p>Se suele utilizar una regla de facto para elegir k, que es la raíz cuadrada del número de observaciones del set de entrenamiento redondeado hacia arriba</p>
+<p><span class="math display">\[k =\sqrt{n_{training}}\]</span></p>
+<p>Para el dataset de performance logística se tiene</p>
+<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">k.choice</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">ceiling</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">training.C</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">k.choice</span></span>
+<span><span class="co">#&gt; [1] 11</span></span></code></pre></div>
+<p>Utilizar un número impar para <span class="math inline">\(k\)</span> es una buena práctica, porque evita caer en empate al seleccionar la etiqueta dominante.</p>
+<p>Utilizaremos la función <span class="math inline">\(knn()\)</span> del paquete <span class="math inline">\(class\)</span> para construir lo que representaría el modelo.</p>
+<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.stats.ox.ac.uk/pub/MASS4/">class</a></span><span class="op">)</span></span>
+<span><span class="va">knn.pred.C</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/class/man/knn.html">knn</a></span><span class="op">(</span>train<span class="op">=</span><span class="va">training.C</span><span class="op">[</span> ,<span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span> , test<span class="op">=</span><span class="va">testing.C</span><span class="op">[</span> , <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span>, cl<span class="op">=</span><span class="va">training.C</span><span class="op">$</span><span class="va">Performance</span>, k<span class="op">=</span><span class="va">k.choice</span><span class="op">)</span></span></code></pre></div>
+<div id="testeo-de-performace-del-algoritmo-entrenado-1" class="section level3" number="5.7.1">
+<h3>
+<span class="header-section-number">5.7.1</span> Testeo de Performace del Algoritmo entrenado<a class="anchor" aria-label="anchor" href="#testeo-de-performace-del-algoritmo-entrenado-1"><i class="fas fa-link"></i></a>
+</h3>
+<p>Dado que kNN no precide un modelo no podemos hacer una ponderación o medida de la bondad del ajuste en los datos de entrenamiento, por lo que debemos necesariamente aplicar el modelo a los datos de prueba.</p>
+<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">knn.test.acc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/confusionMatrix.html">confusionMatrix</a></span><span class="op">(</span><span class="va">knn.pred.C</span>,<span class="va">testing.C</span><span class="op">$</span><span class="va">Performance</span>, mode<span class="op">=</span><span class="st">"prec_recall"</span><span class="op">)</span></span>
+<span><span class="va">knn.test.acc</span></span>
+<span><span class="co">#&gt; Confusion Matrix and Statistics</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;           Reference</span></span>
+<span><span class="co">#&gt; Prediction good fair poor</span></span>
+<span><span class="co">#&gt;       good   15    0    0</span></span>
+<span><span class="co">#&gt;       fair    0   14    0</span></span>
+<span><span class="co">#&gt;       poor    0    1   15</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Overall Statistics</span></span>
+<span><span class="co">#&gt;                                           </span></span>
+<span><span class="co">#&gt;                Accuracy : 0.9778          </span></span>
+<span><span class="co">#&gt;                  95% CI : (0.8823, 0.9994)</span></span>
+<span><span class="co">#&gt;     No Information Rate : 0.3333          </span></span>
+<span><span class="co">#&gt;     P-Value [Acc &gt; NIR] : &lt; 2.2e-16       </span></span>
+<span><span class="co">#&gt;                                           </span></span>
+<span><span class="co">#&gt;                   Kappa : 0.9667          </span></span>
+<span><span class="co">#&gt;                                           </span></span>
+<span><span class="co">#&gt;  Mcnemar's Test P-Value : NA              </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Statistics by Class:</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;                      Class: good Class: fair Class: poor</span></span>
+<span><span class="co">#&gt; Precision                 1.0000      1.0000      0.9375</span></span>
+<span><span class="co">#&gt; Recall                    1.0000      0.9333      1.0000</span></span>
+<span><span class="co">#&gt; F1                        1.0000      0.9655      0.9677</span></span>
+<span><span class="co">#&gt; Prevalence                0.3333      0.3333      0.3333</span></span>
+<span><span class="co">#&gt; Detection Rate            0.3333      0.3111      0.3333</span></span>
+<span><span class="co">#&gt; Detection Prevalence      0.3333      0.3111      0.3556</span></span>
+<span><span class="co">#&gt; Balanced Accuracy         1.0000      0.9667      0.9833</span></span></code></pre></div>
+</div>
+</div>
+<div id="buenas-prácticas-en-knn-1" class="section level2" number="5.8">
+<h2>
+<span class="header-section-number">5.8</span> Buenas prácticas en kNN<a class="anchor" aria-label="anchor" href="#buenas-pr%C3%A1cticas-en-knn-1"><i class="fas fa-link"></i></a>
+</h2>
+<ul>
+<li>Nromalizar los calores</li>
+</ul>
+<p>Dado que kNN se basa en las distancias puede haber un error de influencia si una columna tiene magnitudes muy diferentes a otra.</p>
+<div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/boxplot.html">boxplot</a></span><span class="op">(</span><span class="va">performance_scm</span><span class="op">[</span> ,<span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="03-kNN_files/figure-html/unnamed-chunk-10-1.png" width="672"></div>
+<p>Basados en el gráfico boxplot deberíamos transfomar el recorrido de las variables al rango <span class="math inline">\([0,1]\)</span>.</p>
+<p><span class="math display">\[ \frac{x-min(x)}{max(x)-min(x)}\]</span>
+Noramlizaremos los datos</p>
+<div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">perf_escalado</span> <span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">performance_scm</span><span class="op">[</span> ,<span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span>, <span class="fl">2</span>, <span class="kw">function</span> <span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">(</span><span class="va">x</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">/</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op">)</span></span>
+<span><span class="va">perf_escalado</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="va">perf_escalado</span>, <span class="va">performance_scm</span><span class="op">$</span><span class="va">Performance</span><span class="op">)</span></span></code></pre></div>
+<p>Ahora podemos hacer el gráfico con los valores escalados</p>
+<div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/boxplot.html">boxplot</a></span><span class="op">(</span><span class="va">perf_escalado</span><span class="op">[</span> ,<span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span>, main<span class="op">=</span><span class="st">"Gráfico de cajas Predictores Escalados"</span>, las<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="03-kNN_files/figure-html/unnamed-chunk-12-1.png" width="672"></div>
+<p>Alternativamente de puede usar z-scores, que están estandarizados con la media entorno a 0 y el desvío estandard.</p>
+<p><span class="math display">\[Z= \frac{x-u}{\sigma} \]</span></p>
+<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">perf_z</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">performance_scm</span><span class="op">[</span> ,<span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span>,<span class="fl">2</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">(</span><span class="va">x</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op">/</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>  <span class="op">)</span></span>
+<span><span class="va">perf_z</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="va">perf_z</span>,<span class="va">performance_scm</span><span class="op">$</span><span class="va">Performance</span><span class="op">)</span></span></code></pre></div>
+<p>Vista del gráfico normalizado</p>
+<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/boxplot.html">boxplot</a></span><span class="op">(</span><span class="va">perf_z</span><span class="op">[</span> ,<span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="03-kNN_files/figure-html/unnamed-chunk-14-1.png" width="672"></div>
+<div id="variando-k-1" class="section level3" number="5.8.1">
+<h3>
+<span class="header-section-number">5.8.1</span> Variando k<a class="anchor" aria-label="anchor" href="#variando-k-1"><i class="fas fa-link"></i></a>
+</h3>
+<p>Dado que kNN es un algoritmo de aprendizaje peresozo, pero eficiente a la hora de hacer predicciones (pues en realidad no hay aprendizaje formal), resulta interesante probar el efecto de variar los valores de k y ver cómo impacta en los resultados obtenidos y la performance de entrenamiento.</p>
+<div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">save</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">25</span><span class="op">)</span><span class="op">{</span></span>
+<span>  <span class="va">knn.pred.C.l</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/class/man/knn.html">knn</a></span><span class="op">(</span>train <span class="op">=</span> <span class="va">training.C</span><span class="op">[</span> ,<span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span>, test<span class="op">=</span><span class="va">testing.C</span><span class="op">[</span> ,<span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span>, cl<span class="op">=</span><span class="va">training.C</span><span class="op">$</span><span class="va">Performance</span>, k<span class="op">=</span><span class="va">i</span><span class="op">)</span></span>
+<span>  <span class="va">save</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/pkg/caret/man/confusionMatrix.html">confusionMatrix</a></span><span class="op">(</span><span class="va">knn.pred.C.l</span>, <span class="va">testing.C</span><span class="op">$</span><span class="va">Performance</span>, mode<span class="op">=</span><span class="st">"prec_recall"</span><span class="op">)</span><span class="op">$</span><span class="va">overall</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> </span>
+<span>  </span>
+<span><span class="op">}</span></span>
+<span><span class="va">save</span> <span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span><span class="op">(</span><span class="va">rbind</span>,<span class="va">save</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">25</span>,<span class="va">save</span>, xlab<span class="op">=</span><span class="st">"k"</span>, ylab<span class="op">=</span><span class="st">"Accuracy"</span>, type<span class="op">=</span><span class="st">"o"</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="03-kNN_files/figure-html/unnamed-chunk-15-1.png" width="672"></div>
+
+<p>En el enfoque de partición de R, las observaciones se dividen en grupos K y se reorganizan para formar los grupos más cohesivos posibles de acuerdo con un criterio dado. Hay dos métodos: K-medias y partición alrededor de mediodes <em>PAM</em>. En este artículo, basado en el capítulo 16 de R in Action, Second Edition, el autor Rob Kabacoff analiza la agrupación de K-means.</p>
+<div class="float">
+<img src="https://images.manning.com/720/960/resize/book/1/82c427b-3e8b-423d-b49f-948cebab0a0b/kabacoff2_cover.png" alt="R In Action por Robert Kabacoff"><div class="figcaption">R In Action por Robert Kabacoff</div>
+</div>
+<p>PAM es por lejos el más comunmente utilizado, pero existen otros como <em>CLARA</em>, <em>MELISSA</em>, y otros tantos que se adaptan a diferentes problemas. En el caso de la localización de las balizas de satélites como el ARSAT e incluso de los nano satélites como el FossaSat-1 (cubesat) este método es muy utilizado. Ver <a href="https://www.hackster.io/news/fossasat-1-an-open-source-satellite-for-the-internet-of-things-7f31cab00ef5">Satelites para internet de las cosas Industriales</a>.
+Todas estas tecnologías de satélites de bajo costo están permitiendo mejorar la competitividad y eficiencia de las cadenas de suministros en todo el planeta. En especial esta tipo de tecnología sirve para ver el deterioro de las propiedades alimenticias de cargas en línea y en tiempo real. A pesar de ello en gran parte de latinoamérica y caribe estas tecnología aún están por descubrirse.
+Se han utilizado varios métodos del <strong>skimr()</strong> (un sustituto de <strong>summary()</strong> ), pero el paquete que utilizaremos para esta tarea específica será <strong>cluster()</strong> paquete exitosamente para problemas de congestion de puertos y misiones de vacunación post covid de el paquete : <a href="https://cran.r-project.org/web/views/Cluster.html">ClusteR</a></p>
+</div>
+<div id="agrupación-k-means" class="section level3" number="5.8.2">
+<h3>
+<span class="header-section-number">5.8.2</span> Agrupación K-means<a class="anchor" aria-label="anchor" href="#agrupaci%C3%B3n-k-means"><i class="fas fa-link"></i></a>
+</h3>
+<p>El método de partición más común es el análisis de clúster de K-means. Conceptualmente, el algoritmo K-means:</p>
+<ol style="list-style-type: decimal">
+<li>Selecciona K centroides (K filas elegidas al azar)</li>
+<li>Asigna cada punto de datos a su centroide más cercano</li>
+<li>Recalcula los centroides como el promedio de todos los puntos de datos en un clúster (es decir, los centroides son vectores medios de p-longitud, donde p es el número de variables)</li>
+<li>Asigna puntos de datos a sus centroides más cercanos</li>
+<li>Continúa los pasos 3 y 4 hasta que no se reasignen las observaciones o se alcance el número máximo de iteraciones (R usa 10 como valor predeterminado).</li>
+</ol>
+<p>Los detalles de implementación de este enfoque pueden variar. R utiliza un algoritmo eficiente de Hartigan y Wong (1979) que divide las observaciones en grupos k de tal manera que la suma de cuadrados de las observaciones a sus centros de clúster asignados es un mínimo. Esto significa que en los pasos 2 y 4, cada observación se asigna al clúster con el valor más pequeño de:</p>
+<p><span class="math display">\[ SS_{(k)}= \sum_{i=1}^n  \sum_{j=1}^p( x_{ij}- \bar{x_{kj}}) ²\]</span>
+Donde <span class="math inline">\(k\)</span> es un cluster, <span class="math inline">\(x_{ij}\)</span> es el valor de la variable <span class="math inline">\(j ésima\)</span> para la observación <span class="math inline">\(iésima\)</span>, y <span class="math inline">\(\bar{x}_{kj}\)</span> es la media de la variable j_{p} para el cluster k_i .</p>
+<p>La agrupación en clústeres K-means puede manejar conjuntos de datos más grandes que los enfoques de clúster jerárquicos. Además, las observaciones no se comprometen permanentemente a un grupo. Se mueven cuando al hacerlo mejora la solución general. Sin embargo, el uso de medioides implica que todas las variables deben ser continuas y el enfoque puede verse gravemente afectado por valores atípicos. Por ejemplo k-means no es aplicable para localización de pallets en sistemas de posición flotante si dentro del edificio hay muros o barreras que impiden la circulación entre racks.</p>
+<p>También se desempeñan mal en presencia de grupos no convexos (por ejemplo, en forma de U o celdas de manufactura flexible). El formato de la función K-means en R es:</p>
+<p><span class="math display">\[kmeans(x, centros)\]</span>
+donde <span class="math inline">\(x\)</span> es un conjunto de datos numéricos (matriz o data.frame) y <span class="math inline">\(centros\)</span> es el número de clústeres a extraer. Es un parámetro arbitrario que elijo y con el que pruebo o simulo alternativas. Por su bajo costo computacional converge razonablemente bien a una solución.</p>
+<p>La función devuelve la pertenencia de casos al clúster, los centroides, las sumas de cuadrados (dentro, entre y total) y los tamaños de cada clúster.</p>
+<p>Dado que el análisis de clústeres de K-medias comienza con k centroides elegidos al azar, se puede obtener una solución diferente cada vez que se invoca la función.
+Utilice la función set.seed() para garantizar que los resultados sean reproducibles, en especial si publicas en papers.
+Además, este enfoque de agrupación puede ser sensible a la selección inicial de centroides. La función <span class="math inline">\(kmeans()\)</span> tiene una opción o parámetro <span class="math inline">\(nstart\)</span> que intenta varias configuraciones iniciales e informa sobre la mejor. Por ejemplo, agregando <span class="math inline">\(nstart=25\)</span> generará 25 configuraciones iniciales. Este enfoque a menudo muy recomendable. A diferencia de la agrupación jerárquica, la agrupación en clústeres de <em>K-means</em> requiere que el número de clústeres que se extraer se especifique de antemano. Una vez más, el paquete <em>NbClust()</em> se puede utilizar como guía para estimar un número inicial de clusters acpetable. Además, puede ser útil un gráfico de las sumas totales de cuadrados dentro de los grupos contra el número de clústeres en una solución de K-means. Una curva en el gráfico puede sugerirnos el número apropiado de clústeres.</p>
+<p>El gráfico se puede producir mediante la siguiente función.</p>
+<p>A efectos de sostener un estilo único en los gráficos amenudo conviene crear una función de ploteo en la que repito los parámetros.</p>
+<div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">wssplot</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">nc</span><span class="op">=</span><span class="fl">15</span>, <span class="va">seed</span><span class="op">=</span><span class="fl">1234</span><span class="op">)</span><span class="op">{</span></span>
+<span>               <span class="va">wss</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span><span class="op">-</span><span class="fl">1</span><span class="op">)</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">data</span>,<span class="fl">2</span>,<span class="va">var</span><span class="op">)</span><span class="op">)</span></span>
+<span>               <span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">2</span><span class="op">:</span><span class="va">nc</span><span class="op">)</span><span class="op">{</span></span>
+<span>                    <span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="va">seed</span><span class="op">)</span></span>
+<span>                    <span class="va">wss</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/kmeans.html">kmeans</a></span><span class="op">(</span><span class="va">data</span>, centers<span class="op">=</span><span class="va">i</span><span class="op">)</span><span class="op">$</span><span class="va">withinss</span><span class="op">)</span><span class="op">}</span></span>
+<span>                <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="va">nc</span>, <span class="va">wss</span>, type<span class="op">=</span><span class="st">"b"</span>, xlab<span class="op">=</span><span class="st">"Número de Clusters"</span>,</span>
+<span>                     ylab<span class="op">=</span><span class="st">"Suma cuadrática dentro de cada grupo"</span><span class="op">)</span><span class="op">}</span></span></code></pre></div>
+<p>El parámetro de datos es el conjunto de datos numéricos que se analizará, <span class="math inline">\(nc\)</span> es el número máximo de grupos a considerar y la semilla es una semilla de número aleatorio. Aquí, se analiza un conjunto de datos que contiene 13 mediciones químicas en 178 muestras de vino italiano. Los datos provienen originalmente del Repositorio de Aprendizaje Automático de la UCI (<a href="http://www.ics.uci.edu/~mlearn/MLRepository.html" class="uri">http://www.ics.uci.edu/~mlearn/MLRepository.html</a>), pero también se pueden acceder a ellos a través del paquete de <a href="https://cran.r-project.org/web/packages/rattle.data/index.html">rattle</a>.
+En el listado se proporciona un análisis de conglomerado de K-means para los datos.</p>
+<div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://readr.tidyverse.org">readr</a></span><span class="op">)</span></span>
+<span><span class="va">wine</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="st">"http://archive.ics.uci.edu/ml/machine-learning-databases/wine/wine.data"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Rows: 177 Columns: 14</span></span>
+<span><span class="co">#&gt; ── Column specification ────────────────────────────────────</span></span>
+<span><span class="co">#&gt; Delimiter: ","</span></span>
+<span><span class="co">#&gt; dbl (14): 1, 14.23, 1.71, 2.43, 15.6, 127, 2.8, 3.06, .2...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ℹ Use `spec()` to retrieve the full column specification for this data.</span></span>
+<span><span class="co">#&gt; ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</span></span></code></pre></div>
+<p><em>Dimensiones:</em></p>
+<div class="inline-table"><table class="table table-sm">
+<thead><tr class="header">
+<th>columna</th>
+<th>Propiedad</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>1)</td>
+<td>Alcohol</td>
+</tr>
+<tr class="even">
+<td>2)</td>
+<td>Ácido Malico</td>
+</tr>
+<tr class="odd">
+<td>3)</td>
+<td>Cenizas</td>
+</tr>
+<tr class="even">
+<td>4)</td>
+<td>Alcalinidad de las cenizas</td>
+</tr>
+<tr class="odd">
+<td>5)</td>
+<td>Magnecio</td>
+</tr>
+<tr class="even">
+<td>6)</td>
+<td>Fenoles Totales</td>
+</tr>
+<tr class="odd">
+<td>7)</td>
+<td>Flavonoides</td>
+</tr>
+<tr class="even">
+<td>8)</td>
+<td>Fenoles no flavonoides</td>
+</tr>
+<tr class="odd">
+<td>9)</td>
+<td>Proantocianinas</td>
+</tr>
+<tr class="even">
+<td>10)</td>
+<td>Intensidad de Color</td>
+</tr>
+<tr class="odd">
+<td>11)</td>
+<td>Tinte</td>
+</tr>
+<tr class="even">
+<td>12)</td>
+<td>OD280/OD315 de vinos diluídos</td>
+</tr>
+<tr class="odd">
+<td>13)</td>
+<td>Prolina</td>
+</tr>
+</tbody>
+</table></div>
+<div class="sourceCode" id="cb62"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">nombres</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span> <span class="st">"Type"</span>, </span>
+<span>  <span class="st">"Alcohol"</span>,</span>
+<span><span class="st">"Ácido Malico"</span>,</span>
+<span> <span class="st">"Cenizas"</span>,</span>
+<span><span class="st">"Alcalinidad de las cenizas"</span>  ,</span>
+<span> <span class="st">"Magnecio"</span>,</span>
+<span><span class="st">"Fenoles Totales"</span>, </span>
+<span> <span class="st">"Flavonoides"</span> ,</span>
+<span><span class="st">"Fenoles no flavonoides"</span>, </span>
+<span> <span class="st">"Proantocianinas"</span> ,</span>
+<span>    <span class="st">"Intensidad de Color"</span>, </span>
+<span>    <span class="st">"Tinte"</span>,</span>
+<span>    <span class="st">"OD280/OD315 de vinos diluídos"</span>,</span>
+<span><span class="st">"Prolina"</span>                <span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">wine</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">nombres</span></span></code></pre></div>
+<p>Generaremos un reporte exploratorio automático con la biblioteca skim</p>
+<div class="sourceCode" id="cb63"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/skimr/">skimr</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://docs.ropensci.org/skimr/reference/skim.html">skim</a></span><span class="op">(</span><span class="va">wine</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-table"><table class="table table-sm">
+<caption>
+<span id="tab:unnamed-chunk-4">Table 5.1: </span>Data summary</caption>
+<tbody>
+<tr class="odd">
+<td align="left">Name</td>
+<td align="left">wine</td>
+</tr>
+<tr class="even">
+<td align="left">Number of rows</td>
+<td align="left">177</td>
+</tr>
+<tr class="odd">
+<td align="left">Number of columns</td>
+<td align="left">14</td>
+</tr>
+<tr class="even">
+<td align="left">_______________________</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Column type frequency:</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">numeric</td>
+<td align="left">14</td>
+</tr>
+<tr class="odd">
+<td align="left">________________________</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Group variables</td>
+<td align="left">None</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Variable type: numeric</strong></p>
+<div class="inline-table"><table style="width:100%;" class="table table-sm">
+<colgroup>
+<col width="27%">
+<col width="9%">
+<col width="12%">
+<col width="6%">
+<col width="6%">
+<col width="6%">
+<col width="6%">
+<col width="6%">
+<col width="6%">
+<col width="7%">
+<col width="5%">
+</colgroup>
+<thead><tr class="header">
+<th align="left">skim_variable</th>
+<th align="right">n_missing</th>
+<th align="right">complete_rate</th>
+<th align="right">mean</th>
+<th align="right">sd</th>
+<th align="right">p0</th>
+<th align="right">p25</th>
+<th align="right">p50</th>
+<th align="right">p75</th>
+<th align="right">p100</th>
+<th align="left">hist</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">Type</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1.94</td>
+<td align="right">0.77</td>
+<td align="right">1.00</td>
+<td align="right">1.00</td>
+<td align="right">2.00</td>
+<td align="right">3.00</td>
+<td align="right">3.00</td>
+<td align="left">▆▁▇▁▆</td>
+</tr>
+<tr class="even">
+<td align="left">Alcohol</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">12.99</td>
+<td align="right">0.81</td>
+<td align="right">11.03</td>
+<td align="right">12.36</td>
+<td align="right">13.05</td>
+<td align="right">13.67</td>
+<td align="right">14.83</td>
+<td align="left">▂▇▇▇▃</td>
+</tr>
+<tr class="odd">
+<td align="left">Ácido Malico</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">2.34</td>
+<td align="right">1.12</td>
+<td align="right">0.74</td>
+<td align="right">1.60</td>
+<td align="right">1.87</td>
+<td align="right">3.10</td>
+<td align="right">5.80</td>
+<td align="left">▇▅▂▂▁</td>
+</tr>
+<tr class="even">
+<td align="left">Cenizas</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">2.37</td>
+<td align="right">0.28</td>
+<td align="right">1.36</td>
+<td align="right">2.21</td>
+<td align="right">2.36</td>
+<td align="right">2.56</td>
+<td align="right">3.23</td>
+<td align="left">▁▂▇▅▁</td>
+</tr>
+<tr class="odd">
+<td align="left">Alcalinidad de las cenizas</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">19.52</td>
+<td align="right">3.34</td>
+<td align="right">10.60</td>
+<td align="right">17.20</td>
+<td align="right">19.50</td>
+<td align="right">21.50</td>
+<td align="right">30.00</td>
+<td align="left">▁▆▇▃▁</td>
+</tr>
+<tr class="even">
+<td align="left">Magnecio</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">99.59</td>
+<td align="right">14.17</td>
+<td align="right">70.00</td>
+<td align="right">88.00</td>
+<td align="right">98.00</td>
+<td align="right">107.00</td>
+<td align="right">162.00</td>
+<td align="left">▅▇▃▁▁</td>
+</tr>
+<tr class="odd">
+<td align="left">Fenoles Totales</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">2.29</td>
+<td align="right">0.63</td>
+<td align="right">0.98</td>
+<td align="right">1.74</td>
+<td align="right">2.35</td>
+<td align="right">2.80</td>
+<td align="right">3.88</td>
+<td align="left">▅▇▇▇▁</td>
+</tr>
+<tr class="even">
+<td align="left">Flavonoides</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">2.02</td>
+<td align="right">1.00</td>
+<td align="right">0.34</td>
+<td align="right">1.20</td>
+<td align="right">2.13</td>
+<td align="right">2.86</td>
+<td align="right">5.08</td>
+<td align="left">▆▆▇▂▁</td>
+</tr>
+<tr class="odd">
+<td align="left">Fenoles no flavonoides</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0.36</td>
+<td align="right">0.12</td>
+<td align="right">0.13</td>
+<td align="right">0.27</td>
+<td align="right">0.34</td>
+<td align="right">0.44</td>
+<td align="right">0.66</td>
+<td align="left">▃▇▅▃▂</td>
+</tr>
+<tr class="even">
+<td align="left">Proantocianinas</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1.59</td>
+<td align="right">0.57</td>
+<td align="right">0.41</td>
+<td align="right">1.25</td>
+<td align="right">1.55</td>
+<td align="right">1.95</td>
+<td align="right">3.58</td>
+<td align="left">▃▇▆▂▁</td>
+</tr>
+<tr class="odd">
+<td align="left">Intensidad de Color</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">5.05</td>
+<td align="right">2.32</td>
+<td align="right">1.28</td>
+<td align="right">3.21</td>
+<td align="right">4.68</td>
+<td align="right">6.20</td>
+<td align="right">13.00</td>
+<td align="left">▇▇▃▂▁</td>
+</tr>
+<tr class="even">
+<td align="left">Tinte</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0.96</td>
+<td align="right">0.23</td>
+<td align="right">0.48</td>
+<td align="right">0.78</td>
+<td align="right">0.96</td>
+<td align="right">1.12</td>
+<td align="right">1.71</td>
+<td align="left">▅▇▇▃▁</td>
+</tr>
+<tr class="odd">
+<td align="left">OD280/OD315 de vinos diluídos</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">2.60</td>
+<td align="right">0.71</td>
+<td align="right">1.27</td>
+<td align="right">1.93</td>
+<td align="right">2.78</td>
+<td align="right">3.17</td>
+<td align="right">4.00</td>
+<td align="left">▆▃▆▇▂</td>
+</tr>
+<tr class="even">
+<td align="left">Prolina</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">745.10</td>
+<td align="right">314.88</td>
+<td align="right">278.00</td>
+<td align="right">500.00</td>
+<td align="right">672.00</td>
+<td align="right">985.00</td>
+<td align="right">1680.00</td>
+<td align="left">▇▇▅▃▁</td>
+</tr>
+</tbody>
+</table></div>
+<p>Procederemos a escalar el dataset, que es un poco menos eficiente que normalizar, pero es más rápido y nos muestra algunas de las herramientas de la biblioteca <strong>skimr</strong></p>
+<div class="sourceCode" id="cb64"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/scale.html">scale</a></span><span class="op">(</span><span class="va">wine</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span> </span>
+<span><span class="fu">wssplot</span><span class="op">(</span><span class="va">df</span><span class="op">)</span>     </span></code></pre></div>
+<div class="inline-figure"><img src="04-kmeans_files/figure-html/unnamed-chunk-5-1.png" width="672"></div>
+<p>Cargaremos la biblioteca <strong>NbClust()</strong> para usar el método kmeasn que ella proporciona.</p>
+<div class="sourceCode" id="cb65"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://sites.google.com/site/malikacharrad/research/nbclust-package">NbClust</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1234</span><span class="op">)</span></span>
+<span><span class="va">nc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/NbClust/man/NbClust.html">NbClust</a></span><span class="op">(</span><span class="va">df</span>, min.nc<span class="op">=</span><span class="fl">2</span>, max.nc<span class="op">=</span><span class="fl">15</span>, method<span class="op">=</span><span class="st">"kmeans"</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="04-kmeans_files/figure-html/unnamed-chunk-6-1.png" width="672"></div>
+<pre><code>#&gt; *** : The Hubert index is a graphical method of determining the number of clusters.
+#&gt;                 In the plot of Hubert index, we seek a significant knee that corresponds to a 
+#&gt;                 significant increase of the value of the measure i.e the significant peak in Hubert
+#&gt;                 index second differences plot. 
+#&gt; </code></pre>
+<div class="inline-figure"><img src="04-kmeans_files/figure-html/unnamed-chunk-6-2.png" width="672"></div>
+<pre><code>#&gt; *** : The D index is a graphical method of determining the number of clusters. 
+#&gt;                 In the plot of D index, we seek a significant knee (the significant peak in Dindex
+#&gt;                 second differences plot) that corresponds to a significant increase of the value of
+#&gt;                 the measure. 
+#&gt;  
+#&gt; ******************************************************************* 
+#&gt; * Among all indices:                                                
+#&gt; * 1 proposed 2 as the best number of clusters 
+#&gt; * 19 proposed 3 as the best number of clusters 
+#&gt; * 1 proposed 9 as the best number of clusters 
+#&gt; * 2 proposed 15 as the best number of clusters 
+#&gt; 
+#&gt;                    ***** Conclusion *****                            
+#&gt;  
+#&gt; * According to the majority rule, the best number of clusters is  3 
+#&gt;  
+#&gt;  
+#&gt; *******************************************************************
+table(nc$Best.n[1,])
+#&gt; 
+#&gt;  0  1  2  3  9 15 
+#&gt;  2  1  1 19  1  2</code></pre>
+<p>Dado que las variables varían en rango, se estandarizan antes de la agrupación (función <span class="math inline">\(scale()\)</span>) es muy importante utiulizarla ya que esta biblioteca es muy sensible al error si no se aplica normalizado.</p>
+<p>A continuación, el número de clústeres se determina mediante las funciones <em>wwsplot()</em> y <span class="math inline">\(NbClust()\)</span> . La Figura indica que hay una clara caída en la suma de cuadrados dentro de los grupos cuando se pasa de 1 a 3 grupos. Después de tres clústeres, esta disminución disminuye, lo que sugiere que una solución de 3 clústeres puede ser una buena opción para los datos.</p>
+<p>En la siguiente figura, 14 de los 24 criterios proporcionados por el paquete <span class="math inline">\(NbClust\)</span> sugieren una solución de 3 clústeres.</p>
+<p>Tenga en cuenta que no se pueden calcular los 30 criterios para cada conjunto de datos. Se obtiene una solución final de clúster con la función kmeans() y se imprimen los centroides de clúster.</p>
+<p>Dado que los centroides proporcionados por la función se basan en datos estandarizados, la función <span class="math inline">\(aggregate()\)</span> se utiliza junto con las pertenencias al clúster para determinar las medias variables para cada clúster en la métrica original (o desescalando).</p>
+<div class="sourceCode" id="cb68"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/barplot.html">barplot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">nc</span><span class="op">$</span><span class="va">Best.n</span><span class="op">[</span><span class="fl">1</span>,<span class="op">]</span><span class="op">)</span>, </span>
+<span>          xlab<span class="op">=</span><span class="st">"Numer of Clusters"</span>, ylab<span class="op">=</span><span class="st">"Number of Criteria"</span>,</span>
+<span>          main<span class="op">=</span><span class="st">"Number of Clusters Chosen by 26 Criteria"</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="04-kmeans_files/figure-html/unnamed-chunk-7-1.png" width="672"></div>
+<p>¿Cuantas muestras hay en cada grupo?</p>
+<div class="sourceCode" id="cb69"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1234</span><span class="op">)</span></span>
+<span><span class="va">fit.km</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/kmeans.html">kmeans</a></span><span class="op">(</span><span class="va">df</span>, <span class="fl">3</span>, nstart<span class="op">=</span><span class="fl">25</span><span class="op">)</span>                           <span class="co">#3</span></span>
+<span><span class="va">fit.km</span><span class="op">$</span><span class="va">size</span></span>
+<span><span class="co">#&gt; [1] 61 65 51</span></span></code></pre></div>
+<p><em>Dónde estan los centroides?</em></p>
+<div class="sourceCode" id="cb70"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">fit.km</span><span class="op">$</span><span class="va">centers</span>  </span>
+<span><span class="co">#&gt;      Alcohol Ácido Malico    Cenizas</span></span>
+<span><span class="co">#&gt; 1  0.8333649   -0.3013131  0.3661731</span></span>
+<span><span class="co">#&gt; 2 -0.9183253   -0.3953334 -0.4905017</span></span>
+<span><span class="co">#&gt; 3  0.1736447    0.8642504  0.1871775</span></span>
+<span><span class="co">#&gt;   Alcalinidad de las cenizas    Magnecio Fenoles Totales</span></span>
+<span><span class="co">#&gt; 1                 -0.6065538  0.56922228      0.88768039</span></span>
+<span><span class="co">#&gt; 2                  0.1637039 -0.48321576     -0.07114136</span></span>
+<span><span class="co">#&gt; 3                  0.5168437 -0.06497127     -0.97106500</span></span>
+<span><span class="co">#&gt;   Flavonoides Fenoles no flavonoides Proantocianinas</span></span>
+<span><span class="co">#&gt; 1  0.98016451            -0.56173008      0.57583669</span></span>
+<span><span class="co">#&gt; 2  0.02658937            -0.03709561      0.06509498</span></span>
+<span><span class="co">#&gt; 3 -1.20624204             0.71915195     -0.77171004</span></span>
+<span><span class="co">#&gt;   Intensidad de Color      Tinte</span></span>
+<span><span class="co">#&gt; 1           0.1702296  0.4753467</span></span>
+<span><span class="co">#&gt; 2          -0.8955790  0.4614076</span></span>
+<span><span class="co">#&gt; 3           0.9378162 -1.1566204</span></span>
+<span><span class="co">#&gt;   OD280/OD315 de vinos diluídos    Prolina</span></span>
+<span><span class="co">#&gt; 1                     0.7753334  1.1296451</span></span>
+<span><span class="co">#&gt; 2                     0.2823571 -0.7460740</span></span>
+<span><span class="co">#&gt; 3                    -1.2872265 -0.4002655</span></span></code></pre></div>
+<p>Mira con detenimiento los valores entregados por <span class="math display">\[fit$(...)\]</span></p>
+<div class="sourceCode" id="cb71"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">fit.km</span><span class="op">$</span><span class="va">centers</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="04-kmeans_files/figure-html/unnamed-chunk-10-1.png" width="672"></div>
+<p><em>Matriz de confusión</em></p>
+<div class="sourceCode" id="cb72"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">ct.km</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">wine</span><span class="op">$</span><span class="va">Type</span>, <span class="va">fit.km</span><span class="op">$</span><span class="va">cluster</span><span class="op">)</span></span>
+<span><span class="va">ct.km</span>  </span>
+<span><span class="co">#&gt;    </span></span>
+<span><span class="co">#&gt;      1  2  3</span></span>
+<span><span class="co">#&gt;   1 58  0  0</span></span>
+<span><span class="co">#&gt;   2  3 65  3</span></span>
+<span><span class="co">#&gt;   3  0  0 48</span></span></code></pre></div>
+<p>Como podemos ver se nos ha indicado que es muy probable que existan <strong>3 categorías</strong> o grupos en los que podemos clasificar o etiquetar este dataset.
+La matriz de confusión es muy buena.</p>
+
+</div>
+</div>
+</div>
+  <div class="chapter-nav">
+<div class="prev"><a href="introducci%C3%B3n.html"><span class="header-section-number">4</span> Introducción</a></div>
+<div class="next"><a href="clusterizaci%C3%B3n.html"><span class="header-section-number">6</span> Clusterización</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#anal%C3%ADtica-de-datos-enla-cadena-de-suministros-1"><span class="header-section-number">5</span> Analítica de Datos enla Cadena de Suministros</a></li>
+<li><a class="nav-link" href="#carga-de-dataset-y-exploraci%C3%B3n-1"><span class="header-section-number">5.1</span> Carga de dataset y exploración</a></li>
+<li><a class="nav-link" href="#entrenamiento-y-prueba-1"><span class="header-section-number">5.2</span> Entrenamiento y prueba</a></li>
+<li><a class="nav-link" href="#ajuste-del-modelo-1"><span class="header-section-number">5.3</span> Ajuste del modelo</a></li>
+<li>
+<a class="nav-link" href="#mediciones-model-level-1"><span class="header-section-number">5.4</span> Mediciones Model-level</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#accuracy-1"><span class="header-section-number">5.4.1</span> Accuracy</a></li>
+<li><a class="nav-link" href="#error-rate-1"><span class="header-section-number">5.4.2</span> Error-Rate</a></li>
+</ul>
+</li>
+<li>
+<a class="nav-link" href="#class-level-mesures-1"><span class="header-section-number">5.5</span> Class-Level Mesures</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#precisi%C3%B3n-1"><span class="header-section-number">5.5.1</span> Precisión</a></li>
+<li><a class="nav-link" href="#recall-o-rememoraci%C3%B3n-1"><span class="header-section-number">5.5.2</span> Recall o rememoración</a></li>
+</ul>
+</li>
+<li><a class="nav-link" href="#subreentrenado-sobreentrenado-1"><span class="header-section-number">5.6</span> Subreentrenado Sobreentrenado</a></li>
+<li>
+<a class="nav-link" href="#k-nearest-neighbor-knn-1"><span class="header-section-number">5.7</span> k Nearest Neighbor kNN</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#testeo-de-performace-del-algoritmo-entrenado-1"><span class="header-section-number">5.7.1</span> Testeo de Performace del Algoritmo entrenado</a></li></ul>
+</li>
+<li>
+<a class="nav-link" href="#buenas-pr%C3%A1cticas-en-knn-1"><span class="header-section-number">5.8</span> Buenas prácticas en kNN</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#variando-k-1"><span class="header-section-number">5.8.1</span> Variando k</a></li>
+<li><a class="nav-link" href="#agrupaci%C3%B3n-k-means"><span class="header-section-number">5.8.2</span> Agrupación K-means</a></li>
+</ul>
+</li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+<li><a id="book-source" href="https://github.com/rstudio/bookdown-demo/blob/master/03-kNN.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/rstudio/bookdown-demo/edit/master/03-kNN.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>Random Forest</strong>" was written by Ricardo R. Palma. It was last built on 2023-06-27.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer><!-- dynamically load mathjax for compatibility with self-contained --><script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script><script type="text/x-mathjax-config">const popovers = document.querySelectorAll('a.footnote-ref[data-toggle="popover"]');
+for (let popover of popovers) {
+  const div = document.createElement('div');
+  div.setAttribute('style', 'position: absolute; top: 0, left:0; width:0, height:0, overflow: hidden; visibility: hidden;');
+  div.innerHTML = popover.getAttribute('data-content');
+
+  var has_math = div.querySelector("span.math");
+  if (has_math) {
+    document.body.appendChild(div);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
+    MathJax.Hub.Queue(function() {
+      popover.setAttribute('data-content', div.innerHTML);
+      document.body.removeChild(div);
+    })
+  }
+}
+</script>
+</body>
+</html>

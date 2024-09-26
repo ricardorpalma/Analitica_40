@@ -1,0 +1,903 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title>Capítulo 1 Analítica e Industria 4.0 | Analítica de Datos 4.0</title>
+
+    <meta name="author" content="Ricardo R. Palma" />
+  
+   <meta name="description" content="Analítica de Datos Industriales aplicados a la logística 4.0 en Latinoamérica y Caribe" />
+   <meta name="generator" content="placeholder" />
+  <meta property="og:title" content="Capítulo 1 Analítica e Industria 4.0 | Analítica de Datos 4.0" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Analítica de Datos Industriales aplicados a la logística 4.0 en Latinoamérica y Caribe" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Capítulo 1 Analítica e Industria 4.0 | Analítica de Datos 4.0" />
+  
+  <meta name="twitter:description" content="Analítica de Datos Industriales aplicados a la logística 4.0 en Latinoamérica y Caribe" />
+  
+  <!-- JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script>
+  <script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script>
+    <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet" />
+    <script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script>
+    <script src="libs/bs3compat-0.4.2/transition.js"></script>
+    <script src="libs/bs3compat-0.4.2/tabs.js"></script>
+    <script src="libs/bs3compat-0.4.2/bs3compat.js"></script>
+    <link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet" />
+    <script src="libs/bs4_book-1.0.0/bs4_book.js"></script>
+    <script src="libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
+    <script src="libs/d3-5.7.0/d3-5.15.0.min.js"></script>
+    <script src="libs/d3-regression-1.3.4/d3-regression.min.js"></script>
+    <link href="libs/scatterPlotMatrix-0.2/scatterPlotMatrix.css" rel="stylesheet" />
+    <script src="libs/scatterPlotMatrix-0.2/spm-msp.js"></script>
+    <script src="libs/scatterPlotMatrix-binding-0.2.0/scatterPlotMatrix.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script>
+
+  <!-- CSS -->
+  <style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+      <link rel="stylesheet" href="style.css" />
+  
+</head>
+
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book">
+    <a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">Analítica de Datos 4.0</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+      </form>
+
+      <nav aria-label="Table of contents">
+        <h2>Table of contents</h2>
+        <div id="book-toc"></div>
+
+        <div class="book-extra">
+          <p><a id="book-repo" href="#">View book source <i class="fab fa-github"></i></a></li></p>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="col-sm-12 col-md-9 col-lg-7" id="content">
+<div id="analítica-e-industria-4.0" class="section level1" number="1">
+<h1><span class="header-section-number">Capítulo 1</span> Analítica e Industria 4.0</h1>
+<p>A lo largo de este curso desarrollaremos una serie de tópicos que son novedosos y omnipresentes en la Ingeniería Industrial 4.0. Muchos de ellos han estado presente en el pasado, tales como los métodos estadísticos. Pero solamente han capturado la atención de gobiernos, academia y empresas cuando las arquitecturas del hardware, más los avances de datos disponibles en la nube han logrado superar las barreras de los estancos que los límites que el papel nos imponía. Gran parte de los cimientos de la inteligencia artificial se remontan a los años 50 del siglo XX, autores como <strong>GEORGE BOOLE</strong> en 1854 sentaron las bases de esta disciplina.
+En 1950 <strong>ALAN TURING</strong> Propone en su ensayo Computing Machinery and Intelligence el Test de Turing, una prueba de comunicación verbal hombre-máquina que evalúa la capacidad de las segundas de hacerse pasar por humanos.</p>
+<p>Luego en 1956 <strong>JOHN MCCARTHY</strong> El informático acuña por primera vez el término “Inteligencia Artificial”, durante la Conferencia de Darmouth, evento considerado el germen de la disciplina, para finalizar con <strong>MARVIN MINSKY</strong> que en 1969 escribe el libro perceptores, el trabajo fundamental del análisis de las redes neuronales artificiales.</p>
+<p>En estos días hay dos lenguajes de propósito general que se están imponiendo en el terreno de abordar y aplicar los conceptos de <strong>Analítica de Datos</strong>.</p>
+<p>El primero de ellos es <em>Python</em>, que sin dudas veras que ha tenido repercución y éxito, aún cuando no ha llegado a ser parte del Sylabus de todas las carreras de ingeniería industrial.</p>
+<p>El otro lengunaje, que a mi leal entender es más rápidamente asimilable con los ingenieros industriales es <em>R-Cran</em>.</p>
+<div id="bibliografía-recomendada" class="section level2" number="1.1">
+<h2><span class="header-section-number">1.1</span> Bibliografía Recomendada</h2>
+<div class="float">
+<img src="images/book6.png" alt="Métodos estadísticos de ISO -Emilio Cano" />
+<div class="figcaption">Métodos estadísticos de ISO -Emilio Cano</div>
+</div>
+</div>
+<div id="desambiguación-de-conceptos" class="section level2" number="1.2">
+<h2><span class="header-section-number">1.2</span> Desambiguación de conceptos</h2>
+<p>Se suele utilizar como sinónimos, pero son diferentes conceptos</p>
+<ul>
+<li>Analítica de Datos</li>
+<li>Machine Learning</li>
+<li>Deep Learning</li>
+<li>Business Intelligence</li>
+<li>Minería de Datos</li>
+<li>Inteligencia Artificial</li>
+</ul>
+<p>Todos ellos tienen un factor en común, el uso del un dataset, hardware y software, pero si bien tienen similitudes son bastantes distintos.</p>
+<p>Veamos una aproximación al problema partiendo de los modelos estadísticos.</p>
+<div class="float">
+<img src="images/Fig_1_IA.png" alt="Aproximación Estadística" />
+<div class="figcaption">Aproximación Estadística</div>
+</div>
+<p>Cualquier estadístico que usemos (T-Studen, Distribución Normal, Criterio de máxima verosimilitud, etc) puede ser obordado con el uso de computadora tomando datos etiquetados (que tienen una columna que muestra de que tipo son), luego con un algoritmo apropiado podemos construir un modelo.</p>
+<p>En analítica de datos invertimos el proceso.
+Tomando datos sin etiquetar los sometemos al análisis de un modelo y predecimos que resultado de obtendría en un mundo físico a partir de los datos que son abstracción de ese mundo.</p>
+<p>Así:</p>
+<ul>
+<li>Predecir cuando se romperá un eje</li>
+<li>Encontrar en que categoría de la flota sería conveniente incorporar un camión nuevo</li>
+<li>Determinar antes de cerrar una transacción electrónica virtual la probabilidad de fraude</li>
+<li>Etc.</li>
+</ul>
+<p>Son ejemplos de lo que se puede hacer con analítica de datos.@ehrlinger_treating_2018</p>
+<div class="float">
+<img src="images/Fig_2_IA.png" alt="Enfoque de Inteligencia Artificial" />
+<div class="figcaption">Enfoque de Inteligencia Artificial</div>
+</div>
+<p>En inteligencia artificial el proceso es muy semejante. A diferencia del caso anterior no tenemos un algorítmo que puede crear el modelo en base a las etiquetas de los datos. En este caso se opera en forma no supervisada. para crear un modelo.
+El resultado de la inteligencia artificial es un modelo que nos entrega datos y a partir de datos que el tomó para entrenarse y nos muestra patrones de semejanza entre los datos de entrenamiento y los de prueba.</p>
+<p>Es una práctica habitual crear modelos de IA utilizando un dataset y remuestrear (sampling) usando el 25% de los datos para entrenar y el 75% para predecir y evaluar la calidad del modelo.</p>
+<p>Ejemplos de este tipo de modelos son los árboles de decisión y su entrenamiento</p>
+<p>Por último tenemos el abordaje de machine learning.@dinh-tuan_maia_2019</p>
+</div>
+<div id="data-analitycs" class="section level2" number="1.3">
+<h2><span class="header-section-number">1.3</span> Data Analitycs</h2>
+<p>La analítica de datos permite a las organizaciones analizar todos sus datos (en tiempo real, históricos, no estructurados, estructurados, cualitativos) para identificar patrones y generar conocimientos para informar y, en algunos casos, automatizar decisiones, conectando la inteligencia y la acción. Las mejores soluciones actuales respaldan el proceso analítico de un extremo a otro, desde el acceso, la preparación y la analítica de datos hasta la operatividad de los análisis y el seguimiento de los resultados.</p>
+<p>Según TIBCO, la analítica de datos permite a las organizaciones transformar digitalmente su empresa y su cultura, volviéndose más innovadoras y con visión de futuro en la toma de decisiones. Más allá del monitoreo y la generación de informes tradicionales de KPI para encontrar patrones ocultos en los datos, las organizaciones potenciadas por algoritmos son los nuevos innovadores y líderes empresariales.</p>
+<p>Al cambiar el paradigma más allá de los datos para conectar los conocimientos con la acción, las empresas podrán crear experiencias personalizadas para los clientes, crear productos digitales conectados, optimizar las operaciones y aumentar la productividad de los empleados.@lee_recent_2014</p>
+<p>Con la analítica colaborativa de datos, las empresas permiten que todos contribuyan al éxito empresarial, desde ingenieros de datos y científicos de datos, hasta desarrolladores y analistas empresariales, e incluso profesionales y líderes empresariales. La analítica colaborativa de datos también incentiva a quienes están dentro y fuera de una organización a conectarse y colaborar. Por ejemplo, los científicos de datos pueden trabajar en estrecha colaboración con un cliente para ayudarlo a resolver sus problemas en tiempo real utilizando la interfaz de usuario altamente colaborativa de la analítica moderna del mundo de hoy.</p>
+<p>La analítica de datos impulsa a las empresas a avanzar mediante la introducción de algoritmos en todas partes para optimizar los momentos comerciales críticos, como un cliente que ingresa a su tienda, un equipo a punto de fallar u otros eventos que podrían significar la diferencia entre ganar o perder negocios. La analítica de datos se aplica a todas las industrias, incluidas las de servicios financieros y seguros, fabricación, energía, transporte, viajes y logística, atención médica y otras. La analítica de datos puede ayudar a predecir y manejar interrupciones, optimizar rutas, brindar un servicio proactivo al cliente, realizar ofertas inteligentes de venta cruzada, predecir fallas inminentes de equipos, administrar el inventario en tiempo real, optimizar los precios y prevenir el fraude.</p>
+</div>
+<div id="qué-dimensiones-engloba-el-concepto-de-ad" class="section level2" number="1.4">
+<h2><span class="header-section-number">1.4</span> ¿Qué dimensiones engloba el concepto de AD?</h2>
+<ul>
+<li>Automatización de Reportes</li>
+<li>Inteligencia de Negocios</li>
+<li>Preparción de datos (Data Wrangling)</li>
+<li>Visualización de Datos y Conocimiento</li>
+<li>Analítica Geoespacial (GIS)</li>
+<li>Analítica productiva (predictiva y prescriptiva)</li>
+<li>Machine Learning</li>
+<li>Analítica en tiempo real</li>
+</ul>
+</div>
+<div id="cómo-utilizar-la-analítica-de-datos-el-proceso-analítico" class="section level2" number="1.5">
+<h2><span class="header-section-number">1.5</span> ¿Cómo utilizar la analítica de datos: el proceso analítico?</h2>
+<ol style="list-style-type: decimal">
+<li>Comprenda el problema empresarial.</li>
+<li>Recopile/identifique datos relevantes para el problema.</li>
+<li>Prepare los datos para el análisis.</li>
+<li>Analice los datos para generar conocimientos.</li>
+<li>Implemente/ponga en funcionamiento los análisis y los modelos.</li>
+<li>Supervise y optimice el rendimiento.</li>
+</ol>
+<div id="dataset-o-información-base" class="section level3" number="1.5.1">
+<h3><span class="header-section-number">1.5.1</span> Dataset o Información base</h3>
+<p>Tomaremos un dataset simple, que nos muestra la cantidad de semanas que un pack de baterias de un autoelevador fue capaz de tomar carga como para resistir las operaciones durante toda una jornada de trabajo sin necesidad de recargarse o ser cambiado.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Baterias Varta 75</th>
+<th align="center">Edad (semanas)</th>
+<th align="right">Ensayo Cortocircuito</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td align="center">19</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td align="center">18</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td align="center">22</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td align="center">25</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td align="center">17</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td align="center">30</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td align="center">29</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td align="center">32</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td>9</td>
+<td align="center">31</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>10</td>
+<td align="center">33</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td>11</td>
+<td align="center">38</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>12</td>
+<td align="center">36</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td>13</td>
+<td align="center">40</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td>14</td>
+<td align="center">40</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td>15</td>
+<td align="center">42</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>16</td>
+<td align="center">45</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td>17</td>
+<td align="center">47</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>18</td>
+<td align="center">49</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td>19</td>
+<td align="center">55</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>20</td>
+<td align="center">58</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td>21</td>
+<td align="center">57</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td>22</td>
+<td align="center">63</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td>23</td>
+<td align="center">65</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td>24</td>
+<td align="center">65</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td>25</td>
+<td align="center">66</td>
+<td align="right">1</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Trucos:</p>
+<p>Puedes cargar los datos en un vecto con el comando <strong>Edad_75 &lt;- scan()</strong> . tipea uno a uno los valores de edad y luego dos veces seguidas <em>Enter</em> para finalizar el proceso.</p>
+<p>En los siguientes capítulos veremos como capturar de fuentes de datos como .xls</p>
+</blockquote>
+<table>
+<thead>
+<tr class="header">
+<th>Baterias Siemens 1005</th>
+<th align="center">Edad (semanas)</th>
+<th align="right">Ensayo de Cortocircuito</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td align="center">19</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td align="center">18</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td align="center">22</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td align="center">25</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td align="center">17</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td align="center">30</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td align="center">29</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td align="center">32</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td>9</td>
+<td align="center">31</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>10</td>
+<td align="center">33</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td>11</td>
+<td align="center">38</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td>12</td>
+<td align="center">36</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td>13</td>
+<td align="center">40</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td>14</td>
+<td align="center">40</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td>15</td>
+<td align="center">42</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td>16</td>
+<td align="center">45</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td>17</td>
+<td align="center">47</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td>18</td>
+<td align="center">49</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td>19</td>
+<td align="center">55</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>20</td>
+<td align="center">58</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td>21</td>
+<td align="center">57</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td>22</td>
+<td align="center">63</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td>23</td>
+<td align="center">65</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td>24</td>
+<td align="center">65</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td>25</td>
+<td align="center">66</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td>26</td>
+<td align="center">69</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td>27</td>
+<td align="center">70</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td>28</td>
+<td align="center">71</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td>29</td>
+<td align="center">75</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td>30</td>
+<td align="center">86</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td>31</td>
+<td align="center">79</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td>32</td>
+<td align="center">88</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td>33</td>
+<td align="center">89</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>34</td>
+<td align="center">92</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td>35</td>
+<td align="center">84</td>
+<td align="right">1</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="tratamiento-y-captura-de-la-información" class="section level2" number="1.6">
+<h2><span class="header-section-number">1.6</span> Tratamiento y captura de la información</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="analítica-e-industria-4.html#cb1-1" tabindex="-1"></a>datos_75 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span> , <span class="dv">19</span> , <span class="dv">0</span>,</span>
+<span id="cb1-2"><a href="analítica-e-industria-4.html#cb1-2" tabindex="-1"></a><span class="dv">2</span> , <span class="dv">18</span> , <span class="dv">0</span>,</span>
+<span id="cb1-3"><a href="analítica-e-industria-4.html#cb1-3" tabindex="-1"></a><span class="dv">3</span> , <span class="dv">22</span> , <span class="dv">0</span>,</span>
+<span id="cb1-4"><a href="analítica-e-industria-4.html#cb1-4" tabindex="-1"></a><span class="dv">4</span> , <span class="dv">25</span> , <span class="dv">0</span>,</span>
+<span id="cb1-5"><a href="analítica-e-industria-4.html#cb1-5" tabindex="-1"></a><span class="dv">5</span> , <span class="dv">17</span> , <span class="dv">0</span>,</span>
+<span id="cb1-6"><a href="analítica-e-industria-4.html#cb1-6" tabindex="-1"></a><span class="dv">6</span> , <span class="dv">30</span> , <span class="dv">0</span>,</span>
+<span id="cb1-7"><a href="analítica-e-industria-4.html#cb1-7" tabindex="-1"></a><span class="dv">7</span> , <span class="dv">29</span> , <span class="dv">0</span>,</span>
+<span id="cb1-8"><a href="analítica-e-industria-4.html#cb1-8" tabindex="-1"></a><span class="dv">8</span> , <span class="dv">32</span> , <span class="dv">0</span>,</span>
+<span id="cb1-9"><a href="analítica-e-industria-4.html#cb1-9" tabindex="-1"></a><span class="dv">9</span> , <span class="dv">31</span> , <span class="dv">0</span>,</span>
+<span id="cb1-10"><a href="analítica-e-industria-4.html#cb1-10" tabindex="-1"></a><span class="dv">10</span>, <span class="dv">33</span> , <span class="dv">0</span>,</span>
+<span id="cb1-11"><a href="analítica-e-industria-4.html#cb1-11" tabindex="-1"></a><span class="dv">11</span>, <span class="dv">38</span> , <span class="dv">0</span>,</span>
+<span id="cb1-12"><a href="analítica-e-industria-4.html#cb1-12" tabindex="-1"></a><span class="dv">12</span>, <span class="dv">36</span> , <span class="dv">0</span>,</span>
+<span id="cb1-13"><a href="analítica-e-industria-4.html#cb1-13" tabindex="-1"></a><span class="dv">13</span>, <span class="dv">40</span> , <span class="dv">1</span>,</span>
+<span id="cb1-14"><a href="analítica-e-industria-4.html#cb1-14" tabindex="-1"></a><span class="dv">14</span>, <span class="dv">40</span> , <span class="dv">0</span>,</span>
+<span id="cb1-15"><a href="analítica-e-industria-4.html#cb1-15" tabindex="-1"></a><span class="dv">15</span>, <span class="dv">42</span> , <span class="dv">0</span>,</span>
+<span id="cb1-16"><a href="analítica-e-industria-4.html#cb1-16" tabindex="-1"></a><span class="dv">16</span>, <span class="dv">45</span> , <span class="dv">0</span>,</span>
+<span id="cb1-17"><a href="analítica-e-industria-4.html#cb1-17" tabindex="-1"></a><span class="dv">17</span>, <span class="dv">47</span> , <span class="dv">0</span>,</span>
+<span id="cb1-18"><a href="analítica-e-industria-4.html#cb1-18" tabindex="-1"></a><span class="dv">18</span>, <span class="dv">49</span> , <span class="dv">0</span>,</span>
+<span id="cb1-19"><a href="analítica-e-industria-4.html#cb1-19" tabindex="-1"></a><span class="dv">19</span>, <span class="dv">55</span> , <span class="dv">0</span>,</span>
+<span id="cb1-20"><a href="analítica-e-industria-4.html#cb1-20" tabindex="-1"></a><span class="dv">20</span>, <span class="dv">58</span> , <span class="dv">1</span>,</span>
+<span id="cb1-21"><a href="analítica-e-industria-4.html#cb1-21" tabindex="-1"></a><span class="dv">21</span>, <span class="dv">57</span> , <span class="dv">1</span>,</span>
+<span id="cb1-22"><a href="analítica-e-industria-4.html#cb1-22" tabindex="-1"></a><span class="dv">22</span>, <span class="dv">63</span> , <span class="dv">1</span>,</span>
+<span id="cb1-23"><a href="analítica-e-industria-4.html#cb1-23" tabindex="-1"></a><span class="dv">23</span>, <span class="dv">65</span> , <span class="dv">1</span>,</span>
+<span id="cb1-24"><a href="analítica-e-industria-4.html#cb1-24" tabindex="-1"></a><span class="dv">24</span>, <span class="dv">65</span> , <span class="dv">1</span>,</span>
+<span id="cb1-25"><a href="analítica-e-industria-4.html#cb1-25" tabindex="-1"></a><span class="dv">25</span>, <span class="dv">66</span> , <span class="dv">1</span>)</span>
+<span id="cb1-26"><a href="analítica-e-industria-4.html#cb1-26" tabindex="-1"></a>Muestra_75 <span class="ot">&lt;-</span> <span class="fu">matrix</span>(datos_75, <span class="at">ncol =</span> <span class="dv">3</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-27"><a href="analítica-e-industria-4.html#cb1-27" tabindex="-1"></a>Muestra_75</span>
+<span id="cb1-28"><a href="analítica-e-industria-4.html#cb1-28" tabindex="-1"></a><span class="co">#&gt;       [,1] [,2] [,3]</span></span>
+<span id="cb1-29"><a href="analítica-e-industria-4.html#cb1-29" tabindex="-1"></a><span class="co">#&gt;  [1,]    1   19    0</span></span>
+<span id="cb1-30"><a href="analítica-e-industria-4.html#cb1-30" tabindex="-1"></a><span class="co">#&gt;  [2,]    2   18    0</span></span>
+<span id="cb1-31"><a href="analítica-e-industria-4.html#cb1-31" tabindex="-1"></a><span class="co">#&gt;  [3,]    3   22    0</span></span>
+<span id="cb1-32"><a href="analítica-e-industria-4.html#cb1-32" tabindex="-1"></a><span class="co">#&gt;  [4,]    4   25    0</span></span>
+<span id="cb1-33"><a href="analítica-e-industria-4.html#cb1-33" tabindex="-1"></a><span class="co">#&gt;  [5,]    5   17    0</span></span>
+<span id="cb1-34"><a href="analítica-e-industria-4.html#cb1-34" tabindex="-1"></a><span class="co">#&gt;  [6,]    6   30    0</span></span>
+<span id="cb1-35"><a href="analítica-e-industria-4.html#cb1-35" tabindex="-1"></a><span class="co">#&gt;  [7,]    7   29    0</span></span>
+<span id="cb1-36"><a href="analítica-e-industria-4.html#cb1-36" tabindex="-1"></a><span class="co">#&gt;  [8,]    8   32    0</span></span>
+<span id="cb1-37"><a href="analítica-e-industria-4.html#cb1-37" tabindex="-1"></a><span class="co">#&gt;  [9,]    9   31    0</span></span>
+<span id="cb1-38"><a href="analítica-e-industria-4.html#cb1-38" tabindex="-1"></a><span class="co">#&gt; [10,]   10   33    0</span></span>
+<span id="cb1-39"><a href="analítica-e-industria-4.html#cb1-39" tabindex="-1"></a><span class="co">#&gt; [11,]   11   38    0</span></span>
+<span id="cb1-40"><a href="analítica-e-industria-4.html#cb1-40" tabindex="-1"></a><span class="co">#&gt; [12,]   12   36    0</span></span>
+<span id="cb1-41"><a href="analítica-e-industria-4.html#cb1-41" tabindex="-1"></a><span class="co">#&gt; [13,]   13   40    1</span></span>
+<span id="cb1-42"><a href="analítica-e-industria-4.html#cb1-42" tabindex="-1"></a><span class="co">#&gt; [14,]   14   40    0</span></span>
+<span id="cb1-43"><a href="analítica-e-industria-4.html#cb1-43" tabindex="-1"></a><span class="co">#&gt; [15,]   15   42    0</span></span>
+<span id="cb1-44"><a href="analítica-e-industria-4.html#cb1-44" tabindex="-1"></a><span class="co">#&gt; [16,]   16   45    0</span></span>
+<span id="cb1-45"><a href="analítica-e-industria-4.html#cb1-45" tabindex="-1"></a><span class="co">#&gt; [17,]   17   47    0</span></span>
+<span id="cb1-46"><a href="analítica-e-industria-4.html#cb1-46" tabindex="-1"></a><span class="co">#&gt; [18,]   18   49    0</span></span>
+<span id="cb1-47"><a href="analítica-e-industria-4.html#cb1-47" tabindex="-1"></a><span class="co">#&gt; [19,]   19   55    0</span></span>
+<span id="cb1-48"><a href="analítica-e-industria-4.html#cb1-48" tabindex="-1"></a><span class="co">#&gt; [20,]   20   58    1</span></span>
+<span id="cb1-49"><a href="analítica-e-industria-4.html#cb1-49" tabindex="-1"></a><span class="co">#&gt; [21,]   21   57    1</span></span>
+<span id="cb1-50"><a href="analítica-e-industria-4.html#cb1-50" tabindex="-1"></a><span class="co">#&gt; [22,]   22   63    1</span></span>
+<span id="cb1-51"><a href="analítica-e-industria-4.html#cb1-51" tabindex="-1"></a><span class="co">#&gt; [23,]   23   65    1</span></span>
+<span id="cb1-52"><a href="analítica-e-industria-4.html#cb1-52" tabindex="-1"></a><span class="co">#&gt; [24,]   24   65    1</span></span>
+<span id="cb1-53"><a href="analítica-e-industria-4.html#cb1-53" tabindex="-1"></a><span class="co">#&gt; [25,]   25   66    1</span></span></code></pre></div>
+<p>Obtener el la edad de la batería con nro de inventario 3</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="analítica-e-industria-4.html#cb2-1" tabindex="-1"></a>Muestra_75[<span class="dv">3</span>,<span class="dv">2</span>]</span>
+<span id="cb2-2"><a href="analítica-e-industria-4.html#cb2-2" tabindex="-1"></a><span class="co">#&gt; [1] 22</span></span></code></pre></div>
+<p>Nos interesa saber si la vida en semanas de nuestras baterias compradas coincide con los valores publicados en el sitio web del fabricantes. Se considera que una batería tiene una vida últil mientras al aplicarle una carga completa ella pueda resistir todo el turno de 8 horas sin necesidad de ser reemplazada.</p>
+<p>Obtener las edades de la muestra</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="analítica-e-industria-4.html#cb3-1" tabindex="-1"></a><span class="fu">plot</span> ((Muestra_75[ ,<span class="dv">2</span>]), <span class="at">main=</span> <span class="st">&quot;Vida en Semanas&quot;</span>,<span class="at">xlab=</span><span class="st">&quot;Ficha Taller Batería con falla&quot;</span>, <span class="at">ylab=</span> <span class="st">&quot;Semanas&quot;</span>)</span></code></pre></div>
+<p><img src="01-Baterias_Autoelevador_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p>Promedio de vida</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="analítica-e-industria-4.html#cb4-1" tabindex="-1"></a>vida_media_muestra <span class="ot">&lt;-</span> <span class="fu">mean</span>(Muestra_75[,<span class="dv">2</span>])</span>
+<span id="cb4-2"><a href="analítica-e-industria-4.html#cb4-2" tabindex="-1"></a>vida_media_muestra</span>
+<span id="cb4-3"><a href="analítica-e-industria-4.html#cb4-3" tabindex="-1"></a><span class="co">#&gt; [1] 40.88</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="analítica-e-industria-4.html#cb5-1" tabindex="-1"></a><span class="fu">plot</span> (<span class="fu">sort</span>(Muestra_75[ ,<span class="dv">2</span>]), <span class="at">main=</span> <span class="st">&quot;Vida en Semanas&quot;</span>,<span class="at">xlab=</span><span class="st">&quot;Batería&quot;</span>, <span class="at">ylab=</span> <span class="st">&quot;Semanas&quot;</span>)</span>
+<span id="cb5-2"><a href="analítica-e-industria-4.html#cb5-2" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h=</span>vida_media_muestra)</span>
+<span id="cb5-3"><a href="analítica-e-industria-4.html#cb5-3" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h=</span><span class="dv">40</span>,<span class="at">col=</span><span class="st">&quot;red&quot;</span>)</span>
+<span id="cb5-4"><a href="analítica-e-industria-4.html#cb5-4" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h=</span><span class="dv">50</span>,<span class="at">col=</span><span class="st">&quot;green&quot;</span>)</span></code></pre></div>
+<p><img src="01-Baterias_Autoelevador_files/figure-html/unnamed-chunk-5-1.png" width="672" />
+La línea roja muestra la duración mínima por contrato garantizada por el fabricante. La línea verde indica la duración máxima de la carga e indica si el producto conserva el electrolito original. Se puede extender la duración de la carga con otro electrolíto no original, pero no tendrá garantía del fabricante en caso de fallas.</p>
+<div id="muestra-de-historial-de-carga" class="section level3" number="1.6.1">
+<h3><span class="header-section-number">1.6.1</span> Muestra de Historial de Carga</h3>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="analítica-e-industria-4.html#cb6-1" tabindex="-1"></a><span class="fu">plot</span>(Muestra_75[ , <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>],<span class="at">main =</span> <span class="st">&quot;Resumen de Casos&quot;</span>,<span class="at">xlab =</span> <span class="st">&quot;Ficha Bateria&quot;</span>,<span class="at">ylab=</span><span class="st">&quot;Edad&quot;</span>, <span class="at">type=</span><span class="st">&quot;b&quot;</span>, <span class="at">col=</span><span class="st">&quot;RED&quot;</span>)</span></code></pre></div>
+<p><img src="01-Baterias_Autoelevador_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+</div>
+</div>
+<div id="histogramas-de-edades" class="section level2" number="1.7">
+<h2><span class="header-section-number">1.7</span> Histogramas de Edades</h2>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="analítica-e-industria-4.html#cb7-1" tabindex="-1"></a><span class="fu">hist</span>(Muestra_75[ ,<span class="dv">2</span>],<span class="at">breaks =</span> <span class="dv">10</span>, <span class="at">main =</span> <span class="st">&quot;Histogramas de edades&quot;</span>)</span></code></pre></div>
+<p><img src="01-Baterias_Autoelevador_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+</div>
+<div id="gráficos-de-densidad" class="section level2" number="1.8">
+<h2><span class="header-section-number">1.8</span> Gráficos de Densidad</h2>
+<p>También conocido como gráfico de densidad de Kernel y gráfico de densidad de traza.</p>
+<p>Un gráfico de densidad visualiza la distribución de datos en un intervalo o período de tiempo continuo. Este gráfico es una variación de un Histograma que usa el suavizado de cerner para trazar valores, permitiendo distribuciones más suaves al suavizar el ruido. Los picos de un gráfico de densidad ayudan a mostrar dónde los valores se concentran en el intervalo.</p>
+<p>Una ventaja de los gráficos de densidad sobre los histogramas es que son mejores para determinar la forma de distribución porque no se ven afectados por el número de contenedores utilizados (cada barra utilizada en un histograma típico). Un histograma que consta de solo 4 compartimientos no producirá una forma de distribución lo suficientemente distinguible como lo haría un histograma de 20 compartimientos. Sin embargo, con los gráficos de densidad esto no es un problema.</p>
+<p>La función de densidad puede calcularse fácilmene en R-Cran con el siguiente comando</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="analítica-e-industria-4.html#cb8-1" tabindex="-1"></a><span class="fu">density</span>(Muestra_75[ ,<span class="dv">2</span>])</span>
+<span id="cb8-2"><a href="analítica-e-industria-4.html#cb8-2" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-3"><a href="analítica-e-industria-4.html#cb8-3" tabindex="-1"></a><span class="co">#&gt; Call:</span></span>
+<span id="cb8-4"><a href="analítica-e-industria-4.html#cb8-4" tabindex="-1"></a><span class="co">#&gt;  density.default(x = Muestra_75[, 2])</span></span>
+<span id="cb8-5"><a href="analítica-e-industria-4.html#cb8-5" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-6"><a href="analítica-e-industria-4.html#cb8-6" tabindex="-1"></a><span class="co">#&gt; Data: Muestra_75[, 2] (25 obs.); Bandwidth &#39;bw&#39; = 7.394</span></span>
+<span id="cb8-7"><a href="analítica-e-industria-4.html#cb8-7" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-8"><a href="analítica-e-industria-4.html#cb8-8" tabindex="-1"></a><span class="co">#&gt;        x                y            </span></span>
+<span id="cb8-9"><a href="analítica-e-industria-4.html#cb8-9" tabindex="-1"></a><span class="co">#&gt;  Min.   :-5.183   Min.   :5.383e-05  </span></span>
+<span id="cb8-10"><a href="analítica-e-industria-4.html#cb8-10" tabindex="-1"></a><span class="co">#&gt;  1st Qu.:18.159   1st Qu.:2.474e-03  </span></span>
+<span id="cb8-11"><a href="analítica-e-industria-4.html#cb8-11" tabindex="-1"></a><span class="co">#&gt;  Median :41.500   Median :1.246e-02  </span></span>
+<span id="cb8-12"><a href="analítica-e-industria-4.html#cb8-12" tabindex="-1"></a><span class="co">#&gt;  Mean   :41.500   Mean   :1.070e-02  </span></span>
+<span id="cb8-13"><a href="analítica-e-industria-4.html#cb8-13" tabindex="-1"></a><span class="co">#&gt;  3rd Qu.:64.841   3rd Qu.:1.698e-02  </span></span>
+<span id="cb8-14"><a href="analítica-e-industria-4.html#cb8-14" tabindex="-1"></a><span class="co">#&gt;  Max.   :88.183   Max.   :2.186e-02</span></span></code></pre></div>
+<p>Dado que es un objeto de R a partir del resultado de los cuantiles es posible plotear directamente la función invocada</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="analítica-e-industria-4.html#cb9-1" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">density</span>(Muestra_75[ ,<span class="dv">2</span>]), <span class="at">main =</span> <span class="st">&quot;Gráfico de Densidad&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;Cantidad relativa de muestras&quot;</span>,<span class="at">xlab=</span><span class="st">&quot;Edad&quot;</span>)</span></code></pre></div>
+<p><img src="01-Baterias_Autoelevador_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<div id="gráfica-conjunta-de-histograma-y-densidad" class="section level3" number="1.8.1">
+<h3><span class="header-section-number">1.8.1</span> Gráfica conjunta de Histograma y Densidad</h3>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="analítica-e-industria-4.html#cb10-1" tabindex="-1"></a><span class="fu">hist</span>(Muestra_75[ ,<span class="dv">2</span>], <span class="co"># histogram</span></span>
+<span id="cb10-2"><a href="analítica-e-industria-4.html#cb10-2" tabindex="-1"></a>    <span class="at">breaks =</span> <span class="dv">3</span>,</span>
+<span id="cb10-3"><a href="analítica-e-industria-4.html#cb10-3" tabindex="-1"></a>     <span class="at">col=</span><span class="st">&quot;peachpuff&quot;</span>, <span class="co"># column color</span></span>
+<span id="cb10-4"><a href="analítica-e-industria-4.html#cb10-4" tabindex="-1"></a> <span class="at">border=</span><span class="st">&quot;black&quot;</span>,</span>
+<span id="cb10-5"><a href="analítica-e-industria-4.html#cb10-5" tabindex="-1"></a> <span class="at">prob =</span> <span class="cn">TRUE</span>, <span class="co"># show densities instead of frequencies</span></span>
+<span id="cb10-6"><a href="analítica-e-industria-4.html#cb10-6" tabindex="-1"></a> <span class="at">xlab =</span> <span class="st">&quot;Edad&quot;</span>,</span>
+<span id="cb10-7"><a href="analítica-e-industria-4.html#cb10-7" tabindex="-1"></a> <span class="at">main =</span> <span class="st">&quot;Distribución Edades de la Muestra&quot;</span>)</span>
+<span id="cb10-8"><a href="analítica-e-industria-4.html#cb10-8" tabindex="-1"></a><span class="fu">lines</span>(<span class="fu">density</span>(Muestra_75[ ,<span class="dv">2</span>]), <span class="co"># density plot</span></span>
+<span id="cb10-9"><a href="analítica-e-industria-4.html#cb10-9" tabindex="-1"></a> <span class="at">lwd =</span> <span class="dv">2</span>, <span class="co"># thickness of line</span></span>
+<span id="cb10-10"><a href="analítica-e-industria-4.html#cb10-10" tabindex="-1"></a> <span class="at">col =</span> <span class="st">&quot;chocolate3&quot;</span>)</span></code></pre></div>
+<p><img src="01-Baterias_Autoelevador_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+</div>
+</div>
+<div id="varianza-de-muestra-y-población" class="section level2" number="1.9">
+<h2><span class="header-section-number">1.9</span> Varianza de Muestra y Población</h2>
+<p>La varianza de una población está expresada por la ecuación</p>
+<p><span class="math display">\[\sigma^2 = \sum_{i=1}^{n} \frac {(x_i – \mu)^2} {N}   \]</span></p>
+<p>La varianza (de la muestra puede ser calculada con el comando</p>
+<pre><code>  var(Muestra_75[ ,2])</code></pre>
+<p>Dato que la muestra siempre tiene un número considerablemente menor de individuos que la población la expresión que se usa para calcular la varianza de la muestra es distinta.</p>
+<p>Varianza de la <strong>muestra</strong> es</p>
+<p><span class="math display">\[ s^2 = \sum_{i=1}^{n} \frac {(x_i – \bar{x})^2} {n-1}  \]</span></p>
+<p>Puede encontrarse la varianza de la población sustituyendo los valores como se indica a continuación:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="analítica-e-industria-4.html#cb12-1" tabindex="-1"></a>var_muestra <span class="ot">&lt;-</span> <span class="fu">var</span>(Muestra_75 [ ,<span class="dv">2</span>])</span>
+<span id="cb12-2"><a href="analítica-e-industria-4.html#cb12-2" tabindex="-1"></a>var_muestra</span>
+<span id="cb12-3"><a href="analítica-e-industria-4.html#cb12-3" tabindex="-1"></a><span class="co">#&gt; [1] 244.61</span></span>
+<span id="cb12-4"><a href="analítica-e-industria-4.html#cb12-4" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">length</span>(Muestra_75[ ,<span class="dv">2</span>])</span>
+<span id="cb12-5"><a href="analítica-e-industria-4.html#cb12-5" tabindex="-1"></a>n</span>
+<span id="cb12-6"><a href="analítica-e-industria-4.html#cb12-6" tabindex="-1"></a><span class="co">#&gt; [1] 25</span></span>
+<span id="cb12-7"><a href="analítica-e-industria-4.html#cb12-7" tabindex="-1"></a>n_over_n_1 <span class="ot">&lt;-</span> n<span class="sc">/</span>(n<span class="dv">-1</span>)</span>
+<span id="cb12-8"><a href="analítica-e-industria-4.html#cb12-8" tabindex="-1"></a>n_over_n_1</span>
+<span id="cb12-9"><a href="analítica-e-industria-4.html#cb12-9" tabindex="-1"></a><span class="co">#&gt; [1] 1.041667</span></span></code></pre></div>
+<p>Con esto valores podemos calcular la varianza de la población con la siguiente codificación</p>
+<p><span class="math display">\[ \sigma = \frac {S} {n} \]</span></p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="analítica-e-industria-4.html#cb13-1" tabindex="-1"></a>var_poblacion <span class="ot">&lt;-</span> <span class="fu">var</span>(Muestra_75[ ,<span class="dv">2</span>]) <span class="sc">/</span> n</span>
+<span id="cb13-2"><a href="analítica-e-industria-4.html#cb13-2" tabindex="-1"></a>var_poblacion</span>
+<span id="cb13-3"><a href="analítica-e-industria-4.html#cb13-3" tabindex="-1"></a><span class="co">#&gt; [1] 9.7844</span></span></code></pre></div>
+<p>El desvio estandar de la meustra es</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="analítica-e-industria-4.html#cb14-1" tabindex="-1"></a>dsm <span class="ot">&lt;-</span> <span class="fu">sd</span>({Muestra_75[ ,<span class="dv">2</span>]})</span>
+<span id="cb14-2"><a href="analítica-e-industria-4.html#cb14-2" tabindex="-1"></a>dsm</span>
+<span id="cb14-3"><a href="analítica-e-industria-4.html#cb14-3" tabindex="-1"></a><span class="co">#&gt; [1] 15.64001</span></span></code></pre></div>
+<p>En tanto que el desvió estándar de la población es</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="analítica-e-industria-4.html#cb15-1" tabindex="-1"></a>dsp <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(var_poblacion)</span>
+<span id="cb15-2"><a href="analítica-e-industria-4.html#cb15-2" tabindex="-1"></a>dsp</span>
+<span id="cb15-3"><a href="analítica-e-industria-4.html#cb15-3" tabindex="-1"></a><span class="co">#&gt; [1] 3.128003</span></span></code></pre></div>
+<p>Una forma más elegante de presentar estos resultados parciales puede conseguirse con el uso de la función *<strong>sprintf()</strong></p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="analítica-e-industria-4.html#cb16-1" tabindex="-1"></a><span class="fu">sprintf</span>(<span class="st">&quot;Varianza muestral =%s, Varianza poblacional = %s&quot;</span>, var_muestra, var_poblacion )</span>
+<span id="cb16-2"><a href="analítica-e-industria-4.html#cb16-2" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Varianza muestral =244.61, Varianza poblacional = 9.7844&quot;</span></span></code></pre></div>
+<p>Un valor que es interesante calcular para comparar con la muestra es el desvío porcentual calculado como <span class="math inline">\(dsp_{\%}= \frac{dsp}{n}\)</span></p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="analítica-e-industria-4.html#cb17-1" tabindex="-1"></a>dspp_75 <span class="ot">&lt;-</span> dsp<span class="sc">/</span>n</span>
+<span id="cb17-2"><a href="analítica-e-industria-4.html#cb17-2" tabindex="-1"></a>dspp_75</span>
+<span id="cb17-3"><a href="analítica-e-industria-4.html#cb17-3" tabindex="-1"></a><span class="co">#&gt; [1] 0.1251201</span></span></code></pre></div>
+</div>
+<div id="repetir-en-análisis-para-la-muestra-siemens-1005" class="section level2" number="1.10">
+<h2><span class="header-section-number">1.10</span> Repetir en análisis para la muestra Siemens 1005</h2>
+<div class="blackbox">
+<div class="center">
+<p><strong>Tarea !</strong></p>
+</div>
+<p>Siempre comenzaremos nuestro trabajo con un análisis exploratorio básico, tal como hemos señalado.
+En este caso no hemos descartado ningún individuo de la muestra, pero sería conveniente hacerlo.
+El comando <strong><em>boxplot()</em></strong> te permitirá hacer una inspección rápida.
+Adisionalmente prueba el comando <strong><em>summary()</em></strong> para analizar la distribución de cunatiles y datos faltantes.</p>
+</div>
+</div>
+<div id="construcción-de-un-modelo" class="section level2" number="1.11">
+<h2><span class="header-section-number">1.11</span> Construcción de un modelo</h2>
+<div class="infobox caution">
+<p><strong>Nota!</strong></p>
+<p>En esta parte comenzaremos a desarrollar un modelo.</p>
+</div>
+<p>En la ficha del fabricante de baterías, se indica que el hecho de sustituir el electrolíto original por otro que no sea el oficial y que en general contiene antimonio puede ser en primera instancia considerado como un factor que prolonga la vida útil de la batería y amplía el rango de su ciclo de carga/descarga.</p>
+<p>Sin embrago el fabricante advierte del peligro potencial de cáncer de próstata que el antimonio presenta para el personal técnico que opera las baterías y para el conductor del vehículo.</p>
+<p>Vale recordar que las placas de plomo tienen en su aleación antimonio y a medida que se van envejeciendo liberan antimonio al electrolito, que aún cuando sea en concentraciones bajas, son capaces de afctar la salud. Por este motivo podríamos inferir que hay una correlación entre la vida útil de las baterías y la aparición de síntomas de cáncer de próstata.</p>
+<p>Utilizaremos una hipótesis simple. El modelo de regresión lineal podría ayudarnos a predecir para esta población a que edad deberíamos comenzar el diagnóstico de antígeno prostático en el personal afectado a las tareas que se relacionan con las baterías.</p>
+<p>También realizaremos una comprobación basada en el modelo para saber si ha habido cambios significativos en los síntomas atribuibles al uso del antimonio.</p>
+<p>Como se puede ver, no recurrimos aún a la medicina, pero nos planteamos una hipótesis sobre las implicancias del antimonio y la salud y el objetivo es otorgarle al médico una recomendación para que tenga una alerta temprana, sin que esto afirme o desmienta hechos científicos sobre los que no tenemos capacidad para diagnostiras enfermedades y nos limitamos a prevenirlas.</p>
+</div>
+<div id="hipótesis-o-pregunta-de-investigación" class="section level2" number="1.12">
+<h2><span class="header-section-number">1.12</span> Hipótesis o pregunta de investigación</h2>
+<p>El proceso de investigación científica repetible parte de este tipo de premisa. Es un proceso iterativo de aproximación y revelación. Comenzaremos con una pregunta de investigación. <em>¿Será posible utilizar un modelo de regresión lineal para entender el comportamiento de estos datos?</em>. Esta pregunta con el tiempo podrá ser formulada como una afirmación. Este proceso debe tener una investigación preliminar. De esteo modo podríamos expresar algo como <em>El modelo de regresión lineal, que es muy utilizado en inteligencia artificial podrá darme respuestas a dos preguntas clave de este problema</em></p>
+<p>1- El modelo regresión lineal puede predecir la probabilidad de aparición temprana de cáncer.
+2- Es posible utilizar el modelo construido para comparar dos poblaciones.</p>
+</div>
+<div id="bases-de-un-modelo-ia-de-regresión-lienal" class="section level2" number="1.13">
+<h2><span class="header-section-number">1.13</span> Bases de un modelo IA de regresión lienal</h2>
+<p>Para trabajar en este sentido R-Cran tiene posibilidades de desarrollar modelos de regresión lineal en un sólo comando. A pesar de ello construiremos un modelo desde CERO para entender como se procede en Inteligencia Artificial.</p>
+<p>Todo modelo de regresión se basa en hallar los parámetros <span class="math inline">\(a\)</span> y <span class="math inline">\(b\)</span> de una ecuación de una recta.</p>
+<p><span class="math display">\[ y = a*x + b \]</span></p>
+<blockquote>
+<p>Donde: y es un número que varía entre 1 y 0</p>
+<p>1 señala que se trata de un caso probable positivo, en tanto que</p>
+<p>0 señala que es poco probable la aparición de cancer.</p>
+</blockquote>
+<p>Para poder hallar los valores de estas variable o <strong><em>parámetros del modelo</em></strong> deberíamos utilizar los datos. En realidad con solamente dos datos de la muestra podríamos encontrar una recta que pase por estos dos puntos. Lo más aconsejable es no utilizar sólo dos, sino todos los puntos.
+Esto implica plantear un problema de dos ecuaciones con dos incógnitas y en rigor el método de los mínimos cuadrados sería lo más indicado.</p>
+<p>Siguiendo con la idea de la construcción artesanal del modelo podemos decir que encontrando un punto significativo del modelo por el que pase la recta podremos agregar alguna estrategia para hallar la pendiente y con esos datos calcular <span class="math inline">\(a\)</span> y <span class="math inline">\(b\)</span>.</p>
+</div>
+<div id="puntos-significativos-de-modelo" class="section level2" number="1.14">
+<h2><span class="header-section-number">1.14</span> Puntos significativos de modelo</h2>
+<p>Un punto significativo podría ser la moda de las edades y la moda de la variable categórica [1,0].
+Se puede demostrar que en el modelo de regresión de los mínimos cuadrados este punto es el promedio de <span class="math inline">\(\overline{x}\)</span> y el promedio de <span class="math inline">\(\overline{y}\)</span>.
+Pero existen otros valores <strong>verosímiles</strong> (Ver criterios de máxima verosimilitud <a href="https://es.wikipedia.org/wiki/M%C3%A1xima_verosimilitud">de Ronald Fisher</a>).</p>
+<div class="float">
+<img src="images/recta.png" alt="Modelos aproximado lineal" />
+<div class="figcaption">Modelos aproximado lineal</div>
+</div>
+<div id="cácluo-de-x-e-y-significativos" class="section level3" number="1.14.1">
+<h3><span class="header-section-number">1.14.1</span> Cácluo de x e y significativos</h3>
+<blockquote>
+<p>Valor de y verosimil</p>
+</blockquote>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="analítica-e-industria-4.html#cb18-1" tabindex="-1"></a>index_ymax <span class="ot">&lt;-</span> <span class="fu">which.max</span>(Muestra_75[ ,<span class="dv">3</span>])</span>
+<span id="cb18-2"><a href="analítica-e-industria-4.html#cb18-2" tabindex="-1"></a>ymax <span class="ot">&lt;-</span> Muestra_75[index_ymax,<span class="dv">3</span>]</span>
+<span id="cb18-3"><a href="analítica-e-industria-4.html#cb18-3" tabindex="-1"></a></span>
+<span id="cb18-4"><a href="analítica-e-industria-4.html#cb18-4" tabindex="-1"></a>index_ymin <span class="ot">&lt;-</span> <span class="fu">which.min</span>(Muestra_75[ ,<span class="dv">3</span>])</span>
+<span id="cb18-5"><a href="analítica-e-industria-4.html#cb18-5" tabindex="-1"></a>ymin <span class="ot">&lt;-</span> Muestra_75[index_ymin,<span class="dv">3</span>]</span>
+<span id="cb18-6"><a href="analítica-e-industria-4.html#cb18-6" tabindex="-1"></a></span>
+<span id="cb18-7"><a href="analítica-e-industria-4.html#cb18-7" tabindex="-1"></a>y_sig <span class="ot">&lt;-</span> (ymax<span class="sc">-</span>ymin) <span class="sc">/</span><span class="dv">2</span></span>
+<span id="cb18-8"><a href="analítica-e-industria-4.html#cb18-8" tabindex="-1"></a></span>
+<span id="cb18-9"><a href="analítica-e-industria-4.html#cb18-9" tabindex="-1"></a>y_sig </span>
+<span id="cb18-10"><a href="analítica-e-industria-4.html#cb18-10" tabindex="-1"></a><span class="co">#&gt; [1] 0.5</span></span></code></pre></div>
+<blockquote>
+<p>Valor de x verosimil</p>
+</blockquote>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="analítica-e-industria-4.html#cb19-1" tabindex="-1"></a>index_xmax <span class="ot">&lt;-</span> <span class="fu">which.max</span>(Muestra_75[ ,<span class="dv">2</span>])</span>
+<span id="cb19-2"><a href="analítica-e-industria-4.html#cb19-2" tabindex="-1"></a>xmax <span class="ot">&lt;-</span> Muestra_75[index_xmax,<span class="dv">2</span>]</span>
+<span id="cb19-3"><a href="analítica-e-industria-4.html#cb19-3" tabindex="-1"></a>xmax</span>
+<span id="cb19-4"><a href="analítica-e-industria-4.html#cb19-4" tabindex="-1"></a><span class="co">#&gt; [1] 66</span></span>
+<span id="cb19-5"><a href="analítica-e-industria-4.html#cb19-5" tabindex="-1"></a>index_xmin <span class="ot">&lt;-</span> <span class="fu">which.min</span>(Muestra_75[ ,<span class="dv">2</span>])</span>
+<span id="cb19-6"><a href="analítica-e-industria-4.html#cb19-6" tabindex="-1"></a>xmin <span class="ot">&lt;-</span> Muestra_75[index_xmin,<span class="dv">2</span>]</span>
+<span id="cb19-7"><a href="analítica-e-industria-4.html#cb19-7" tabindex="-1"></a>xmin</span>
+<span id="cb19-8"><a href="analítica-e-industria-4.html#cb19-8" tabindex="-1"></a><span class="co">#&gt; [1] 17</span></span>
+<span id="cb19-9"><a href="analítica-e-industria-4.html#cb19-9" tabindex="-1"></a></span>
+<span id="cb19-10"><a href="analítica-e-industria-4.html#cb19-10" tabindex="-1"></a>x_sig <span class="ot">&lt;-</span> (xmax<span class="sc">-</span>xmin)</span>
+<span id="cb19-11"><a href="analítica-e-industria-4.html#cb19-11" tabindex="-1"></a></span>
+<span id="cb19-12"><a href="analítica-e-industria-4.html#cb19-12" tabindex="-1"></a>x_sig </span>
+<span id="cb19-13"><a href="analítica-e-industria-4.html#cb19-13" tabindex="-1"></a><span class="co">#&gt; [1] 49</span></span></code></pre></div>
+<p>El punto de coordenadas [24.5 , 0.5] es un punto por el que debe pasar la recta que construiremos.</p>
+</div>
+<div id="cáclulo-de-la-pendiente" class="section level3" number="1.14.2">
+<h3><span class="header-section-number">1.14.2</span> Cáclulo de la pendiente</h3>
+<p>em valor <span class="math inline">\(a\)</span> representa la pendiente de la recta. De modo que con los <span class="math inline">\(\Delta{x}\)</span> y <span class="math inline">\(\Delta{y}\)</span> podremos calcularlo facilmente</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="analítica-e-industria-4.html#cb20-1" tabindex="-1"></a>a <span class="ot">&lt;-</span> ((ymax<span class="sc">-</span>ymin)<span class="sc">/</span>(xmax<span class="sc">-</span>xmin))</span>
+<span id="cb20-2"><a href="analítica-e-industria-4.html#cb20-2" tabindex="-1"></a>a</span>
+<span id="cb20-3"><a href="analítica-e-industria-4.html#cb20-3" tabindex="-1"></a><span class="co">#&gt; [1] 0.02040816</span></span></code></pre></div>
+<blockquote>
+<p><span class="math inline">\(a\)</span> = valor de la pendiente es 0.02040816</p>
+</blockquote>
+<p>Pendiente en grados</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="analítica-e-industria-4.html#cb21-1" tabindex="-1"></a><span class="fu">atan</span>(a)</span>
+<span id="cb21-2"><a href="analítica-e-industria-4.html#cb21-2" tabindex="-1"></a><span class="co">#&gt; [1] 0.02040533</span></span></code></pre></div>
+</div>
+<div id="cáclulo-de-la-ordenada-al-origen." class="section level3" number="1.14.3">
+<h3><span class="header-section-number">1.14.3</span> Cáclulo de la ordenada al origen.</h3>
+<p>Para calcular la ordenada al origen basta con poner <span class="math inline">\(x=\overline{x}\)</span> del punto significativo que hemos adoptado en la formula de la recta usando el <span class="math inline">\(a\)</span> calculado y despejar <span class="math inline">\(b\)</span></p>
+<p><span class="math display">\[ y = a *x +b\]</span>
+<span class="math display">\[ b = y-a*x\]</span>
+Cáclulo de b</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="analítica-e-industria-4.html#cb22-1" tabindex="-1"></a>y_sig</span>
+<span id="cb22-2"><a href="analítica-e-industria-4.html#cb22-2" tabindex="-1"></a><span class="co">#&gt; [1] 0.5</span></span>
+<span id="cb22-3"><a href="analítica-e-industria-4.html#cb22-3" tabindex="-1"></a>x_sig</span>
+<span id="cb22-4"><a href="analítica-e-industria-4.html#cb22-4" tabindex="-1"></a><span class="co">#&gt; [1] 49</span></span>
+<span id="cb22-5"><a href="analítica-e-industria-4.html#cb22-5" tabindex="-1"></a>a</span>
+<span id="cb22-6"><a href="analítica-e-industria-4.html#cb22-6" tabindex="-1"></a><span class="co">#&gt; [1] 0.02040816</span></span>
+<span id="cb22-7"><a href="analítica-e-industria-4.html#cb22-7" tabindex="-1"></a></span>
+<span id="cb22-8"><a href="analítica-e-industria-4.html#cb22-8" tabindex="-1"></a>b <span class="ot">&lt;-</span> y_sig<span class="sc">-</span>(a<span class="sc">*</span>x_sig)</span>
+<span id="cb22-9"><a href="analítica-e-industria-4.html#cb22-9" tabindex="-1"></a>b</span>
+<span id="cb22-10"><a href="analítica-e-industria-4.html#cb22-10" tabindex="-1"></a><span class="co">#&gt; [1] -0.5</span></span></code></pre></div>
+</div>
+<div id="gráfica" class="section level3" number="1.14.4">
+<h3><span class="header-section-number">1.14.4</span> Gráfica</h3>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="analítica-e-industria-4.html#cb23-1" tabindex="-1"></a><span class="fu">plot</span>(Muestra_75[ ,<span class="dv">2</span>],Muestra_75[ ,<span class="dv">3</span>], <span class="at">main =</span> <span class="st">&quot;Dignóstico Preliminar&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;Diagnóstico + -&quot;</span>, <span class="at">xlab=</span><span class="st">&quot;Edad&quot;</span>)</span>
+<span id="cb23-2"><a href="analítica-e-industria-4.html#cb23-2" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h=</span>y_sig, <span class="at">col=</span><span class="st">&quot;red&quot;</span>)</span>
+<span id="cb23-3"><a href="analítica-e-industria-4.html#cb23-3" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span>x_sig,<span class="at">col=</span><span class="st">&quot;red&quot;</span>)</span>
+<span id="cb23-4"><a href="analítica-e-industria-4.html#cb23-4" tabindex="-1"></a><span class="fu">abline</span>(b,a)</span></code></pre></div>
+<p><img src="01-Baterias_Autoelevador_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+</div>
+</div>
+<div id="modelo-de-regresión-lineal-generalizado" class="section level2" number="1.15">
+<h2><span class="header-section-number">1.15</span> Modelo de regresión lineal generalizado</h2>
+<p>En realidad este trabajo que hemos hecho puede ser realizado con solamente un comando en R-Cran.</p>
+<p>Construiremos el dataset</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="analítica-e-industria-4.html#cb24-1" tabindex="-1"></a>x_muestra_75 <span class="ot">&lt;-</span> Muestra_75[ ,<span class="dv">2</span>]</span>
+<span id="cb24-2"><a href="analítica-e-industria-4.html#cb24-2" tabindex="-1"></a>y_muestra_75 <span class="ot">&lt;-</span> Muestra_75[ ,<span class="dv">3</span>]</span>
+<span id="cb24-3"><a href="analítica-e-industria-4.html#cb24-3" tabindex="-1"></a>mrlg <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>( <span class="fu">cbind</span>(x_muestra_75,y_muestra_75))</span></code></pre></div>
+<p>Construcción del modelo lineal</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="analítica-e-industria-4.html#cb25-1" tabindex="-1"></a>mi_formula <span class="ot">&lt;-</span> y_muestra_75 <span class="sc">~</span> x_muestra_75</span>
+<span id="cb25-2"><a href="analítica-e-industria-4.html#cb25-2" tabindex="-1"></a>modelo_2 <span class="ot">&lt;-</span>  <span class="fu">lm</span> (mi_formula, <span class="at">data=</span>mrlg)</span>
+<span id="cb25-3"><a href="analítica-e-industria-4.html#cb25-3" tabindex="-1"></a>modelo_2</span>
+<span id="cb25-4"><a href="analítica-e-industria-4.html#cb25-4" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb25-5"><a href="analítica-e-industria-4.html#cb25-5" tabindex="-1"></a><span class="co">#&gt; Call:</span></span>
+<span id="cb25-6"><a href="analítica-e-industria-4.html#cb25-6" tabindex="-1"></a><span class="co">#&gt; lm(formula = mi_formula, data = mrlg)</span></span>
+<span id="cb25-7"><a href="analítica-e-industria-4.html#cb25-7" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb25-8"><a href="analítica-e-industria-4.html#cb25-8" tabindex="-1"></a><span class="co">#&gt; Coefficients:</span></span>
+<span id="cb25-9"><a href="analítica-e-industria-4.html#cb25-9" tabindex="-1"></a><span class="co">#&gt;  (Intercept)  x_muestra_75  </span></span>
+<span id="cb25-10"><a href="analítica-e-industria-4.html#cb25-10" tabindex="-1"></a><span class="co">#&gt;     -0.61021       0.02178</span></span>
+<span id="cb25-11"><a href="analítica-e-industria-4.html#cb25-11" tabindex="-1"></a>modelo_2<span class="sc">$</span>coefficients[<span class="dv">2</span>]</span>
+<span id="cb25-12"><a href="analítica-e-industria-4.html#cb25-12" tabindex="-1"></a><span class="co">#&gt; x_muestra_75 </span></span>
+<span id="cb25-13"><a href="analítica-e-industria-4.html#cb25-13" tabindex="-1"></a><span class="co">#&gt;   0.02177616</span></span>
+<span id="cb25-14"><a href="analítica-e-industria-4.html#cb25-14" tabindex="-1"></a>modelo_2<span class="sc">$</span>coefficients[<span class="dv">1</span>]</span>
+<span id="cb25-15"><a href="analítica-e-industria-4.html#cb25-15" tabindex="-1"></a><span class="co">#&gt; (Intercept) </span></span>
+<span id="cb25-16"><a href="analítica-e-industria-4.html#cb25-16" tabindex="-1"></a><span class="co">#&gt;  -0.6102094</span></span></code></pre></div>
+<p>Como vemos nos dice que la ordenada al origen es -0.610 y la pendiente es 0.021 muy parecidas a los valores <span class="math inline">\(a\)</span> y <span class="math inline">\(b\)</span> que obtuvimos antes.</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="analítica-e-industria-4.html#cb26-1" tabindex="-1"></a><span class="fu">plot</span>(mrlg)</span>
+<span id="cb26-2"><a href="analítica-e-industria-4.html#cb26-2" tabindex="-1"></a><span class="fu">abline</span>(modelo_2,<span class="at">col=</span><span class="st">&quot;blue&quot;</span>)</span></code></pre></div>
+<p><img src="01-Baterias_Autoelevador_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
+</div>
+<div id="modelo-de-regresión-logística" class="section level2" number="1.16">
+<h2><span class="header-section-number">1.16</span> Modelo de regresión logística</h2>
+<p>Una de las cosas destacables del uso de IA es que puedo recurrir a muchos modelos para interpretar o predecir el comportamiento de los datos. Puedo generar <strong>(entrenar)</strong> el modelo o modelos y utilizar algún mecanismo de medición de la calidad de cada modelo y en base a ello utilizar IA para seleccionar el que más se adapta a <strong><em>mis datos</em></strong>.</p>
+<p>Hay una distribución de probabilidades llamada <em>Distribución Logística</em> que puede utilizarse (del mismo modo que la distribución lineal se usa para el modelo de regresión lineal generalizado) para armar una regresión lineal logística.</p>
+<p>La forma típica de la distribución logística normalizada tiene la siguiente ecuación paramétrica y luce como se ve en el ejemplo.</p>
+<p><span class="math display">\[ \sigma(x)= \frac{e^x}{(e^x+1)} = \frac{1}{1+e^{-x}}\]</span></p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="analítica-e-industria-4.html#cb27-1" tabindex="-1"></a><span class="fu">curve</span>((<span class="dv">1</span><span class="sc">/</span>(<span class="dv">1</span><span class="sc">+</span><span class="fu">exp</span>(<span class="sc">-</span>x))),<span class="sc">-</span><span class="dv">10</span>,<span class="dv">10</span>,<span class="at">col =</span><span class="st">&quot;red&quot;</span>)</span>
+<span id="cb27-2"><a href="analítica-e-industria-4.html#cb27-2" tabindex="-1"></a><span class="fu">abline</span>(<span class="fl">0.5</span>,<span class="fl">0.05</span>,<span class="at">col=</span><span class="st">&quot;green&quot;</span>)</span>
+<span id="cb27-3"><a href="analítica-e-industria-4.html#cb27-3" tabindex="-1"></a><span class="fu">text</span>(<span class="sc">-</span><span class="dv">8</span>,<span class="fl">0.2</span>,<span class="st">&quot;Rergresion Lineal&quot;</span>,<span class="at">col=</span><span class="st">&quot;green&quot;</span>)</span>
+<span id="cb27-4"><a href="analítica-e-industria-4.html#cb27-4" tabindex="-1"></a><span class="fu">text</span>(<span class="dv">6</span>,<span class="fl">0.8</span>,<span class="st">&quot;Rergresion Logística&quot;</span>,<span class="at">col=</span><span class="st">&quot;red&quot;</span>)</span></code></pre></div>
+<p><img src="01-Baterias_Autoelevador_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
+<p>Como pude verse el modelo de regresión logística es mas sensible a los datos y proporcional resultados más verosímiles, pero aún mantienen error admisible. De todos modos esta análisis visual nos indica que ya tenemos una alternativa que es mejor que nuestro modelo lineal inicial.</p>
+<p>La función de distribución de probabilidad acumulada de la regresión logística es:</p>
+<p><span class="math display">\[g(F(x))=  ln \left[ \frac{F(x)}{1-F(x)} \right] = \beta^0 + \beta_1*x \]</span>
+Al igual que en la regresión lineal es posible (aplicando logaritmos) encontrar los parámetros <span class="math inline">\(\beta_0\)</span> y <span class="math inline">\(\beta_1\)</span> con solamente cuatro datos en la muestra. El error será inadmisible, pero es algo parecido a armar una regresión lineal con sólo dos muestras.</p>
+
+</div>
+</div>
+  </main>
+
+  <div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page">
+      <h2>On this page</h2>
+      <div id="book-on-this-page"></div>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+          <li><a id="book-source" href="#">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="#">Edit this page <i class="fab fa-github"></i></a></li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5">
+  <div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>Analítica de Datos 4.0</strong>" was written by Ricardo R. Palma. It was last built on 2023-06-30.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer>
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+<script type="text/x-mathjax-config">const popovers = document.querySelectorAll('a.footnote-ref[data-toggle="popover"]');
+for (let popover of popovers) {
+  const div = document.createElement('div');
+  div.setAttribute('style', 'position: absolute; top: 0, left:0; width:0, height:0, overflow: hidden; visibility: hidden;');
+  div.innerHTML = popover.getAttribute('data-content');
+
+  var has_math = div.querySelector("span.math");
+  if (has_math) {
+    document.body.appendChild(div);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
+    MathJax.Hub.Queue(function() {
+      popover.setAttribute('data-content', div.innerHTML);
+      document.body.removeChild(div);
+    })
+  }
+}
+</script>
+</body>
+
+</html>

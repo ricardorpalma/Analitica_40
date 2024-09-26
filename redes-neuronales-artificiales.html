@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Capítulo 7 Redes Neuronales artificiales | Analítica de Datos 4.0</title>
+<meta name="author" content="Ricardo R. Palma">
+<meta name="description" content="Las redes neuronales artificiales son modelos computacionales inspirados en el funcionamiento del cerebro humano. Están compuestas por una serie de unidades llamadas neuronas artificiales, que...">
+<meta name="generator" content="bookdown 0.33 with bs4_book()">
+<meta property="og:title" content="Capítulo 7 Redes Neuronales artificiales | Analítica de Datos 4.0">
+<meta property="og:type" content="book">
+<meta property="og:description" content="Las redes neuronales artificiales son modelos computacionales inspirados en el funcionamiento del cerebro humano. Están compuestas por una serie de unidades llamadas neuronas artificiales, que...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Capítulo 7 Redes Neuronales artificiales | Analítica de Datos 4.0">
+<meta name="twitter:description" content="Las redes neuronales artificiales son modelos computacionales inspirados en el funcionamiento del cerebro humano. Están compuestas por una serie de unidades llamadas neuronas artificiales, que...">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.4.2/transition.js"></script><script src="libs/bs3compat-0.4.2/tabs.js"></script><script src="libs/bs3compat-0.4.2/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="libs/htmlwidgets-1.6.2/htmlwidgets.js"></script><script src="libs/d3-5.7.0/d3-5.15.0.min.js"></script><script src="libs/d3-regression-1.3.4/d3-regression.min.js"></script><link href="libs/scatterPlotMatrix-0.2/scatterPlotMatrix.css" rel="stylesheet">
+<script src="libs/scatterPlotMatrix-0.2/spm-msp.js"></script><script src="libs/scatterPlotMatrix-binding-0.2.0/scatterPlotMatrix.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+<style type="text/css">
+    /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+        }
+    .hanging div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }
+  </style>
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">Analítica de Datos 4.0</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html">Acerca de este curso</a></li>
+<li><a class="" href="data_analitics.html"><span class="header-section-number">1</span> Data_Analitics</a></li>
+<li><a class="" href="patrones-de-asociaci%C3%B3n.html"><span class="header-section-number">2</span> Patrones de asociación</a></li>
+<li><a class="" href="clasificaci%C3%B3n-con-knn.html"><span class="header-section-number">3</span> Clasificación con KNN</a></li>
+<li><a class="" href="algoritmo-del-vecino-m%C3%A1s-pr%C3%B3ximo.html"><span class="header-section-number">4</span> Algoritmo del vecino más próximo</a></li>
+<li><a class="" href="agrupaci%C3%B3n-k-means.html"><span class="header-section-number">5</span> Agrupación K-Means</a></li>
+<li><a class="" href="clusterizaci%C3%B3n.html"><span class="header-section-number">6</span> Clusterización</a></li>
+<li><a class="active" href="redes-neuronales-artificiales.html"><span class="header-section-number">7</span> Redes Neuronales artificiales</a></li>
+<li><a class="" href="%C3%A1rboles-de-decisi%C3%B3n.html"><span class="header-section-number">8</span> Árboles de decisión</a></li>
+<li><a class="" href="random-forest.html"><span class="header-section-number">9</span> Random Forest</a></li>
+<li><a class="" href="bibliograf%C3%ADa.html">Bibliografía</a></li>
+</ul>
+
+        <div class="book-extra">
+          <p><a id="book-repo" href="https://ricardorpalma.github.io/MCSC_Op_4.0/Cap_1/">View book source <i class="fab fa-gitlab"></i></a></p>
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="redes-neuronales-artificiales" class="section level1" number="7">
+<h1>
+<span class="header-section-number">Capítulo 7</span> Redes Neuronales artificiales<a class="anchor" aria-label="anchor" href="#redes-neuronales-artificiales"><i class="fas fa-link"></i></a>
+</h1>
+<p>Las redes neuronales artificiales son modelos computacionales inspirados en el funcionamiento del cerebro humano. Están compuestas por una serie de unidades llamadas neuronas artificiales, que están conectadas entre sí a través de conexiones ponderadas. Estas conexiones permiten a las redes neuronales procesar información y realizar tareas de aprendizaje y predicción.</p>
+<div class="float">
+<img src="images/Neuron3.png" alt="Nourona Humana"><div class="figcaption">Nourona Humana</div>
+</div>
+<p>En ingeniería industrial, las redes neuronales artificiales se utilizan en una amplia variedad de aplicaciones, como:</p>
+<ol style="list-style-type: decimal">
+<li><p>Pronóstico de demanda: Las redes neuronales pueden utilizarse para predecir la demanda futura de productos o servicios en función de datos históricos, ayudando así a la planificación de la producción y la gestión de inventarios.</p></li>
+<li><p>Control de procesos: Las redes neuronales pueden utilizarse para controlar y optimizar procesos industriales. Pueden aprender de los datos recopilados en tiempo real y ajustar los parámetros del sistema para maximizar la eficiencia y minimizar los errores.</p></li>
+<li><p>Mantenimiento predictivo: Las redes neuronales pueden utilizarse para predecir fallos y realizar mantenimiento predictivo en maquinaria y equipos industriales. Al analizar datos de sensores y patrones de fallas anteriores, las redes neuronales pueden identificar señales de advertencia temprana y ayudar a evitar costosas interrupciones en la producción.</p></li>
+<li><p>Control de calidad: Las redes neuronales pueden utilizarse para realizar inspección y control de calidad en productos manufacturados. Pueden identificar defectos o anomalías en imágenes, señales o datos sensoriales, ayudando a mejorar la calidad del producto final.</p></li>
+<li><p>Optimización de la cadena de suministro: Las redes neuronales pueden utilizarse para optimizar la gestión de la cadena de suministro, analizando grandes volúmenes de datos y tomando decisiones óptimas en tiempo real sobre inventario, distribución y logística.</p></li>
+</ol>
+<p>La ventaja de las redes neuronales artificiales en ingeniería industrial radica en su capacidad para modelar relaciones complejas y no lineales entre variables, así como en su capacidad de aprendizaje a partir de datos. Sin embargo, es importante tener en cuenta que el uso de redes neuronales artificiales requiere una adecuada preparación y procesamiento de los datos, así como una validación y ajuste adecuados de los modelos para garantizar resultados confiables y precisos.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Hanane Zermane and Abbes Drardja, &lt;span&gt;“Development of an Efficient Cement Production Monitoring System Based on the Improved Random Forest Algorithm,”&lt;/span&gt; &lt;em&gt;The International Journal of Advanced Manufacturing Technology&lt;/em&gt; 120, no. 3-4 (2022): 1853–66.&lt;/p&gt;"><sup>25</sup></a></span></p>
+<div class="float">
+<img src="images/ann.png" alt="Ejemplo de una red neuronal artificial de una capa occulta"><div class="figcaption">Ejemplo de una red neuronal artificial de una capa occulta</div>
+</div>
+<ul>
+<li><p>Si la ANN (Artificial Neural Net) tiene sólo una neurona de salida actua como clasificador dicotómico de la entrada.</p></li>
+<li><p>Si tiene varios niveles o categorías del tipo binario puede actuar como clasificador categórico</p></li>
+<li><p>Si tiene una salida de doble precisión puede actuar como predictor (clustering)</p></li>
+</ul>
+<div id="bibliografía-recomendada-4" class="section level2" number="7.1">
+<h2>
+<span class="header-section-number">7.1</span> Bibliografía recomendada<a class="anchor" aria-label="anchor" href="#bibliograf%C3%ADa-recomendada-4"><i class="fas fa-link"></i></a>
+</h2>
+<div class="float">
+<img src="images/book_12.png" alt="Análisis de datos categóricos"><div class="figcaption">Análisis de datos categóricos</div>
+</div>
+</div>
+<div id="redes-neuronales-en-r-cran" class="section level2" number="7.2">
+<h2>
+<span class="header-section-number">7.2</span> Redes Neuronales en R-Cran<a class="anchor" aria-label="anchor" href="#redes-neuronales-en-r-cran"><i class="fas fa-link"></i></a>
+</h2>
+<p>En R-Cran, puedes implementar redes neuronales artificiales utilizando la biblioteca “neuralnet”. Esta biblioteca proporciona funciones para construir y entrenar redes neuronales de una o varias capas en R.</p>
+<p>Aquí hay un ejemplo básico de cómo construir y entrenar una red neuronal artificial utilizando la biblioteca “neuralnet” en R-Cran:</p>
+<ol style="list-style-type: decimal">
+<li>
+<p>Instalación del paquete “neuralnet”:</p>
+<p>install.packages(“neuralnet”)</p>
+</li>
+<li>
+<p>Carga del paquete “neuralnet”:</p>
+<p>library(neuralnet)</p>
+</li>
+<li><p>Preparación de los datos de entrenamiento y prueba:</p></li>
+</ol>
+<p>Supongamos que tienes un conjunto de datos con variables de entrada (predictoras) llamadas “x1” y “x2” y una variable de salida (objetivo) llamada “y”. Debes dividir tus datos en conjuntos de entrenamiento y prueba. Aquí hay un ejemplo de cómo puedes hacerlo:</p>
+<pre><code>set.seed(123)  # Establecer una semilla aleatoria para reproducibilidad
+
+  # Dividir datos en conjuntos de entrenamiento y prueba
+
+train_indices &lt;- sample(1:nrow(tus_datos), nrow(tus_datos)*0.8)  # 80% de los datos para entrenamiento
+train_data &lt;- tus_datos[train_indices, ]
+test_data &lt;- tus_datos[-train_indices, ]</code></pre>
+<ol start="4" style="list-style-type: decimal">
+<li>Construcción de la red neuronal:</li>
+</ol>
+<p>Aquí puedes definir la arquitectura de tu red neuronal especificando el número de nodos en cada capa oculta. Por ejemplo, una red con una capa oculta de 5 nodos se puede definir de la siguiente manera:</p>
+<pre><code># Definir la fórmula de la red neuronal
+formula &lt;- y ~ x1 + x2</code></pre>
+<p>Crear la red neuronal</p>
+<pre><code>nn &lt;- neuralnet(formula, data = train_data, hidden = c(5))</code></pre>
+<p>En este ejemplo, “formula” especifica la relación entre las variables de entrada y salida, y “hidden” indica el número de nodos en la capa oculta.</p>
+<ol start="5" style="list-style-type: decimal">
+<li>Entrenamiento de la red neuronal:</li>
+</ol>
+<p>Utiliza la función “train” para entrenar la red neuronal con los datos de entrenamiento:</p>
+<p>Entrenar la red neuronal</p>
+<pre><code>trained_nn &lt;- train(nn)</code></pre>
+<ol start="6" style="list-style-type: decimal">
+<li>Predicción con la red neuronal entrenada:</li>
+</ol>
+<p>Utiliza la función “compute” para realizar predicciones con la red neuronal entrenada:</p>
+<p>Realizar predicciones con la red neuronal</p>
+<pre><code>predictions &lt;- compute(trained_nn, test_data[, c("x1", "x2")])</code></pre>
+<p>En este ejemplo, “test_data[, c(”x1”, ”x2”)]” son las variables de entrada para las cuales deseas realizar predicciones.</p>
+<p>Este es solo un ejemplo básico para construir y entrenar una red neuronal artificial en R-Cran utilizando la biblioteca “neuralnet”. Puedes consultar la documentación de la biblioteca para obtener más información sobre las funciones y opciones disponibles.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Nicolas Morizet et al., &lt;span&gt;“Classification of Acoustic Emission Signals Using Wavelets and &lt;span&gt;Random&lt;/span&gt; &lt;span&gt;Forests&lt;/span&gt;: &lt;span&gt;Application&lt;/span&gt; to Localized Corrosion,”&lt;/span&gt; &lt;em&gt;Mechanical Systems and Signal Processing&lt;/em&gt; 70 (2016): 1026–37.&lt;/p&gt;"><sup>26</sup></a></span></p>
+</div>
+<div id="caso-de-estudio-cargar-de-bibliotecas" class="section level2" number="7.3">
+<h2>
+<span class="header-section-number">7.3</span> Caso de estudio: Cargar de bibliotecas<a class="anchor" aria-label="anchor" href="#caso-de-estudio-cargar-de-bibliotecas"><i class="fas fa-link"></i></a>
+</h2>
+<div class="sourceCode" id="cb135"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/bips-hb/neuralnet">neuralnet</a></span><span class="op">)</span>  <span class="co"># regression</span></span>
+<span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.stats.ox.ac.uk/pub/MASS4/">nnet</a></span><span class="op">)</span> <span class="co"># classification </span></span>
+<span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">NeuralNetTools</span><span class="op">)</span></span>
+<span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://had.co.nz/plyr">plyr</a></span><span class="op">)</span></span></code></pre></div>
+</div>
+<div id="carga-de-datos" class="section level2" number="7.4">
+<h2>
+<span class="header-section-number">7.4</span> Carga de Datos<a class="anchor" aria-label="anchor" href="#carga-de-datos"><i class="fas fa-link"></i></a>
+</h2>
+<div class="sourceCode" id="cb136"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://readr.tidyverse.org">readr</a></span><span class="op">)</span></span>
+<span><span class="va">Startups</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="st">"/home/rpalma/AAA_Datos/2020/Posgrado/Di3/Datasets/50 Start Ups/50_Startups_LAC.csv"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Rows: 50 Columns: 6</span></span>
+<span><span class="co">#&gt; ── Column specification ────────────────────────────────────</span></span>
+<span><span class="co">#&gt; Delimiter: ","</span></span>
+<span><span class="co">#&gt; chr (1): Pais</span></span>
+<span><span class="co">#&gt; dbl (5): R_D_Spend, POM, Logist_Market, Profit, Superviv...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ℹ Use `spec()` to retrieve the full column specification for this data.</span></span>
+<span><span class="co">#&gt; ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</span></span></code></pre></div>
+<div class="sourceCode" id="cb137"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">Categoric</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="st">"/home/rpalma/AAA_Datos/2020/Posgrado/Di3/Datasets/50 Start Ups/50_Startups_Categoric_LAC.csv"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Rows: 50 Columns: 6</span></span>
+<span><span class="co">#&gt; ── Column specification ────────────────────────────────────</span></span>
+<span><span class="co">#&gt; Delimiter: ","</span></span>
+<span><span class="co">#&gt; chr (2): Pais, Supervivencia</span></span>
+<span><span class="co">#&gt; dbl (4): R_D_Spend, POM, Logist_Market, Profit</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ℹ Use `spec()` to retrieve the full column specification for this data.</span></span>
+<span><span class="co">#&gt; ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</span></span></code></pre></div>
+<p>La columna supervivencia de la tabla Categoric tiene etiquetas que identifican la situación en la que terminaron los emprendimientos, a saber:</p>
+<ul>
+<li><p><strong>SpinOf</strong> La empresa se separó de una principal y logró su independencia económica</p></li>
+<li><p><strong>RevEq</strong> La empresa alcanzó su punto de equilibrio canceló su deuda con el banco y fue comprada por la competencia.</p></li>
+<li><p><strong>BankR</strong> La empresa no prosperó y el banco se quedó con los activos que vendidos no compensaron el preśtamo inicial (Banca Rota).</p></li>
+</ul>
+</div>
+<div id="tratamiento-de-variables-categóricas" class="section level2" number="7.5">
+<h2>
+<span class="header-section-number">7.5</span> Tratamiento de variables categóricas<a class="anchor" aria-label="anchor" href="#tratamiento-de-variables-categ%C3%B3ricas"><i class="fas fa-link"></i></a>
+</h2>
+<div class="sourceCode" id="cb138"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">tabla1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">Categoric</span><span class="op">$</span><span class="va">Pais</span><span class="op">)</span></span>
+<span><span class="va">tabla2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">Categoric</span><span class="op">$</span><span class="va">Supervivencia</span><span class="op">)</span></span>
+<span><span class="va">tabla3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">Categoric</span><span class="op">$</span><span class="va">Pais</span>,<span class="va">Categoric</span><span class="op">$</span><span class="va">Supervivencia</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb139"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">tabla1</span>, col<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"red"</span>,<span class="st">"green"</span>,<span class="st">"blue"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="06-Neural_Net_files/figure-html/unnamed-chunk-5-1.png" width="672"></div>
+<div class="sourceCode" id="cb140"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">tabla2</span>, col<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"red"</span>,<span class="st">"green"</span>,<span class="st">"blue"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="06-Neural_Net_files/figure-html/unnamed-chunk-6-1.png" width="672"></div>
+<div class="sourceCode" id="cb141"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">tabla3</span>, col<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"red"</span>,<span class="st">"green"</span>,<span class="st">"blue"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="06-Neural_Net_files/figure-html/unnamed-chunk-7-1.png" width="672"></div>
+</div>
+<div id="histogramas-superpuestos" class="section level2" number="7.6">
+<h2>
+<span class="header-section-number">7.6</span> Histogramas superpuestos<a class="anchor" aria-label="anchor" href="#histogramas-superpuestos"><i class="fas fa-link"></i></a>
+</h2>
+<div class="sourceCode" id="cb142"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">ind_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="va">Categoric</span><span class="op">$</span><span class="va">Pais</span><span class="op">==</span><span class="st">"Colombia"</span><span class="op">)</span></span>
+<span><span class="va">p1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">as.matrix</a></span><span class="op">(</span><span class="va">Categoric</span><span class="op">[</span><span class="va">ind_1</span>,<span class="fl">5</span><span class="op">]</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">ind_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="va">Categoric</span><span class="op">$</span><span class="va">Pais</span><span class="op">==</span><span class="st">"Ecuador"</span><span class="op">)</span></span>
+<span><span class="va">p2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">as.matrix</a></span><span class="op">(</span><span class="va">Categoric</span><span class="op">[</span><span class="va">ind_2</span>,<span class="fl">5</span><span class="op">]</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">ind_3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="va">Categoric</span><span class="op">$</span><span class="va">Pais</span><span class="op">==</span><span class="st">"Chile"</span><span class="op">)</span></span>
+<span><span class="va">p3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">as.matrix</a></span><span class="op">(</span><span class="va">Categoric</span><span class="op">[</span><span class="va">ind_3</span>,<span class="fl">5</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb143"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">hp1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">p1</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="06-Neural_Net_files/figure-html/unnamed-chunk-9-1.png" width="672"></div>
+<div class="sourceCode" id="cb144"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">hp2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">p2</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="06-Neural_Net_files/figure-html/unnamed-chunk-9-2.png" width="672"></div>
+<div class="sourceCode" id="cb145"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">hp3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">p3</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="06-Neural_Net_files/figure-html/unnamed-chunk-9-3.png" width="672"></div>
+<div class="sourceCode" id="cb146"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">3</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span> <span class="va">hp1</span>, col<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/grDevices/rgb.html">rgb</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">/</span><span class="fl">4</span><span class="op">)</span>, xlim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">30000</span>,<span class="fl">200000</span><span class="op">)</span>,ylim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">5</span><span class="op">)</span>,main<span class="op">=</span><span class="st">"Ecuador"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span> <span class="va">hp2</span>, col<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/grDevices/rgb.html">rgb</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">1</span><span class="op">/</span><span class="fl">4</span><span class="op">)</span>,xlim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">30000</span>,<span class="fl">200000</span><span class="op">)</span>,ylim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">10</span><span class="op">)</span>,main<span class="op">=</span><span class="st">"Colombia"</span><span class="op">)</span> </span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span> <span class="va">hp3</span>, col<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/grDevices/rgb.html">rgb</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">1</span><span class="op">/</span><span class="fl">4</span><span class="op">)</span>,xlim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">30000</span>,<span class="fl">200000</span><span class="op">)</span>,ylim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">10</span><span class="op">)</span>,main<span class="op">=</span><span class="st">"Chile"</span><span class="op">)</span> </span></code></pre></div>
+<div class="inline-figure"><img src="06-Neural_Net_files/figure-html/unnamed-chunk-9-4.png" width="672"></div>
+<div class="sourceCode" id="cb147"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span> <span class="va">hp1</span>, col<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/grDevices/rgb.html">rgb</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">/</span><span class="fl">4</span><span class="op">)</span>, xlim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">30000</span>,<span class="fl">200000</span><span class="op">)</span>,ylim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">5</span><span class="op">)</span>,main<span class="op">=</span><span class="st">"Ecuador"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span> <span class="va">hp2</span>, col<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/grDevices/rgb.html">rgb</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">1</span><span class="op">/</span><span class="fl">4</span><span class="op">)</span>,xlim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">30000</span>,<span class="fl">200000</span><span class="op">)</span>,ylim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">10</span><span class="op">)</span>,main<span class="op">=</span><span class="st">"Colombia"</span><span class="op">)</span> </span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span> <span class="va">hp3</span>, col<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/grDevices/rgb.html">rgb</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">1</span><span class="op">/</span><span class="fl">4</span><span class="op">)</span>,xlim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">30000</span>,<span class="fl">200000</span><span class="op">)</span>,ylim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">10</span><span class="op">)</span>,main<span class="op">=</span><span class="st">"Chile"</span><span class="op">)</span> </span></code></pre></div>
+<div class="inline-figure"><img src="06-Neural_Net_files/figure-html/unnamed-chunk-10-1.png" width="672"></div>
+<div class="sourceCode" id="cb148"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/pairs.html">pairs</a></span><span class="op">(</span><span class="va">Categoric</span><span class="op">[</span> ,<span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="06-Neural_Net_files/figure-html/unnamed-chunk-11-1.png" width="672"></div>
+<div class="sourceCode" id="cb149"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/boxplot.html">boxplot</a></span><span class="op">(</span><span class="va">Categoric</span><span class="op">[</span> ,<span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="06-Neural_Net_files/figure-html/unnamed-chunk-12-1.png" width="672"></div>
+<div class="sourceCode" id="cb150"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">Categoric</span><span class="op">$</span><span class="va">Pais</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/plyr/man/revalue.html">revalue</a></span><span class="op">(</span><span class="va">Categoric</span><span class="op">$</span><span class="va">Pais</span>,</span>
+<span>                          <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Colombia"</span><span class="op">=</span><span class="st">"0"</span>, <span class="st">"Ecuador"</span><span class="op">=</span><span class="st">"1"</span>,</span>
+<span>                            <span class="st">"Chile"</span><span class="op">=</span><span class="st">"2"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div id="cuadro-de-campos-categóricos" class="section level2" number="7.7">
+<h2>
+<span class="header-section-number">7.7</span> Cuadro de campos categóricos<a class="anchor" aria-label="anchor" href="#cuadro-de-campos-categ%C3%B3ricos"><i class="fas fa-link"></i></a>
+</h2>
+<div class="sourceCode" id="cb151"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">Categoric</span><span class="op">$</span><span class="va">Supervivencia</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/plyr/man/revalue.html">revalue</a></span><span class="op">(</span><span class="va">Categoric</span><span class="op">$</span><span class="va">Supervivencia</span>,</span>
+<span>                          <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"BankR"</span><span class="op">=</span><span class="st">"0"</span>, <span class="st">"RevEq"</span><span class="op">=</span><span class="st">"1"</span>,</span>
+<span>                            <span class="st">"SpinOff"</span><span class="op">=</span><span class="st">"2"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div id="profit-versus-país" class="section level2" number="7.8">
+<h2>
+<span class="header-section-number">7.8</span> Profit versus País<a class="anchor" aria-label="anchor" href="#profit-versus-pa%C3%ADs"><i class="fas fa-link"></i></a>
+</h2>
+<div class="sourceCode" id="cb152"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">Categoric</span><span class="op">$</span><span class="va">Pais</span>, <span class="va">Categoric</span><span class="op">$</span><span class="va">Profit</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="06-Neural_Net_files/figure-html/unnamed-chunk-15-1.png" width="672"></div>
+</div>
+<div id="visualización-de-tablas" class="section level2" number="7.9">
+<h2>
+<span class="header-section-number">7.9</span> Visualización de Tablas<a class="anchor" aria-label="anchor" href="#visualizaci%C3%B3n-de-tablas"><i class="fas fa-link"></i></a>
+</h2>
+<p>Tabla Textual</p>
+<div class="sourceCode" id="cb153"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://haozhu233.github.io/kableExtra/">kableExtra</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">Categoric</span><span class="op">)</span>, <span class="st">"pipe"</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-table"><table class="table table-sm">
+<thead><tr class="header">
+<th align="right">R_D_Spend</th>
+<th align="right">POM</th>
+<th align="right">Logist_Market</th>
+<th align="right">Pais</th>
+<th align="right">Profit</th>
+<th align="right">Supervivencia</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="right">165349.2</td>
+<td align="right">136897.80</td>
+<td align="right">471784.1</td>
+<td align="right">0</td>
+<td align="right">192261.8</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="right">162597.7</td>
+<td align="right">151377.59</td>
+<td align="right">443898.5</td>
+<td align="right">1</td>
+<td align="right">191792.1</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="right">153441.5</td>
+<td align="right">101145.55</td>
+<td align="right">407934.5</td>
+<td align="right">2</td>
+<td align="right">191050.4</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="right">144372.4</td>
+<td align="right">118671.85</td>
+<td align="right">383199.6</td>
+<td align="right">0</td>
+<td align="right">182902.0</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="right">142107.3</td>
+<td align="right">91391.77</td>
+<td align="right">366168.4</td>
+<td align="right">2</td>
+<td align="right">166187.9</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="right">131876.9</td>
+<td align="right">99814.71</td>
+<td align="right">362861.4</td>
+<td align="right">0</td>
+<td align="right">156991.1</td>
+<td align="right">2</td>
+</tr>
+</tbody>
+</table></div>
+<p>Tabla Simple</p>
+<div class="sourceCode" id="cb154"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">Categoric</span><span class="op">)</span>, <span class="st">"simple"</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-table"><table class="table table-sm">
+<thead><tr class="header">
+<th align="right">R_D_Spend</th>
+<th align="right">POM</th>
+<th align="right">Logist_Market</th>
+<th align="right">Pais</th>
+<th align="right">Profit</th>
+<th align="right">Supervivencia</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="right">165349.2</td>
+<td align="right">136897.80</td>
+<td align="right">471784.1</td>
+<td align="right">0</td>
+<td align="right">192261.8</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="right">162597.7</td>
+<td align="right">151377.59</td>
+<td align="right">443898.5</td>
+<td align="right">1</td>
+<td align="right">191792.1</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="right">153441.5</td>
+<td align="right">101145.55</td>
+<td align="right">407934.5</td>
+<td align="right">2</td>
+<td align="right">191050.4</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="right">144372.4</td>
+<td align="right">118671.85</td>
+<td align="right">383199.6</td>
+<td align="right">0</td>
+<td align="right">182902.0</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="right">142107.3</td>
+<td align="right">91391.77</td>
+<td align="right">366168.4</td>
+<td align="right">2</td>
+<td align="right">166187.9</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="right">131876.9</td>
+<td align="right">99814.71</td>
+<td align="right">362861.4</td>
+<td align="right">0</td>
+<td align="right">156991.1</td>
+<td align="right">2</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div id="normailización" class="section level2" number="7.10">
+<h2>
+<span class="header-section-number">7.10</span> Normailización<a class="anchor" aria-label="anchor" href="#normailizaci%C3%B3n"><i class="fas fa-link"></i></a>
+</h2>
+<div class="sourceCode" id="cb155"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">normalize</span><span class="op">&lt;-</span><span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span></span>
+<span>  <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span> <span class="op">(</span> <span class="op">(</span><span class="va">x</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">/</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">Startups_norm</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">Categoric</span>,FUN<span class="op">=</span><span class="va">normalize</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">Startups_norm</span><span class="op">$</span><span class="va">Profit</span><span class="op">)</span></span>
+<span><span class="co">#&gt;    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span></span>
+<span><span class="co">#&gt;  0.0000  0.4249  0.5254  0.5481  0.7044  1.0000</span></span></code></pre></div>
+<p>Datos Originales y Datos normalizados</p>
+<div class="sourceCode" id="cb156"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">Categoric</span><span class="op">$</span><span class="va">Profit</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 192261.8 191792.1 191050.4 182902.0 166187.9 156991.1</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">Startups_norm</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   R_D_Spend       POM Logist_Market Pais    Profit</span></span>
+<span><span class="co">#&gt; 1 1.0000000 0.6517439     1.0000000  0.0 1.0000000</span></span>
+<span><span class="co">#&gt; 2 0.9833595 0.7619717     0.9408934  0.5 0.9973546</span></span>
+<span><span class="co">#&gt; 3 0.9279846 0.3795790     0.8646636  1.0 0.9931781</span></span>
+<span><span class="co">#&gt; 4 0.8731364 0.5129984     0.8122351  0.0 0.9472924</span></span>
+<span><span class="co">#&gt; 5 0.8594377 0.3053280     0.7761356  1.0 0.8531714</span></span>
+<span><span class="co">#&gt; 6 0.7975660 0.3694479     0.7691259  0.0 0.8013818</span></span>
+<span><span class="co">#&gt;   Supervivencia</span></span>
+<span><span class="co">#&gt; 1             1</span></span>
+<span><span class="co">#&gt; 2             1</span></span>
+<span><span class="co">#&gt; 3             1</span></span>
+<span><span class="co">#&gt; 4             1</span></span>
+<span><span class="co">#&gt; 5             1</span></span>
+<span><span class="co">#&gt; 6             1</span></span></code></pre></div>
+<p>Muestreo para entrenamento</p>
+<div class="sourceCode" id="cb157"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">indice</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/arules/man/sample.html">sample</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">Startups_norm</span><span class="op">)</span>, replace <span class="op">=</span> <span class="cn">TRUE</span>, prob <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.7</span>,<span class="fl">0.3</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">startups_train</span> <span class="op">&lt;-</span> <span class="va">Startups_norm</span><span class="op">[</span><span class="va">indice</span><span class="op">==</span><span class="fl">1</span>,<span class="op">]</span></span>
+<span><span class="va">startups_test</span>  <span class="op">&lt;-</span> <span class="va">Startups_norm</span><span class="op">[</span><span class="va">indice</span><span class="op">==</span><span class="fl">2</span>,<span class="op">]</span></span></code></pre></div>
+</div>
+<div id="modelo-de-neural-net" class="section level2" number="7.11">
+<h2>
+<span class="header-section-number">7.11</span> Modelo de Neural Net<a class="anchor" aria-label="anchor" href="#modelo-de-neural-net"><i class="fas fa-link"></i></a>
+</h2>
+<div class="sourceCode" id="cb158"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/bips-hb/neuralnet">neuralnet</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/attach.html">attach</a></span><span class="op">(</span><span class="va">Categoric</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">startups_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/neuralnet/man/neuralnet.html">neuralnet</a></span><span class="op">(</span><span class="va">Profit</span> <span class="op">~</span> <span class="va">R_D_Spend</span><span class="op">+</span> <span class="va">POM</span> <span class="op">+</span> <span class="va">Logist_Market</span> <span class="op">+</span> <span class="va">Pais</span> , data <span class="op">=</span> <span class="va">startups_train</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">startups_model</span><span class="op">)</span></span>
+<span><span class="co">#&gt; List of 14</span></span>
+<span><span class="co">#&gt;  $ call               : language neuralnet(formula = Profit ~ R_D_Spend + POM + Logist_Market +      Pais, data = startups_train)</span></span>
+<span><span class="co">#&gt;  $ response           : num [1:38, 1] 1 0.997 0.993 0.853 0.801 ...</span></span>
+<span><span class="co">#&gt;   ..- attr(*, "dimnames")=List of 2</span></span>
+<span><span class="co">#&gt;   .. ..$ : chr [1:38] "1" "2" "3" "5" ...</span></span>
+<span><span class="co">#&gt;   .. ..$ : chr "Profit"</span></span>
+<span><span class="co">#&gt;  $ covariate          : num [1:38, 1:4] 1 0.983 0.928 0.859 0.798 ...</span></span>
+<span><span class="co">#&gt;   ..- attr(*, "dimnames")=List of 2</span></span>
+<span><span class="co">#&gt;   .. ..$ : chr [1:38] "1" "2" "3" "5" ...</span></span>
+<span><span class="co">#&gt;   .. ..$ : chr [1:4] "R_D_Spend" "POM" "Logist_Market" "Pais"</span></span>
+<span><span class="co">#&gt;  $ model.list         :List of 2</span></span>
+<span><span class="co">#&gt;   ..$ response : chr "Profit"</span></span>
+<span><span class="co">#&gt;   ..$ variables: chr [1:4] "R_D_Spend" "POM" "Logist_Market" "Pais"</span></span>
+<span><span class="co">#&gt;  $ err.fct            :function (x, y)  </span></span>
+<span><span class="co">#&gt;   ..- attr(*, "type")= chr "sse"</span></span>
+<span><span class="co">#&gt;  $ act.fct            :function (x)  </span></span>
+<span><span class="co">#&gt;   ..- attr(*, "type")= chr "logistic"</span></span>
+<span><span class="co">#&gt;  $ linear.output      : logi TRUE</span></span>
+<span><span class="co">#&gt;  $ data               :'data.frame': 38 obs. of  6 variables:</span></span>
+<span><span class="co">#&gt;   ..$ R_D_Spend    : num [1:38] 1 0.983 0.928 0.859 0.798 ...</span></span>
+<span><span class="co">#&gt;   ..$ POM          : num [1:38] 0.652 0.762 0.38 0.305 0.369 ...</span></span>
+<span><span class="co">#&gt;   ..$ Logist_Market: num [1:38] 1 0.941 0.865 0.776 0.769 ...</span></span>
+<span><span class="co">#&gt;   ..$ Pais         : num [1:38] 0 0.5 1 1 0 1 0 0.5 1 0.5 ...</span></span>
+<span><span class="co">#&gt;   ..$ Profit       : num [1:38] 1 0.997 0.993 0.853 0.801 ...</span></span>
+<span><span class="co">#&gt;   ..$ Supervivencia: num [1:38] 1 1 1 1 1 1 1 0.5 0.5 0.5 ...</span></span>
+<span><span class="co">#&gt;  $ exclude            : NULL</span></span>
+<span><span class="co">#&gt;  $ net.result         :List of 1</span></span>
+<span><span class="co">#&gt;   ..$ : num [1:38, 1] 0.945 0.935 0.925 0.893 0.849 ...</span></span>
+<span><span class="co">#&gt;   .. ..- attr(*, "dimnames")=List of 2</span></span>
+<span><span class="co">#&gt;   .. .. ..$ : chr [1:38] "1" "2" "3" "5" ...</span></span>
+<span><span class="co">#&gt;   .. .. ..$ : NULL</span></span>
+<span><span class="co">#&gt;  $ weights            :List of 1</span></span>
+<span><span class="co">#&gt;   ..$ :List of 2</span></span>
+<span><span class="co">#&gt;   .. ..$ : num [1:5, 1] -1.6037 3.4756 -0.3046 0.2851 0.0369</span></span>
+<span><span class="co">#&gt;   .. ..$ : num [1:2, 1] 0.057 1.014</span></span>
+<span><span class="co">#&gt;  $ generalized.weights:List of 1</span></span>
+<span><span class="co">#&gt;   ..$ : num [1:38, 1:4] 7.37 6.71 6.26 5.32 4.69 ...</span></span>
+<span><span class="co">#&gt;   .. ..- attr(*, "dimnames")=List of 2</span></span>
+<span><span class="co">#&gt;   .. .. ..$ : chr [1:38] "1" "2" "3" "5" ...</span></span>
+<span><span class="co">#&gt;   .. .. ..$ : NULL</span></span>
+<span><span class="co">#&gt;  $ startweights       :List of 1</span></span>
+<span><span class="co">#&gt;   ..$ :List of 2</span></span>
+<span><span class="co">#&gt;   .. ..$ : num [1:5, 1] 0.4884 0.9995 0.8446 0.0553 1.1865</span></span>
+<span><span class="co">#&gt;   .. ..$ : num [1:2, 1] -0.367 -0.649</span></span>
+<span><span class="co">#&gt;  $ result.matrix      : num [1:10, 1] 0.06629 0.00832 406 -1.60375 3.47563 ...</span></span>
+<span><span class="co">#&gt;   ..- attr(*, "dimnames")=List of 2</span></span>
+<span><span class="co">#&gt;   .. ..$ : chr [1:10] "error" "reached.threshold" "steps" "Intercept.to.1layhid1" ...</span></span>
+<span><span class="co">#&gt;   .. ..$ : NULL</span></span>
+<span><span class="co">#&gt;  - attr(*, "class")= chr "nn"</span></span></code></pre></div>
+</div>
+<div id="ploteo-de-la-red-neuronal" class="section level2" number="7.12">
+<h2>
+<span class="header-section-number">7.12</span> Ploteo de la red Neuronal<a class="anchor" aria-label="anchor" href="#ploteo-de-la-red-neuronal"><i class="fas fa-link"></i></a>
+</h2>
+<div class="sourceCode" id="cb159"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">startups_model</span>, rep <span class="op">=</span> <span class="st">"best"</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="06-Neural_Net_files/figure-html/unnamed-chunk-22-1.png" width="672"></div>
+</div>
+<div id="ploteo-de-la-red-proporcional" class="section level2" number="7.13">
+<h2>
+<span class="header-section-number">7.13</span> Ploteo de la red proporcional<a class="anchor" aria-label="anchor" href="#ploteo-de-la-red-proporcional"><i class="fas fa-link"></i></a>
+</h2>
+<p>Esto me indica cuales son los KPI</p>
+<div class="sourceCode" id="cb160"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">numeric</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span>, family <span class="op">=</span> <span class="st">'serif'</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/NeuralNetTools/man/plotnet.html">plotnet</a></span><span class="op">(</span><span class="va">startups_model</span>, alpha <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="06-Neural_Net_files/figure-html/unnamed-chunk-23-1.png" width="672"></div>
+<div id="evaluación-de-la-performance-del-modelo" class="section level3" number="7.13.1">
+<h3>
+<span class="header-section-number">7.13.1</span> Evaluación de la performance del modelo<a class="anchor" aria-label="anchor" href="#evaluaci%C3%B3n-de-la-performance-del-modelo"><i class="fas fa-link"></i></a>
+</h3>
+<div class="sourceCode" id="cb161"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">model_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/neuralnet/man/compute.html">compute</a></span><span class="op">(</span><span class="va">startups_model</span>,<span class="va">startups_test</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="va">predicted_profit</span> <span class="op">&lt;-</span> <span class="va">model_results</span><span class="op">$</span><span class="va">net.result</span></span></code></pre></div>
+</div>
+</div>
+<div id="predicted-profit-vs-actual-profit-of-test-data." class="section level2" number="7.14">
+<h2>
+<span class="header-section-number">7.14</span> Predicted profit Vs Actual profit of test data.<a class="anchor" aria-label="anchor" href="#predicted-profit-vs-actual-profit-of-test-data."><i class="fas fa-link"></i></a>
+</h2>
+<div class="sourceCode" id="cb162"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html">cor</a></span><span class="op">(</span><span class="va">predicted_profit</span>,<span class="va">startups_test</span><span class="op">$</span><span class="va">Profit</span><span class="op">)</span></span>
+<span><span class="co">#&gt;           [,1]</span></span>
+<span><span class="co">#&gt; [1,] 0.9716114</span></span></code></pre></div>
+</div>
+<div id="desnormalización-de-los-resultados" class="section level2" number="7.15">
+<h2>
+<span class="header-section-number">7.15</span> Desnormalización de los resultados<a class="anchor" aria-label="anchor" href="#desnormalizaci%C3%B3n-de-los-resultados"><i class="fas fa-link"></i></a>
+</h2>
+<p>Dado que hicimos la predicciones con los datos normalizados, ahora deberemos des-normalizarlos<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Majid Gholizadeh et al., &lt;span&gt;“Prediction of Nanofluids Viscosity Using Random Forest (&lt;span&gt;RF&lt;/span&gt;) Approach,”&lt;/span&gt; &lt;em&gt;Chemometrics and Intelligent Laboratory Systems&lt;/em&gt; 201 (2020): 104010.&lt;/p&gt;"><sup>27</sup></a></span></p>
+<div class="sourceCode" id="cb163"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="va">str_max</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">Startups</span><span class="op">$</span><span class="va">Profit</span><span class="op">)</span></span>
+<span><span class="va">str_min</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">Startups</span><span class="op">$</span><span class="va">Profit</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">unnormalize</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">min</span>, <span class="va">max</span><span class="op">)</span> <span class="op">{</span> </span>
+<span>  <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span> <span class="op">(</span><span class="va">max</span> <span class="op">-</span> <span class="va">min</span><span class="op">)</span><span class="op">*</span><span class="va">x</span> <span class="op">+</span> <span class="va">min</span> <span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">ActualProfit_pred</span> <span class="op">&lt;-</span> <span class="fu">unnormalize</span><span class="op">(</span><span class="va">predicted_profit</span>,<span class="va">str_min</span>,<span class="va">str_max</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">ActualProfit_pred</span><span class="op">)</span></span>
+<span><span class="co">#&gt;         [,1]</span></span>
+<span><span class="co">#&gt; 4  172113.85</span></span>
+<span><span class="co">#&gt; 7  159799.94</span></span>
+<span><span class="co">#&gt; 21 117169.88</span></span>
+<span><span class="co">#&gt; 23 115060.71</span></span>
+<span><span class="co">#&gt; 26  99314.84</span></span>
+<span><span class="co">#&gt; 28 112440.55</span></span></code></pre></div>
+</div>
+<div id="mejoramiento-de-la-performance-del-modelo" class="section level2" number="7.16">
+<h2>
+<span class="header-section-number">7.16</span> Mejoramiento de la performance del modelo<a class="anchor" aria-label="anchor" href="#mejoramiento-de-la-performance-del-modelo"><i class="fas fa-link"></i></a>
+</h2>
+<p>Es posible mejorar la performance con el agregado de más capas ocultas.</p>
+<div class="sourceCode" id="cb164"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">Startups_model2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/neuralnet/man/neuralnet.html">neuralnet</a></span><span class="op">(</span><span class="va">Profit</span><span class="op">~</span><span class="va">R_D_Spend</span><span class="op">+</span> <span class="va">POM</span> <span class="op">+</span> <span class="va">Logist_Market</span> <span class="op">+</span> <span class="va">Pais</span> , data <span class="op">=</span> <span class="va">startups_train</span>, hidden <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">4</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">Startups_model2</span> ,rep <span class="op">=</span> <span class="st">"best"</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="06-Neural_Net_files/figure-html/unnamed-chunk-27-1.png" width="672"></div>
+</div>
+<div id="performance-del-modelo-mejorado" class="section level2" number="7.17">
+<h2>
+<span class="header-section-number">7.17</span> Performance del modelo mejorado<a class="anchor" aria-label="anchor" href="#performance-del-modelo-mejorado"><i class="fas fa-link"></i></a>
+</h2>
+<div class="sourceCode" id="cb165"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">model_results2</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/pkg/neuralnet/man/compute.html">compute</a></span><span class="op">(</span><span class="va">Startups_model2</span>,<span class="va">startups_test</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="va">predicted_Profit2</span><span class="op">&lt;-</span><span class="va">model_results2</span><span class="op">$</span><span class="va">net.result</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html">cor</a></span><span class="op">(</span><span class="va">predicted_Profit2</span>,<span class="va">startups_test</span><span class="op">$</span><span class="va">Profit</span><span class="op">)</span></span>
+<span><span class="co">#&gt;           [,1]</span></span>
+<span><span class="co">#&gt; [1,] 0.9743737</span></span></code></pre></div>
+</div>
+<div id="modelo-mejorado-kpi" class="section level2" number="7.18">
+<h2>
+<span class="header-section-number">7.18</span> Modelo Mejorado KPI<a class="anchor" aria-label="anchor" href="#modelo-mejorado-kpi"><i class="fas fa-link"></i></a>
+</h2>
+<div class="sourceCode" id="cb166"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">numeric</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span>, family <span class="op">=</span> <span class="st">'serif'</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/NeuralNetTools/man/plotnet.html">plotnet</a></span><span class="op">(</span><span class="va">Startups_model2</span>, alpha <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="06-Neural_Net_files/figure-html/unnamed-chunk-29-1.png" width="672"></div>
+</div>
+<div id="neural-net-clasificación" class="section level2" number="7.19">
+<h2>
+<span class="header-section-number">7.19</span> Neural Net Clasificación<a class="anchor" aria-label="anchor" href="#neural-net-clasificaci%C3%B3n"><i class="fas fa-link"></i></a>
+</h2>
+<p>Armamos el dataset de datos a clasificar</p>
+<div class="sourceCode" id="cb167"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.stats.ox.ac.uk/pub/MASS4/">nnet</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">supervivencia</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span><span class="op">(</span><span class="va">Categoric</span><span class="op">$</span><span class="va">Supervivencia</span><span class="op">)</span></span>
+<span><span class="va">R_D_Spend</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">as.matrix</a></span><span class="op">(</span><span class="va">Categoric</span><span class="op">$</span><span class="va">R_D_Spend</span><span class="op">)</span></span>
+<span><span class="va">POM</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">as.matrix</a></span><span class="op">(</span><span class="va">Categoric</span><span class="op">$</span><span class="va">POM</span><span class="op">)</span></span>
+<span><span class="va">Logist_Market</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">as.matrix</a></span><span class="op">(</span><span class="va">Categoric</span><span class="op">$</span><span class="va">Logist_Market</span><span class="op">)</span></span>
+<span><span class="va">Clasificar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span> <span class="op">(</span><span class="va">supervivencia</span>,<span class="va">R_D_Spend</span>,<span class="va">POM</span>,<span class="va">Logist_Market</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div id="muestreo" class="section level2" number="7.20">
+<h2>
+<span class="header-section-number">7.20</span> Muestreo<a class="anchor" aria-label="anchor" href="#muestreo"><i class="fas fa-link"></i></a>
+</h2>
+<div class="sourceCode" id="cb168"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">indice</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/arules/man/sample.html">sample</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">Clasificar</span><span class="op">)</span>, replace <span class="op">=</span> <span class="cn">TRUE</span>, prob <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.7</span>,<span class="fl">0.3</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">clasificar_train</span> <span class="op">&lt;-</span> <span class="va">Startups_norm</span><span class="op">[</span><span class="va">indice</span><span class="op">==</span><span class="fl">1</span>,<span class="op">]</span></span>
+<span><span class="va">clasificar_test</span>  <span class="op">&lt;-</span> <span class="va">Startups_norm</span><span class="op">[</span><span class="va">indice</span><span class="op">==</span><span class="fl">2</span>,<span class="op">]</span></span>
+<span></span>
+<span><span class="va">supervivientes_clasificados</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">clasificar_train</span><span class="op">$</span><span class="va">Supervivencia</span><span class="op">)</span></span></code></pre></div>
+<p>Entrenamiento de nnet como clasificador</p>
+<div class="sourceCode" id="cb169"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">supervivientes_train</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/pkg/nnet/man/nnet.html">nnet</a></span><span class="op">(</span><span class="va">supervivientes_clasificados</span><span class="op">~</span><span class="va">clasificar_train</span><span class="op">$</span><span class="va">R_D_Spend</span> <span class="op">+</span> <span class="va">clasificar_train</span><span class="op">$</span><span class="va">POM</span><span class="op">+</span> <span class="va">clasificar_train</span><span class="op">$</span><span class="va">Logist_Market</span> ,data<span class="op">=</span><span class="va">clasificar_train</span>,size<span class="op">=</span><span class="fl">5</span>, decay<span class="op">=</span><span class="fl">5e-4</span>, maxit<span class="op">=</span><span class="fl">2000</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # weights:  38</span></span>
+<span><span class="co">#&gt; initial  value 59.107806 </span></span>
+<span><span class="co">#&gt; iter  10 value 14.748014</span></span>
+<span><span class="co">#&gt; iter  20 value 3.603393</span></span>
+<span><span class="co">#&gt; iter  30 value 2.820916</span></span>
+<span><span class="co">#&gt; iter  40 value 1.612401</span></span>
+<span><span class="co">#&gt; iter  50 value 1.455408</span></span>
+<span><span class="co">#&gt; iter  60 value 1.296047</span></span>
+<span><span class="co">#&gt; iter  70 value 1.236838</span></span>
+<span><span class="co">#&gt; iter  80 value 1.193746</span></span>
+<span><span class="co">#&gt; iter  90 value 1.166896</span></span>
+<span><span class="co">#&gt; iter 100 value 1.146649</span></span>
+<span><span class="co">#&gt; iter 110 value 1.111960</span></span>
+<span><span class="co">#&gt; iter 120 value 1.097064</span></span>
+<span><span class="co">#&gt; iter 130 value 1.089686</span></span>
+<span><span class="co">#&gt; iter 140 value 1.077179</span></span>
+<span><span class="co">#&gt; iter 150 value 1.069923</span></span>
+<span><span class="co">#&gt; iter 160 value 1.066188</span></span>
+<span><span class="co">#&gt; iter 170 value 1.062448</span></span>
+<span><span class="co">#&gt; iter 180 value 1.054359</span></span>
+<span><span class="co">#&gt; iter 190 value 1.046659</span></span>
+<span><span class="co">#&gt; iter 200 value 1.039676</span></span>
+<span><span class="co">#&gt; iter 210 value 1.033308</span></span>
+<span><span class="co">#&gt; iter 220 value 1.031089</span></span>
+<span><span class="co">#&gt; iter 230 value 1.030091</span></span>
+<span><span class="co">#&gt; iter 240 value 1.029339</span></span>
+<span><span class="co">#&gt; iter 250 value 1.028950</span></span>
+<span><span class="co">#&gt; iter 260 value 1.028491</span></span>
+<span><span class="co">#&gt; iter 270 value 1.027658</span></span>
+<span><span class="co">#&gt; iter 280 value 1.026666</span></span>
+<span><span class="co">#&gt; iter 290 value 1.025955</span></span>
+<span><span class="co">#&gt; iter 300 value 1.025262</span></span>
+<span><span class="co">#&gt; iter 310 value 1.024848</span></span>
+<span><span class="co">#&gt; iter 320 value 1.024725</span></span>
+<span><span class="co">#&gt; iter 330 value 1.024631</span></span>
+<span><span class="co">#&gt; iter 340 value 1.024528</span></span>
+<span><span class="co">#&gt; iter 350 value 1.024417</span></span>
+<span><span class="co">#&gt; iter 360 value 1.024343</span></span>
+<span><span class="co">#&gt; iter 370 value 1.024279</span></span>
+<span><span class="co">#&gt; iter 380 value 1.024248</span></span>
+<span><span class="co">#&gt; iter 390 value 1.024241</span></span>
+<span><span class="co">#&gt; iter 400 value 1.024234</span></span>
+<span><span class="co">#&gt; iter 410 value 1.024228</span></span>
+<span><span class="co">#&gt; iter 420 value 1.024221</span></span>
+<span><span class="co">#&gt; iter 430 value 1.024219</span></span>
+<span><span class="co">#&gt; iter 440 value 1.024218</span></span>
+<span><span class="co">#&gt; iter 450 value 1.024217</span></span>
+<span><span class="co">#&gt; iter 450 value 1.024217</span></span>
+<span><span class="co">#&gt; iter 450 value 1.024217</span></span>
+<span><span class="co">#&gt; final  value 1.024217 </span></span>
+<span><span class="co">#&gt; converged</span></span></code></pre></div>
+</div>
+<div id="visualización-del-clasificador" class="section level2" number="7.21">
+<h2>
+<span class="header-section-number">7.21</span> Visualización del clasificador<a class="anchor" aria-label="anchor" href="#visualizaci%C3%B3n-del-clasificador"><i class="fas fa-link"></i></a>
+</h2>
+<div class="sourceCode" id="cb170"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/NeuralNetTools/man/plotnet.html">plotnet</a></span><span class="op">(</span><span class="va">supervivientes_train</span>, alpha <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="06-Neural_Net_files/figure-html/unnamed-chunk-33-1.png" width="672"></div>
+</div>
+<div id="aramdos-de-set-de-entrenamiento-y-de-predicción" class="section level2" number="7.22">
+<h2>
+<span class="header-section-number">7.22</span> Aramdos de set de entrenamiento y de predicción<a class="anchor" aria-label="anchor" href="#aramdos-de-set-de-entrenamiento-y-de-predicci%C3%B3n"><i class="fas fa-link"></i></a>
+</h2>
+<p><a href="https://stackoverrun.com/es/q/3338607" class="uri">https://stackoverrun.com/es/q/3338607</a></p>
+<p>crs<span class="math inline">\(nnet &lt;- nnet(as.factor(Target) ~ .,  data=crs\)</span>dataset[crs<span class="math inline">\(sample,c(crs\)</span>input, crs$target)],
+size=10, skip=TRUE, MaxNWts=10000,
+trace=FALSE, maxit=100)</p>
+
+</div>
+</div>
+
+  <div class="chapter-nav">
+<div class="prev"><a href="clusterizaci%C3%B3n.html"><span class="header-section-number">6</span> Clusterización</a></div>
+<div class="next"><a href="%C3%A1rboles-de-decisi%C3%B3n.html"><span class="header-section-number">8</span> Árboles de decisión</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#redes-neuronales-artificiales"><span class="header-section-number">7</span> Redes Neuronales artificiales</a></li>
+<li><a class="nav-link" href="#bibliograf%C3%ADa-recomendada-4"><span class="header-section-number">7.1</span> Bibliografía recomendada</a></li>
+<li><a class="nav-link" href="#redes-neuronales-en-r-cran"><span class="header-section-number">7.2</span> Redes Neuronales en R-Cran</a></li>
+<li><a class="nav-link" href="#caso-de-estudio-cargar-de-bibliotecas"><span class="header-section-number">7.3</span> Caso de estudio: Cargar de bibliotecas</a></li>
+<li><a class="nav-link" href="#carga-de-datos"><span class="header-section-number">7.4</span> Carga de Datos</a></li>
+<li><a class="nav-link" href="#tratamiento-de-variables-categ%C3%B3ricas"><span class="header-section-number">7.5</span> Tratamiento de variables categóricas</a></li>
+<li><a class="nav-link" href="#histogramas-superpuestos"><span class="header-section-number">7.6</span> Histogramas superpuestos</a></li>
+<li><a class="nav-link" href="#cuadro-de-campos-categ%C3%B3ricos"><span class="header-section-number">7.7</span> Cuadro de campos categóricos</a></li>
+<li><a class="nav-link" href="#profit-versus-pa%C3%ADs"><span class="header-section-number">7.8</span> Profit versus País</a></li>
+<li><a class="nav-link" href="#visualizaci%C3%B3n-de-tablas"><span class="header-section-number">7.9</span> Visualización de Tablas</a></li>
+<li><a class="nav-link" href="#normailizaci%C3%B3n"><span class="header-section-number">7.10</span> Normailización</a></li>
+<li><a class="nav-link" href="#modelo-de-neural-net"><span class="header-section-number">7.11</span> Modelo de Neural Net</a></li>
+<li><a class="nav-link" href="#ploteo-de-la-red-neuronal"><span class="header-section-number">7.12</span> Ploteo de la red Neuronal</a></li>
+<li>
+<a class="nav-link" href="#ploteo-de-la-red-proporcional"><span class="header-section-number">7.13</span> Ploteo de la red proporcional</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#evaluaci%C3%B3n-de-la-performance-del-modelo"><span class="header-section-number">7.13.1</span> Evaluación de la performance del modelo</a></li></ul>
+</li>
+<li><a class="nav-link" href="#predicted-profit-vs-actual-profit-of-test-data."><span class="header-section-number">7.14</span> Predicted profit Vs Actual profit of test data.</a></li>
+<li><a class="nav-link" href="#desnormalizaci%C3%B3n-de-los-resultados"><span class="header-section-number">7.15</span> Desnormalización de los resultados</a></li>
+<li><a class="nav-link" href="#mejoramiento-de-la-performance-del-modelo"><span class="header-section-number">7.16</span> Mejoramiento de la performance del modelo</a></li>
+<li><a class="nav-link" href="#performance-del-modelo-mejorado"><span class="header-section-number">7.17</span> Performance del modelo mejorado</a></li>
+<li><a class="nav-link" href="#modelo-mejorado-kpi"><span class="header-section-number">7.18</span> Modelo Mejorado KPI</a></li>
+<li><a class="nav-link" href="#neural-net-clasificaci%C3%B3n"><span class="header-section-number">7.19</span> Neural Net Clasificación</a></li>
+<li><a class="nav-link" href="#muestreo"><span class="header-section-number">7.20</span> Muestreo</a></li>
+<li><a class="nav-link" href="#visualizaci%C3%B3n-del-clasificador"><span class="header-section-number">7.21</span> Visualización del clasificador</a></li>
+<li><a class="nav-link" href="#aramdos-de-set-de-entrenamiento-y-de-predicci%C3%B3n"><span class="header-section-number">7.22</span> Aramdos de set de entrenamiento y de predicción</a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+<li><a id="book-source" href="https://ricardorpalma.github.io/MCSC_Op_4.0/Cap_1//blob/master/06-Neural_Net.Rmd">View source <i class="fab fa-gitlab"></i></a></li>
+          <li><a id="book-edit" href="https://ricardorpalma.github.io/MCSC_Op_4.0/Cap_1//edit/master/06-Neural_Net.Rmd">Edit this page <i class="fab fa-gitlab"></i></a></li>
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>Analítica de Datos 4.0</strong>" was written by Ricardo R. Palma. It was last built on 2023-06-30.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer><!-- dynamically load mathjax for compatibility with self-contained --><script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script><script type="text/x-mathjax-config">const popovers = document.querySelectorAll('a.footnote-ref[data-toggle="popover"]');
+for (let popover of popovers) {
+  const div = document.createElement('div');
+  div.setAttribute('style', 'position: absolute; top: 0, left:0; width:0, height:0, overflow: hidden; visibility: hidden;');
+  div.innerHTML = popover.getAttribute('data-content');
+
+  var has_math = div.querySelector("span.math");
+  if (has_math) {
+    document.body.appendChild(div);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
+    MathJax.Hub.Queue(function() {
+      popover.setAttribute('data-content', div.innerHTML);
+      document.body.removeChild(div);
+    })
+  }
+}
+</script>
+</body>
+</html>

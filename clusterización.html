@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Capítulo 6 Clusterización | Analítica de Datos 4.0</title>
+<meta name="author" content="Ricardo R. Palma">
+<meta name="description" content="Una de las cosas interesantes sobre la posibilidad de hacer Inteligencia de Negocios (BI por sus siglas en ingles – Business Intelligence) es que nos permite descubrir patrones no visibles en...">
+<meta name="generator" content="bookdown 0.33 with bs4_book()">
+<meta property="og:title" content="Capítulo 6 Clusterización | Analítica de Datos 4.0">
+<meta property="og:type" content="book">
+<meta property="og:description" content="Una de las cosas interesantes sobre la posibilidad de hacer Inteligencia de Negocios (BI por sus siglas en ingles – Business Intelligence) es que nos permite descubrir patrones no visibles en...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Capítulo 6 Clusterización | Analítica de Datos 4.0">
+<meta name="twitter:description" content="Una de las cosas interesantes sobre la posibilidad de hacer Inteligencia de Negocios (BI por sus siglas en ingles – Business Intelligence) es que nos permite descubrir patrones no visibles en...">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.4.2/transition.js"></script><script src="libs/bs3compat-0.4.2/tabs.js"></script><script src="libs/bs3compat-0.4.2/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="libs/htmlwidgets-1.6.2/htmlwidgets.js"></script><script src="libs/d3-5.7.0/d3-5.15.0.min.js"></script><script src="libs/d3-regression-1.3.4/d3-regression.min.js"></script><link href="libs/scatterPlotMatrix-0.2/scatterPlotMatrix.css" rel="stylesheet">
+<script src="libs/scatterPlotMatrix-0.2/spm-msp.js"></script><script src="libs/scatterPlotMatrix-binding-0.2.0/scatterPlotMatrix.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+<style type="text/css">
+    /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+        }
+    .hanging div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }
+  </style>
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">Analítica de Datos 4.0</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html">Acerca de este curso</a></li>
+<li><a class="" href="data_analitics.html"><span class="header-section-number">1</span> Data_Analitics</a></li>
+<li><a class="" href="patrones-de-asociaci%C3%B3n.html"><span class="header-section-number">2</span> Patrones de asociación</a></li>
+<li><a class="" href="clasificaci%C3%B3n-con-knn.html"><span class="header-section-number">3</span> Clasificación con KNN</a></li>
+<li><a class="" href="algoritmo-del-vecino-m%C3%A1s-pr%C3%B3ximo.html"><span class="header-section-number">4</span> Algoritmo del vecino más próximo</a></li>
+<li><a class="" href="agrupaci%C3%B3n-k-means.html"><span class="header-section-number">5</span> Agrupación K-Means</a></li>
+<li><a class="active" href="clusterizaci%C3%B3n.html"><span class="header-section-number">6</span> Clusterización</a></li>
+<li><a class="" href="redes-neuronales-artificiales.html"><span class="header-section-number">7</span> Redes Neuronales artificiales</a></li>
+<li><a class="" href="%C3%A1rboles-de-decisi%C3%B3n.html"><span class="header-section-number">8</span> Árboles de decisión</a></li>
+<li><a class="" href="random-forest.html"><span class="header-section-number">9</span> Random Forest</a></li>
+<li><a class="" href="bibliograf%C3%ADa.html">Bibliografía</a></li>
+</ul>
+
+        <div class="book-extra">
+          <p><a id="book-repo" href="https://ricardorpalma.github.io/MCSC_Op_4.0/Cap_1/">View book source <i class="fab fa-gitlab"></i></a></p>
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="clusterización" class="section level1" number="6">
+<h1>
+<span class="header-section-number">Capítulo 6</span> Clusterización<a class="anchor" aria-label="anchor" href="#clusterizaci%C3%B3n"><i class="fas fa-link"></i></a>
+</h1>
+<p>Una de las cosas interesantes sobre la posibilidad de hacer Inteligencia de Negocios (BI por sus siglas en ingles – Business Intelligence) es que nos permite descubrir patrones no visibles en primera instancia, pero que ayudan a preguntarnos ¿por qué sucede esto?.
+En esta serie de ejercicios teóricos, además de familiarizarnos con el lenguaje R-Cran y su uso en Clusters, trataremos de ver como podemos valernos de las bondades del entorno de trabajo para responder a esas preguntas.</p>
+<p>Hasta ahora tenemos claro temas referidos al concepto estadísticos clásicos (monovariados), y hemos insinuado algo sobre las estructuras de los entornos multivariados.</p>
+<div id="bibliografía-recomendada-3" class="section level2" number="6.1">
+<h2>
+<span class="header-section-number">6.1</span> Bibliografía recomendada<a class="anchor" aria-label="anchor" href="#bibliograf%C3%ADa-recomendada-3"><i class="fas fa-link"></i></a>
+</h2>
+<div class="float">
+<img src="images/book5.png" alt="Preparación de datos"><div class="figcaption">Preparación de datos</div>
+</div>
+<p>Teniendo en cuenta lo sensible que este mérodo es a el tratamiento previo de los datos (sobre todo a la normalización) es recomendable revisar esta publicación.</p>
+<p>Tanto sea para empresas industriales o de servicios en las que sus sistemas de información abarquen los campos de medición y administración de la estrategia o el aspecto operativo; es de crucial importancia determinar los niveles en los que las variables que representan a las perspectivas tengan claramente establecidas sus franjas de flotación. En otras palabras debemos sentar las bases para construir un Cuadro de mando o tablero de control, que no es sólo hacer que luces rojas amarillas y verdes se enciendan en un semáforo, sino tener relevancia para la toma de decisión sobre lo que los datos nos aportan.</p>
+<p>Utilizaremos una base de datos ficticia (cualquier semejanza con la realidad es pura coincidencia).</p>
+<p><a href="https://themys.sid.uncu.edu.ar/rpalma/R-cran/UCB/BSC_proveedores.csv" class="uri">https://themys.sid.uncu.edu.ar/rpalma/R-cran/UCB/BSC_proveedores.csv</a></p>
+<p>En ella se ha realizado un estudio sobre varias empresas que son contratistas o proveedores de servicios de alto valor agregado de grandes compañías constructora. Se ha indagado el desempeño de unos 150 contratistas según cuatro dimensiones o indicadores del BSC.</p>
+<p>Estas dimensiones están relacionadas con:</p>
+<ul>
+<li>Tecnología</li>
+<li>Normas</li>
+<li>Capital</li>
+<li>Equipamiento</li>
+</ul>
+<p>Los datos han sido normalizados tode vez que deberemos comparar unidades de medidas muy disimiles. Por ejemplo la calidad de los recursos humanos no tiene dimensión y el capital estaba expresado en dolares.</p>
+<div id="carga-de-datos-desde-archivos-externos" class="section level3" number="6.1.1">
+<h3>
+<span class="header-section-number">6.1.1</span> Carga de datos desde archivos externos<a class="anchor" aria-label="anchor" href="#carga-de-datos-desde-archivos-externos"><i class="fas fa-link"></i></a>
+</h3>
+<p>Si bien sería posible cargar datos a mano en R-CRAN, no sería práctico hacer lo así.
+Todos los datos que se utilizan en este entorno de trabajo se manejan internamente como matrices. Estas matrices de datos (semejantes a bases de datos) se llaman data-frames.</p>
+<p>Un data frame podría ser una matriz de una fila por una columna así por ejemplo</p>
+<pre><code>  &gt; X &lt;-200 ;
+  &gt; Y= 20 ;
+
+  &gt; Y= X+Z</code></pre>
+<p>Intente carga dos dataframes a y b con valores numéricos y realizamos la suma de ambos como se muestra en el código.</p>
+<p>Esto nos permitiría usar R-CRAN como si se tratase de una calculadora.</p>
+</div>
+</div>
+<div id="captura-de-datos" class="section level2" number="6.2">
+<h2>
+<span class="header-section-number">6.2</span> Captura de datos<a class="anchor" aria-label="anchor" href="#captura-de-datos"><i class="fas fa-link"></i></a>
+</h2>
+<p>Cargando datos desde la línea de comando</p>
+<pre><code>Ejecute los comandos "scan()" y luego tipee los números separados por &lt;Enter&gt;.</code></pre>
+<p>Para finalizar la carga tipee dos veces <enter>.</enter></p>
+</div>
+<div id="desde-dónde-podemos-cargar-datos" class="section level2" number="6.3">
+<h2>
+<span class="header-section-number">6.3</span> ¿Desde dónde podemos cargar datos?<a class="anchor" aria-label="anchor" href="#desde-d%C3%B3nde-podemos-cargar-datos"><i class="fas fa-link"></i></a>
+</h2>
+<p>Uno de los requisitos para poder cargar datos es que sepamos en que carpeta estamos trabajando.
+En este ejercicio veremos como hacer para saber donde estamos parados.</p>
+<div class="sourceCode" id="cb110"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html">getwd</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "/media/rpalma/Datos/2023/Posgrado/R-Cran/Analitica_Datos/UCC"</span></span></code></pre></div>
+<p>Puedes cambiar tu carpeta (directorio) de trabajo con el comando setwd()</p>
+<p>Debes poner entre comillas lo que va dentro del paréntesis</p>
+<p>Prepare un archivo en excel y guardelo con formato csv
+“comma separated values” para capturarlo desde R-CRAN.</p>
+<div id="revisión-de-datos-ejemplo" class="section level3" number="6.3.1">
+<h3>
+<span class="header-section-number">6.3.1</span> Revisión de Datos Ejemplo<a class="anchor" aria-label="anchor" href="#revisi%C3%B3n-de-datos-ejemplo"><i class="fas fa-link"></i></a>
+</h3>
+<p>Con los siguientes comando importaremos una planilla generada con una hoja de cálculo que contiene las 150 respuestas de las encuestas que se realizaron</p>
+<div class="sourceCode" id="cb111"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://readr.tidyverse.org">readr</a></span><span class="op">)</span></span>
+<span><span class="co">#BSC_proveedores &lt;- read_csv("BSC_proveedores.csv")</span></span>
+<span><span class="va">BSC_proveedores</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="st">"https://themys.sid.uncu.edu.ar/rpalma/R-cran/UCB/BSC_proveedores.csv"</span><span class="op">)</span></span></code></pre></div>
+<p>Podemos ver el contenido del dataframe BSC_Proveedores que se llama igual que el archivo de texto separado por comas. Para ello ejecutamos el siguiente comando.</p>
+<div class="sourceCode" id="cb112"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">BSC_proveedores</span> <span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span> ,<span class="fl">70</span><span class="op">:</span><span class="fl">73</span>, <span class="fl">126</span><span class="op">:</span><span class="fl">129</span><span class="op">)</span> ,<span class="op">]</span></span>
+<span><span class="co">#&gt;       X Tecnologia Normas Capital Equipo       Empresa</span></span>
+<span><span class="co">#&gt; 1     1        5.1    3.5     1.4    0.2   CNB-Cerveza</span></span>
+<span><span class="co">#&gt; 2     2        4.9    3.0     1.4    0.2   CNB-Cerveza</span></span>
+<span><span class="co">#&gt; 3     3        4.7    3.2     1.3    0.2   CNB-Cerveza</span></span>
+<span><span class="co">#&gt; 4     4        4.6    3.1     1.5    0.2   CNB-Cerveza</span></span>
+<span><span class="co">#&gt; 5     5        5.0    3.6     1.4    0.2   CNB-Cerveza</span></span>
+<span><span class="co">#&gt; 70   70        5.6    2.5     3.9    1.1     FARMACORP</span></span>
+<span><span class="co">#&gt; 71   71        5.9    3.2     4.8    1.8     FARMACORP</span></span>
+<span><span class="co">#&gt; 72   72        6.1    2.8     4.0    1.3     FARMACORP</span></span>
+<span><span class="co">#&gt; 73   73        6.3    2.5     4.9    1.5     FARMACORP</span></span>
+<span><span class="co">#&gt; 126 126        7.2    3.2     6.0    1.8 SOFIA-Avicola</span></span>
+<span><span class="co">#&gt; 127 127        6.2    2.8     4.8    1.8 SOFIA-Avicola</span></span>
+<span><span class="co">#&gt; 128 128        6.1    3.0     4.9    1.8 SOFIA-Avicola</span></span>
+<span><span class="co">#&gt; 129 129        6.4    2.8     5.6    2.1 SOFIA-Avicola</span></span></code></pre></div>
+</div>
+</div>
+<div id="análisis-exploratorio" class="section level2" number="6.4">
+<h2>
+<span class="header-section-number">6.4</span> Análisis Exploratorio<a class="anchor" aria-label="anchor" href="#an%C3%A1lisis-exploratorio"><i class="fas fa-link"></i></a>
+</h2>
+<p>Si quisiésemos ver el desempeño respecto a la variable TECNOLOGÍA tendríamos que interponer entre el nombre del dataset el signo pesos y luego el nombre de la columna</p>
+<div class="sourceCode" id="cb113"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">BSC_proveedores</span> <span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span> ,<span class="fl">70</span><span class="op">:</span><span class="fl">73</span>, <span class="fl">126</span><span class="op">:</span><span class="fl">129</span><span class="op">)</span> ,<span class="op">]</span></span>
+<span><span class="co">#&gt;       X Tecnologia Normas Capital Equipo       Empresa</span></span>
+<span><span class="co">#&gt; 1     1        5.1    3.5     1.4    0.2   CNB-Cerveza</span></span>
+<span><span class="co">#&gt; 2     2        4.9    3.0     1.4    0.2   CNB-Cerveza</span></span>
+<span><span class="co">#&gt; 3     3        4.7    3.2     1.3    0.2   CNB-Cerveza</span></span>
+<span><span class="co">#&gt; 4     4        4.6    3.1     1.5    0.2   CNB-Cerveza</span></span>
+<span><span class="co">#&gt; 5     5        5.0    3.6     1.4    0.2   CNB-Cerveza</span></span>
+<span><span class="co">#&gt; 70   70        5.6    2.5     3.9    1.1     FARMACORP</span></span>
+<span><span class="co">#&gt; 71   71        5.9    3.2     4.8    1.8     FARMACORP</span></span>
+<span><span class="co">#&gt; 72   72        6.1    2.8     4.0    1.3     FARMACORP</span></span>
+<span><span class="co">#&gt; 73   73        6.3    2.5     4.9    1.5     FARMACORP</span></span>
+<span><span class="co">#&gt; 126 126        7.2    3.2     6.0    1.8 SOFIA-Avicola</span></span>
+<span><span class="co">#&gt; 127 127        6.2    2.8     4.8    1.8 SOFIA-Avicola</span></span>
+<span><span class="co">#&gt; 128 128        6.1    3.0     4.9    1.8 SOFIA-Avicola</span></span>
+<span><span class="co">#&gt; 129 129        6.4    2.8     5.6    2.1 SOFIA-Avicola</span></span></code></pre></div>
+<p>Repita todo el prceso con el resto de la dimensiones NORMA, CAPITAL, EQUIPO, EMPRESA.</p>
+</div>
+<div id="historgramas-análisis-de-histograma" class="section level2" number="6.5">
+<h2>
+<span class="header-section-number">6.5</span> Historgramas Análisis de Histograma<a class="anchor" aria-label="anchor" href="#historgramas-an%C3%A1lisis-de-histograma"><i class="fas fa-link"></i></a>
+</h2>
+<p>Veremos como se comportan las muestras (contratistar) utilizando el histograma</p>
+<div class="sourceCode" id="cb114"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">BSC_proveedores</span><span class="op">$</span><span class="va">Tecnologia</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="05-Cluster_Proveedores_files/figure-html/unnamed-chunk-5-1.png" width="672"></div>
+<p>El gráfico nos muestra que hay dos grupos de contratistas (casi 29 ocurrencias en cada uno) con un desempeño de 6 en la variable TECNOLOGÍA . La escala original era de 1 a 10.</p>
+<p>Utilizaremos el comando par() que permite dividir el área de ploteo en una matriz especificada por el comando Numero de Columna (nmfrow)</p>
+<p>Haga las interpretaciones de estos gráficos.</p>
+<p>** Particionado del área de impresión</p>
+<div class="sourceCode" id="cb115"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">BSC_proveedores</span><span class="op">$</span><span class="va">Tecnologia</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">BSC_proveedores</span><span class="op">$</span><span class="va">Tecnologia</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">BSC_proveedores</span><span class="op">$</span><span class="va">Capital</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">BSC_proveedores</span><span class="op">$</span><span class="va">Equipo</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="05-Cluster_Proveedores_files/figure-html/unnamed-chunk-6-1.png" width="672"></div>
+</div>
+<div id="gráficos-de-densidad-1" class="section level2" number="6.6">
+<h2>
+<span class="header-section-number">6.6</span> Gráficos de Densidad<a class="anchor" aria-label="anchor" href="#gr%C3%A1ficos-de-densidad-1"><i class="fas fa-link"></i></a>
+</h2>
+<p>Algunas personas prefieren utilizar la envolvente del histograma que es el gráfico de densidad.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Kittipong Chomboon et al., &lt;span&gt;“An Empirical Study of Distance Metrics for k-Nearest Neighbor Algorithm,”&lt;/span&gt; in &lt;em&gt;Proceedings of the 3rd International Conference on Industrial Application Engineering&lt;/em&gt;, vol. 2, 2015.&lt;/p&gt;"><sup>19</sup></a></span></p>
+<p>&lt;&lt;Density,fig=TRUE&gt;&gt;=</p>
+<div class="sourceCode" id="cb116"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/density.html">density</a></span><span class="op">(</span><span class="va">BSC_proveedores</span><span class="op">$</span><span class="va">Equipo</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="05-Cluster_Proveedores_files/figure-html/unnamed-chunk-7-1.png" width="672"></div>
+<div class="sourceCode" id="cb117"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/density.html">density</a></span><span class="op">(</span><span class="va">BSC_proveedores</span><span class="op">$</span><span class="va">Tecnologia</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/density.html">density</a></span><span class="op">(</span><span class="va">BSC_proveedores</span><span class="op">$</span><span class="va">Normas</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/density.html">density</a></span><span class="op">(</span><span class="va">BSC_proveedores</span><span class="op">$</span><span class="va">Capital</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/density.html">density</a></span><span class="op">(</span><span class="va">BSC_proveedores</span><span class="op">$</span><span class="va">Equipo</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="05-Cluster_Proveedores_files/figure-html/unnamed-chunk-8-1.png" width="672"></div>
+<p>Algunas de estas gráficas ya nos muestran que existen ciertas diferencias entre las contratistas, es como si hubiese diferentes campanas de Gauss que agrupan a las diferentes muestras.</p>
+</div>
+<div id="gráficas-ralas-y-análisis-multivariado" class="section level2" number="6.7">
+<h2>
+<span class="header-section-number">6.7</span> Gráficas Ralas y Análisis Multivariado<a class="anchor" aria-label="anchor" href="#gr%C3%A1ficas-ralas-y-an%C3%A1lisis-multivariado"><i class="fas fa-link"></i></a>
+</h2>
+<div class="sourceCode" id="cb118"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://r-forge.r-project.org/projects/car/">car</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; Loading required package: carData</span></span>
+<span><span class="va">BSC_Rawdata</span> <span class="op">&lt;-</span> <span class="va">BSC_proveedores</span><span class="op">[</span> ,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">4</span>,<span class="fl">5</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="va">BSC_Rawdata</span></span>
+<span><span class="co">#&gt;     Tecnologia Normas Capital Equipo</span></span>
+<span><span class="co">#&gt; 1          5.1    3.5     1.4    0.2</span></span>
+<span><span class="co">#&gt; 2          4.9    3.0     1.4    0.2</span></span>
+<span><span class="co">#&gt; 3          4.7    3.2     1.3    0.2</span></span>
+<span><span class="co">#&gt; 4          4.6    3.1     1.5    0.2</span></span>
+<span><span class="co">#&gt; 5          5.0    3.6     1.4    0.2</span></span>
+<span><span class="co">#&gt; 6          5.4    3.9     1.7    0.4</span></span>
+<span><span class="co">#&gt; 7          4.6    3.4     1.4    0.3</span></span>
+<span><span class="co">#&gt; 8          5.0    3.4     1.5    0.2</span></span>
+<span><span class="co">#&gt; 9          4.4    2.9     1.4    0.2</span></span>
+<span><span class="co">#&gt; 10         4.9    3.1     1.5    0.1</span></span>
+<span><span class="co">#&gt; 11         5.4    3.7     1.5    0.2</span></span>
+<span><span class="co">#&gt; 12         4.8    3.4     1.6    0.2</span></span>
+<span><span class="co">#&gt; 13         4.8    3.0     1.4    0.1</span></span>
+<span><span class="co">#&gt; 14         4.3    3.0     1.1    0.1</span></span>
+<span><span class="co">#&gt; 15         5.8    4.0     1.2    0.2</span></span>
+<span><span class="co">#&gt; 16         5.7    4.4     1.5    0.4</span></span>
+<span><span class="co">#&gt; 17         5.4    3.9     1.3    0.4</span></span>
+<span><span class="co">#&gt; 18         5.1    3.5     1.4    0.3</span></span>
+<span><span class="co">#&gt; 19         5.7    3.8     1.7    0.3</span></span>
+<span><span class="co">#&gt; 20         5.1    3.8     1.5    0.3</span></span>
+<span><span class="co">#&gt; 21         5.4    3.4     1.7    0.2</span></span>
+<span><span class="co">#&gt; 22         5.1    3.7     1.5    0.4</span></span>
+<span><span class="co">#&gt; 23         4.6    3.6     1.0    0.2</span></span>
+<span><span class="co">#&gt; 24         5.1    3.3     1.7    0.5</span></span>
+<span><span class="co">#&gt; 25         4.8    3.4     1.9    0.2</span></span>
+<span><span class="co">#&gt; 26         5.0    3.0     1.6    0.2</span></span>
+<span><span class="co">#&gt; 27         5.0    3.4     1.6    0.4</span></span>
+<span><span class="co">#&gt; 28         5.2    3.5     1.5    0.2</span></span>
+<span><span class="co">#&gt; 29         5.2    3.4     1.4    0.2</span></span>
+<span><span class="co">#&gt; 30         4.7    3.2     1.6    0.2</span></span>
+<span><span class="co">#&gt; 31         4.8    3.1     1.6    0.2</span></span>
+<span><span class="co">#&gt; 32         5.4    3.4     1.5    0.4</span></span>
+<span><span class="co">#&gt; 33         5.2    4.1     1.5    0.1</span></span>
+<span><span class="co">#&gt; 34         5.5    4.2     1.4    0.2</span></span>
+<span><span class="co">#&gt; 35         4.9    3.1     1.5    0.2</span></span>
+<span><span class="co">#&gt; 36         5.0    3.2     1.2    0.2</span></span>
+<span><span class="co">#&gt; 37         5.5    3.5     1.3    0.2</span></span>
+<span><span class="co">#&gt; 38         4.9    3.6     1.4    0.1</span></span>
+<span><span class="co">#&gt; 39         4.4    3.0     1.3    0.2</span></span>
+<span><span class="co">#&gt; 40         5.1    3.4     1.5    0.2</span></span>
+<span><span class="co">#&gt; 41         5.0    3.5     1.3    0.3</span></span>
+<span><span class="co">#&gt; 42         4.5    2.3     1.3    0.3</span></span>
+<span><span class="co">#&gt; 43         4.4    3.2     1.3    0.2</span></span>
+<span><span class="co">#&gt; 44         5.0    3.5     1.6    0.6</span></span>
+<span><span class="co">#&gt; 45         5.1    3.8     1.9    0.4</span></span>
+<span><span class="co">#&gt; 46         4.8    3.0     1.4    0.3</span></span>
+<span><span class="co">#&gt; 47         5.1    3.8     1.6    0.2</span></span>
+<span><span class="co">#&gt; 48         4.6    3.2     1.4    0.2</span></span>
+<span><span class="co">#&gt; 49         5.3    3.7     1.5    0.2</span></span>
+<span><span class="co">#&gt; 50         5.0    3.3     1.4    0.2</span></span>
+<span><span class="co">#&gt; 51         7.0    3.2     4.7    1.4</span></span>
+<span><span class="co">#&gt; 52         6.4    3.2     4.5    1.5</span></span>
+<span><span class="co">#&gt; 53         6.9    3.1     4.9    1.5</span></span>
+<span><span class="co">#&gt; 54         5.5    2.3     4.0    1.3</span></span>
+<span><span class="co">#&gt; 55         6.5    2.8     4.6    1.5</span></span>
+<span><span class="co">#&gt; 56         5.7    2.8     4.5    1.3</span></span>
+<span><span class="co">#&gt; 57         6.3    3.3     4.7    1.6</span></span>
+<span><span class="co">#&gt; 58         4.9    2.4     3.3    1.0</span></span>
+<span><span class="co">#&gt; 59         6.6    2.9     4.6    1.3</span></span>
+<span><span class="co">#&gt; 60         5.2    2.7     3.9    1.4</span></span>
+<span><span class="co">#&gt; 61         5.0    2.0     3.5    1.0</span></span>
+<span><span class="co">#&gt; 62         5.9    3.0     4.2    1.5</span></span>
+<span><span class="co">#&gt; 63         6.0    2.2     4.0    1.0</span></span>
+<span><span class="co">#&gt; 64         6.1    2.9     4.7    1.4</span></span>
+<span><span class="co">#&gt; 65         5.6    2.9     3.6    1.3</span></span>
+<span><span class="co">#&gt; 66         6.7    3.1     4.4    1.4</span></span>
+<span><span class="co">#&gt; 67         5.6    3.0     4.5    1.5</span></span>
+<span><span class="co">#&gt; 68         5.8    2.7     4.1    1.0</span></span>
+<span><span class="co">#&gt; 69         6.2    2.2     4.5    1.5</span></span>
+<span><span class="co">#&gt; 70         5.6    2.5     3.9    1.1</span></span>
+<span><span class="co">#&gt; 71         5.9    3.2     4.8    1.8</span></span>
+<span><span class="co">#&gt; 72         6.1    2.8     4.0    1.3</span></span>
+<span><span class="co">#&gt; 73         6.3    2.5     4.9    1.5</span></span>
+<span><span class="co">#&gt; 74         6.1    2.8     4.7    1.2</span></span>
+<span><span class="co">#&gt; 75         6.4    2.9     4.3    1.3</span></span>
+<span><span class="co">#&gt; 76         6.6    3.0     4.4    1.4</span></span>
+<span><span class="co">#&gt; 77         6.8    2.8     4.8    1.4</span></span>
+<span><span class="co">#&gt; 78         6.7    3.0     5.0    1.7</span></span>
+<span><span class="co">#&gt; 79         6.0    2.9     4.5    1.5</span></span>
+<span><span class="co">#&gt; 80         5.7    2.6     3.5    1.0</span></span>
+<span><span class="co">#&gt; 81         5.5    2.4     3.8    1.1</span></span>
+<span><span class="co">#&gt; 82         5.5    2.4     3.7    1.0</span></span>
+<span><span class="co">#&gt; 83         5.8    2.7     3.9    1.2</span></span>
+<span><span class="co">#&gt; 84         6.0    2.7     5.1    1.6</span></span>
+<span><span class="co">#&gt; 85         5.4    3.0     4.5    1.5</span></span>
+<span><span class="co">#&gt; 86         6.0    3.4     4.5    1.6</span></span>
+<span><span class="co">#&gt; 87         6.7    3.1     4.7    1.5</span></span>
+<span><span class="co">#&gt; 88         6.3    2.3     4.4    1.3</span></span>
+<span><span class="co">#&gt; 89         5.6    3.0     4.1    1.3</span></span>
+<span><span class="co">#&gt; 90         5.5    2.5     4.0    1.3</span></span>
+<span><span class="co">#&gt; 91         5.5    2.6     4.4    1.2</span></span>
+<span><span class="co">#&gt; 92         6.1    3.0     4.6    1.4</span></span>
+<span><span class="co">#&gt; 93         5.8    2.6     4.0    1.2</span></span>
+<span><span class="co">#&gt; 94         5.0    2.3     3.3    1.0</span></span>
+<span><span class="co">#&gt; 95         5.6    2.7     4.2    1.3</span></span>
+<span><span class="co">#&gt; 96         5.7    3.0     4.2    1.2</span></span>
+<span><span class="co">#&gt; 97         5.7    2.9     4.2    1.3</span></span>
+<span><span class="co">#&gt; 98         6.2    2.9     4.3    1.3</span></span>
+<span><span class="co">#&gt; 99         5.1    2.5     3.0    1.1</span></span>
+<span><span class="co">#&gt; 100        5.7    2.8     4.1    1.3</span></span>
+<span><span class="co">#&gt; 101        6.3    3.3     6.0    2.5</span></span>
+<span><span class="co">#&gt; 102        5.8    2.7     5.1    1.9</span></span>
+<span><span class="co">#&gt; 103        7.1    3.0     5.9    2.1</span></span>
+<span><span class="co">#&gt; 104        6.3    2.9     5.6    1.8</span></span>
+<span><span class="co">#&gt; 105        6.5    3.0     5.8    2.2</span></span>
+<span><span class="co">#&gt; 106        7.6    3.0     6.6    2.1</span></span>
+<span><span class="co">#&gt; 107        4.9    2.5     4.5    1.7</span></span>
+<span><span class="co">#&gt; 108        7.3    2.9     6.3    1.8</span></span>
+<span><span class="co">#&gt; 109        6.7    2.5     5.8    1.8</span></span>
+<span><span class="co">#&gt; 110        7.2    3.6     6.1    2.5</span></span>
+<span><span class="co">#&gt; 111        6.5    3.2     5.1    2.0</span></span>
+<span><span class="co">#&gt; 112        6.4    2.7     5.3    1.9</span></span>
+<span><span class="co">#&gt; 113        6.8    3.0     5.5    2.1</span></span>
+<span><span class="co">#&gt; 114        5.7    2.5     5.0    2.0</span></span>
+<span><span class="co">#&gt; 115        5.8    2.8     5.1    2.4</span></span>
+<span><span class="co">#&gt; 116        6.4    3.2     5.3    2.3</span></span>
+<span><span class="co">#&gt; 117        6.5    3.0     5.5    1.8</span></span>
+<span><span class="co">#&gt; 118        7.7    3.8     6.7    2.2</span></span>
+<span><span class="co">#&gt; 119        7.7    2.6     6.9    2.3</span></span>
+<span><span class="co">#&gt; 120        6.0    2.2     5.0    1.5</span></span>
+<span><span class="co">#&gt; 121        6.9    3.2     5.7    2.3</span></span>
+<span><span class="co">#&gt; 122        5.6    2.8     4.9    2.0</span></span>
+<span><span class="co">#&gt; 123        7.7    2.8     6.7    2.0</span></span>
+<span><span class="co">#&gt; 124        6.3    2.7     4.9    1.8</span></span>
+<span><span class="co">#&gt; 125        6.7    3.3     5.7    2.1</span></span>
+<span><span class="co">#&gt; 126        7.2    3.2     6.0    1.8</span></span>
+<span><span class="co">#&gt; 127        6.2    2.8     4.8    1.8</span></span>
+<span><span class="co">#&gt; 128        6.1    3.0     4.9    1.8</span></span>
+<span><span class="co">#&gt; 129        6.4    2.8     5.6    2.1</span></span>
+<span><span class="co">#&gt; 130        7.2    3.0     5.8    1.6</span></span>
+<span><span class="co">#&gt; 131        7.4    2.8     6.1    1.9</span></span>
+<span><span class="co">#&gt; 132        7.9    3.8     6.4    2.0</span></span>
+<span><span class="co">#&gt; 133        6.4    2.8     5.6    2.2</span></span>
+<span><span class="co">#&gt; 134        6.3    2.8     5.1    1.5</span></span>
+<span><span class="co">#&gt; 135        6.1    2.6     5.6    1.4</span></span>
+<span><span class="co">#&gt; 136        7.7    3.0     6.1    2.3</span></span>
+<span><span class="co">#&gt; 137        6.3    3.4     5.6    2.4</span></span>
+<span><span class="co">#&gt; 138        6.4    3.1     5.5    1.8</span></span>
+<span><span class="co">#&gt; 139        6.0    3.0     4.8    1.8</span></span>
+<span><span class="co">#&gt; 140        6.9    3.1     5.4    2.1</span></span>
+<span><span class="co">#&gt; 141        6.7    3.1     5.6    2.4</span></span>
+<span><span class="co">#&gt; 142        6.9    3.1     5.1    2.3</span></span>
+<span><span class="co">#&gt; 143        5.8    2.7     5.1    1.9</span></span>
+<span><span class="co">#&gt; 144        6.8    3.2     5.9    2.3</span></span>
+<span><span class="co">#&gt; 145        6.7    3.3     5.7    2.5</span></span>
+<span><span class="co">#&gt; 146        6.7    3.0     5.2    2.3</span></span>
+<span><span class="co">#&gt; 147        6.3    2.5     5.0    1.9</span></span>
+<span><span class="co">#&gt; 148        6.5    3.0     5.2    2.0</span></span>
+<span><span class="co">#&gt; 149        6.2    3.4     5.4    2.3</span></span>
+<span><span class="co">#&gt; 150        5.9    3.0     5.1    1.8</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/car/man/scatterplotMatrix.html">scatterplotMatrix</a></span><span class="op">(</span><span class="va">BSC_Rawdata</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="05-Cluster_Proveedores_files/figure-html/unnamed-chunk-9-1.png" width="672"></div>
+<p>Este tipo de análisis multivariado nos permite construir una matriz de gráficas que en la diagonal principal nos muestra los ya conocidos gráficos de densidad.
+Luego cada una de las otras intersecciones nos señala si existe algún tipo de correlación montónica (creciente o decreciente) entre las variables analizadas.
+Esto es importante, pues a priori no sabemos si las dimensiones que estamos usando tienen o no relación entre ellas. En otras palabras si las dimensiones o metas tienen correlación quiere decir que podríamos prescindir de una de ellas.
+Así capital y equipo parecen a priori tener alta linealidad en su correlación.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Binquan Wang et al., &lt;span&gt;“Giant &lt;span&gt;Electric&lt;/span&gt; &lt;span&gt;Field&lt;/span&gt;-&lt;span&gt;Induced&lt;/span&gt; &lt;span&gt;Strain&lt;/span&gt; with &lt;span&gt;High&lt;/span&gt; &lt;span&gt;Temperature&lt;/span&gt;-&lt;span&gt;Stability&lt;/span&gt; in &lt;span&gt;Textured&lt;/span&gt; &lt;span&gt;KNN&lt;/span&gt;-&lt;span&gt;Based&lt;/span&gt; &lt;span&gt;Piezoceramics&lt;/span&gt; for &lt;span&gt;Actuator&lt;/span&gt; &lt;span&gt;Applications&lt;/span&gt;,”&lt;/span&gt; &lt;em&gt;Advanced Functional Materials&lt;/em&gt;, 2023, 2214643.&lt;/p&gt;"><sup>20</sup></a></span></p>
+<p>Notar también las líneas de puntos que nos marcan el intervalo de confianza que podríamos tener sobre esa variable. Es justamente ese margen el que nos perite establecer la franja de flotación que motiva el paso de verde a amarillo. Si se desplazase a tres veces la varianza estaríamos en rojo.</p>
+</div>
+<div id="mínimo-numero-de-dimensiones" class="section level2" number="6.8">
+<h2>
+<span class="header-section-number">6.8</span> Mínimo numero de dimensiones<a class="anchor" aria-label="anchor" href="#m%C3%ADnimo-numero-de-dimensiones"><i class="fas fa-link"></i></a>
+</h2>
+<p>Cuándo nos enfrentamos a situaciones como esta, suele ocurrir que al definir los indicadores nos encontramos con el dilema del gran volumen de datos. Esto no es un problema que provenga tan solo del número de casos que estudiamos con el objeto de conocer el recorrido de una variable, sino más bien por la gran cantidad de variables o calificadores con los que los definimos o estudiamos.
+Ya vimos en el caso anterior como dimensiones o variables que tienen distinto nombre no son en realidad más que la misma cosa.
+En el ejemplo anterior la pregunta era si podríamos prescindir de una variable. En este ejercicio trataremos de ver cuantas podemos eliminar. La consigna es Mientras menos variables mejor, y la restricción que impondremos será la de perder variables siempre que podamos seguir describiendo con alto nivel de confianza el comportamiento de todos los casos. Otra mirada sobre el problema podría enunciarse así. “Como puedo saber que valores o recorrido le impondría a la mínima cantidad de variables para calificar como candidato interesante en la nómina de contratistas de las grandes empresas constructoras”.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;T. Adithiyaa, D. Chandramohan, and T. Sathish, &lt;span&gt;“Optimal Prediction of Process Parameters by &lt;span&gt;GWO&lt;/span&gt;-&lt;span&gt;KNN&lt;/span&gt; in Stirring-Squeeze Casting of &lt;span&gt;AA2219&lt;/span&gt; Reinforced Metal Matrix Composites,”&lt;/span&gt; &lt;em&gt;Materials Today: Proceedings&lt;/em&gt; 21 (2020): 1000–1007.&lt;/p&gt;"><sup>21</sup></a></span></p>
+<p>Para auxilio en este problema utilizaremos el Método de Análisis de Componentes Principales. En este caso y al igual que en el caso anterior usaré un subconjunto de datos (sólo los numéricos) y en especial la matriz de correlación. Esta matriz está armada con las pendientes de las aproximaciones lineales de las rectas del gráfico de densidades.</p>
+<p>Las técnicas que usaremos pretenden desde sus diferentes enfoques abrodar el problema de simplificar la interpretación del comportamiento individual y colectivo de los casos (empresas constructoras y contratista) y como podemos valernos del proceso de ingeniería inversa para mover los controles de nuestra “nave” en el tablero de comando con el que fijaremos la altura de la vara del tablero de control.</p>
+</div>
+<div id="análisis-de-componentes-principales" class="section level2" number="6.9">
+<h2>
+<span class="header-section-number">6.9</span> Análisis de Componentes Principales<a class="anchor" aria-label="anchor" href="#an%C3%A1lisis-de-componentes-principales"><i class="fas fa-link"></i></a>
+</h2>
+<p>Crearemos un objeto nuevo que se llamará PC1 (por Principal Component 1) y la instrucción con el que crearemos la matriz de correlaciones es princomp.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Hossein Rezaei Estakhroueiyeh and Esmat Rashedi, &lt;span&gt;“Detecting Moldy &lt;span&gt;Bread&lt;/span&gt; Using an &lt;span&gt;E&lt;/span&gt;-Nose and the &lt;span&gt;KNN&lt;/span&gt; Classifier,”&lt;/span&gt; in &lt;em&gt;2015 5th &lt;span&gt;International&lt;/span&gt; &lt;span&gt;Conference&lt;/span&gt; on &lt;span&gt;Computer&lt;/span&gt; and &lt;span&gt;Knowledge&lt;/span&gt; &lt;span&gt;Engineering&lt;/span&gt; (&lt;span&gt;ICCKE&lt;/span&gt;)&lt;/em&gt; (IEEE, 2015), 251–55.&lt;/p&gt;"><sup>22</sup></a></span></p>
+<div class="sourceCode" id="cb119"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">PC1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/princomp.html">princomp</a></span><span class="op">(</span><span class="va">BSC_Rawdata</span><span class="op">)</span></span>
+<span><span class="va">PC1</span></span>
+<span><span class="co">#&gt; Call:</span></span>
+<span><span class="co">#&gt; princomp(x = BSC_Rawdata)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Standard deviations:</span></span>
+<span><span class="co">#&gt;    Comp.1    Comp.2    Comp.3    Comp.4 </span></span>
+<span><span class="co">#&gt; 2.0494032 0.4909714 0.2787259 0.1538707 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;  4  variables and  150 observations.</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">PC1</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="05-Cluster_Proveedores_files/figure-html/unnamed-chunk-10-1.png" width="672"></div>
+<p>En el ploteo podemos ver que uno de los componentes principales aporta casi el 4 veces más de la información referida al comportamiento de la varianza de todos los casos. Este componente es el que más incluye en la clasificación o posible identificación del comportamiento de cada individuo de la muestra.</p>
+<p>&lt;&lt;sumario_pc1,echo=TRUE&gt;&gt;=</p>
+<div class="sourceCode" id="cb120"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">PC1</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Importance of components:</span></span>
+<span><span class="co">#&gt;                           Comp.1     Comp.2     Comp.3</span></span>
+<span><span class="co">#&gt; Standard deviation     2.0494032 0.49097143 0.27872586</span></span>
+<span><span class="co">#&gt; Proportion of Variance 0.9246187 0.05306648 0.01710261</span></span>
+<span><span class="co">#&gt; Cumulative Proportion  0.9246187 0.97768521 0.99478782</span></span>
+<span><span class="co">#&gt;                             Comp.4</span></span>
+<span><span class="co">#&gt; Standard deviation     0.153870700</span></span>
+<span><span class="co">#&gt; Proportion of Variance 0.005212184</span></span>
+<span><span class="co">#&gt; Cumulative Proportion  1.000000000</span></span></code></pre></div>
+<p>Si observamos bien el reporte que nos entrega el comando summary nos podemos dar cuenta que con los dos primeros componentes podríamos explicar 97.768521% del comportamiento de las muestras de la población. En nuestro caso del total de empresas contratistas analizadas.</p>
+<p>¿Qué pasaría si representamos a las empresas en un gŕafico en el que las variables de los ejes sean los dos componentes principales? , pues tendríamos un primer indicio de la bondad de las dimensiones o variables para agrupar a las muestras
+Esto lo podemos realizar con el comando bilot.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;Gaoyuan Liu et al., &lt;span&gt;“An Enhanced Intrusion Detection Model Based on Improved &lt;span class="nocase"&gt;kNN&lt;/span&gt; in &lt;span&gt;WSNs&lt;/span&gt;,”&lt;/span&gt; &lt;em&gt;Sensors&lt;/em&gt; 22, no. 4 (2022): 1407.&lt;/p&gt;'><sup>23</sup></a></span></p>
+<div class="sourceCode" id="cb121"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/biplot.html">biplot</a></span><span class="op">(</span><span class="va">PC1</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="05-Cluster_Proveedores_files/figure-html/unnamed-chunk-12-1.png" width="672"></div>
+<p>Los ńumeros que aparecen el el diagrama son el caso de estudio (renglón en que se encuentra la empresa contratista).
+A simple vista observamos que hay como tres tipos distintos empresas (tres nubes claramente diferenciadas). Aquí nos queda claro que el principal componente que ordena o divide a estas colonias es indistintamente el CAPITAL o el EQUIPAMIENTO con que cuentas.</p>
+<p>También podemos ver que hay empresas como la 15, 16, 132, 118, 61, 107 sobre las que el gráfico nos recomienda estudiarlas más pues no es capaz de clasificarlas bien (son casos extremos o anómalos). Tal vez con poco capital o sin equipo pueden llegar a ser competitivas o interesantes para las grandes constructoras.<span class="citation"><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;A. Moosavian et al., &lt;span&gt;“Comparison of Two Classifiers; &lt;span&gt;K&lt;/span&gt;-Nearest Neighbor and Artificial Neural Network, for Fault Diagnosis on a Main Engine Journal-Bearing,”&lt;/span&gt; &lt;em&gt;Shock and Vibration&lt;/em&gt; 20, no. 2 (2013): 263–72.&lt;/p&gt;"><sup>24</sup></a></span></p>
+<p>Por último la dimensión referida a la cetificación de NORMAS es la dimensión que menos valor aporta. Esto no implica que no certificar sea poco importante, sino que probablemente sea una pregunta irrelevante si todos contestaron que SI certificaron ISO 9000.</p>
+</div>
+<div id="scores" class="section level2" number="6.10">
+<h2>
+<span class="header-section-number">6.10</span> Scores<a class="anchor" aria-label="anchor" href="#scores"><i class="fas fa-link"></i></a>
+</h2>
+<p>Si el comportamiento del componente va hacia el lado positivo, se debe interpretar como que a mayor desempeño mejor resultado o calificación. Si algún componente apunta para el lado negativo tendremos que pensar que a mayor calificación en esa dimensión pero sería el desempeño.
+La variable PC1 que usamos tiene mucha información valiosa.
+Revise todo el contenido, voy a mostrar una dimensión que es el score que indica como se comportarían todos los individuos si sólo los analizásemos con los componentes 1 y 2.</p>
+<div class="sourceCode" id="cb122"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">acp1</span> <span class="op">&lt;-</span> <span class="va">PC1</span><span class="op">$</span><span class="va">scores</span></span>
+<span><span class="va">acp1</span> <span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span> , <span class="op">]</span></span>
+<span><span class="co">#&gt;          Comp.1      Comp.2      Comp.3       Comp.4</span></span>
+<span><span class="co">#&gt;  [1,] -2.684126  0.31939725  0.02791483  0.002262437</span></span>
+<span><span class="co">#&gt;  [2,] -2.714142 -0.17700123  0.21046427  0.099026550</span></span>
+<span><span class="co">#&gt;  [3,] -2.888991 -0.14494943 -0.01790026  0.019968390</span></span>
+<span><span class="co">#&gt;  [4,] -2.745343 -0.31829898 -0.03155937 -0.075575817</span></span>
+<span><span class="co">#&gt;  [5,] -2.728717  0.32675451 -0.09007924 -0.061258593</span></span>
+<span><span class="co">#&gt;  [6,] -2.280860  0.74133045 -0.16867766 -0.024200858</span></span>
+<span><span class="co">#&gt;  [7,] -2.820538 -0.08946138 -0.25789216 -0.048143106</span></span>
+<span><span class="co">#&gt;  [8,] -2.626145  0.16338496  0.02187932 -0.045297871</span></span>
+<span><span class="co">#&gt;  [9,] -2.886383 -0.57831175 -0.02075957 -0.026744736</span></span>
+<span><span class="co">#&gt; [10,] -2.672756 -0.11377425  0.19763272 -0.056295401</span></span></code></pre></div>
+<p>Voy a realizar el mismo score pero ahora solo con los componentes 1 y 2</p>
+<div class="sourceCode" id="cb123"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">acp2</span> <span class="op">&lt;-</span><span class="va">PC1</span><span class="op">$</span><span class="va">scores</span><span class="op">[</span> ,<span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">acp2</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="05-Cluster_Proveedores_files/figure-html/unnamed-chunk-14-1.png" width="672"></div>
+<p>Aquí ya podemos ver más claramente la división que se produce entre distintos clusters. Para poder diferencias aún más recurriremos a un nuevo tipo de análisis diferenciado que se llama análisis de clusters</p>
+</div>
+<div id="análisis-de-clusters-o-conglomerados" class="section level2" number="6.11">
+<h2>
+<span class="header-section-number">6.11</span> Análisis de Clusters o Conglomerados<a class="anchor" aria-label="anchor" href="#an%C3%A1lisis-de-clusters-o-conglomerados"><i class="fas fa-link"></i></a>
+</h2>
+<p>Para realizar este análisis recurriremos a cargar la biblioteca clusters</p>
+<p>En el análisis de conglomerados existen dos formas clásicas de estudio. Ambas recurren a las distancias euclídeas entre las muestras. Tenemos aproximaciones Jerárquicas y No Jerárquicas
+<strong>AGNES, CLARA, DIANA, MORA, PAM</strong> son nombres de las técnicas que la biblioteca Clusters usa. Todas las técnicas se caracterizan por ser un acrónimo de la combinación de aproximaciones que usan (Single Linkage, Complete Linkage, Average Linkage) .</p>
+<p>Todas tienen nombre de mujer, pero esto no quiere necesariamente decir que se trate de una técnica con complicaciones inesperadas, sino más bien que si quieres lo mejor de una de ellas es mejor que la entiendas e indagues en la página del manual.</p>
+<div class="sourceCode" id="cb124"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://svn.r-project.org/R-packages/trunk/cluster/">cluster</a></span><span class="op">)</span></span>
+<span><span class="va">agp1</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/cluster/man/agnes.html">agnes</a></span><span class="op">(</span><span class="va">acp2</span>,method<span class="op">=</span><span class="st">"single"</span><span class="op">)</span></span>
+<span><span class="va">agp2</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/cluster/man/agnes.html">agnes</a></span><span class="op">(</span><span class="va">acp2</span>,method<span class="op">=</span><span class="st">"complete"</span><span class="op">)</span></span>
+<span><span class="va">agp3</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/cluster/man/agnes.html">agnes</a></span><span class="op">(</span><span class="va">acp2</span>,method<span class="op">=</span><span class="st">"average"</span><span class="op">)</span></span></code></pre></div>
+<p>Con la clasificacion terminada procederemos a ver gráficamente el resultado.</p>
+<div class="sourceCode" id="cb125"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">acp2</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">agp1</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">agp2</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="05-Cluster_Proveedores_files/figure-html/unnamed-chunk-16-1.png" width="672"></div>
+<div class="sourceCode" id="cb126"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">agp3</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="05-Cluster_Proveedores_files/figure-html/unnamed-chunk-16-2.png" width="672"></div>
+<p>Pasa asignar las muestras a grupos usaré el comendo cuttree que me permite valerme de las franjas blancas de corte del los gráficos para armar los clusters</p>
+<div class="sourceCode" id="cb127"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">agpcut</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/cutree.html">cutree</a></span><span class="op">(</span><span class="va">agp3</span>,<span class="fl">3</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">acp2</span>,col<span class="op">=</span><span class="va">agpcut</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="05-Cluster_Proveedores_files/figure-html/unnamed-chunk-17-1.png" width="672"></div>
+<div id="otros-gráficos-de-agrupamiento" class="section level3" number="6.11.1">
+<h3>
+<span class="header-section-number">6.11.1</span> Otros gráficos de agrupamiento<a class="anchor" aria-label="anchor" href="#otros-gr%C3%A1ficos-de-agrupamiento"><i class="fas fa-link"></i></a>
+</h3>
+<p>Método Clara</p>
+<div class="sourceCode" id="cb128"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/cluster/man/clara.html">clara</a></span><span class="op">(</span><span class="va">BSC_Rawdata</span>,<span class="fl">5</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="05-Cluster_Proveedores_files/figure-html/unnamed-chunk-18-1.png" width="672"><img src="05-Cluster_Proveedores_files/figure-html/unnamed-chunk-18-2.png" width="672"></p>
+</div>
+</div>
+<div id="método-melisa" class="section level2" number="6.12">
+<h2>
+<span class="header-section-number">6.12</span> Método Melisa<a class="anchor" aria-label="anchor" href="#m%C3%A9todo-melisa"><i class="fas fa-link"></i></a>
+</h2>
+<div class="sourceCode" id="cb129"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/cluster/man/diana.html">diana</a></span><span class="op">(</span><span class="va">BSC_Rawdata</span><span class="op">)</span>,ask <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<p><img src="05-Cluster_Proveedores_files/figure-html/unnamed-chunk-19-1.png" width="672"><img src="05-Cluster_Proveedores_files/figure-html/unnamed-chunk-19-2.png" width="672"></p>
+
+</div>
+</div>
+
+  <div class="chapter-nav">
+<div class="prev"><a href="agrupaci%C3%B3n-k-means.html"><span class="header-section-number">5</span> Agrupación K-Means</a></div>
+<div class="next"><a href="redes-neuronales-artificiales.html"><span class="header-section-number">7</span> Redes Neuronales artificiales</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#clusterizaci%C3%B3n"><span class="header-section-number">6</span> Clusterización</a></li>
+<li>
+<a class="nav-link" href="#bibliograf%C3%ADa-recomendada-3"><span class="header-section-number">6.1</span> Bibliografía recomendada</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#carga-de-datos-desde-archivos-externos"><span class="header-section-number">6.1.1</span> Carga de datos desde archivos externos</a></li></ul>
+</li>
+<li><a class="nav-link" href="#captura-de-datos"><span class="header-section-number">6.2</span> Captura de datos</a></li>
+<li>
+<a class="nav-link" href="#desde-d%C3%B3nde-podemos-cargar-datos"><span class="header-section-number">6.3</span> ¿Desde dónde podemos cargar datos?</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#revisi%C3%B3n-de-datos-ejemplo"><span class="header-section-number">6.3.1</span> Revisión de Datos Ejemplo</a></li></ul>
+</li>
+<li><a class="nav-link" href="#an%C3%A1lisis-exploratorio"><span class="header-section-number">6.4</span> Análisis Exploratorio</a></li>
+<li><a class="nav-link" href="#historgramas-an%C3%A1lisis-de-histograma"><span class="header-section-number">6.5</span> Historgramas Análisis de Histograma</a></li>
+<li><a class="nav-link" href="#gr%C3%A1ficos-de-densidad-1"><span class="header-section-number">6.6</span> Gráficos de Densidad</a></li>
+<li><a class="nav-link" href="#gr%C3%A1ficas-ralas-y-an%C3%A1lisis-multivariado"><span class="header-section-number">6.7</span> Gráficas Ralas y Análisis Multivariado</a></li>
+<li><a class="nav-link" href="#m%C3%ADnimo-numero-de-dimensiones"><span class="header-section-number">6.8</span> Mínimo numero de dimensiones</a></li>
+<li><a class="nav-link" href="#an%C3%A1lisis-de-componentes-principales"><span class="header-section-number">6.9</span> Análisis de Componentes Principales</a></li>
+<li><a class="nav-link" href="#scores"><span class="header-section-number">6.10</span> Scores</a></li>
+<li>
+<a class="nav-link" href="#an%C3%A1lisis-de-clusters-o-conglomerados"><span class="header-section-number">6.11</span> Análisis de Clusters o Conglomerados</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#otros-gr%C3%A1ficos-de-agrupamiento"><span class="header-section-number">6.11.1</span> Otros gráficos de agrupamiento</a></li></ul>
+</li>
+<li><a class="nav-link" href="#m%C3%A9todo-melisa"><span class="header-section-number">6.12</span> Método Melisa</a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+<li><a id="book-source" href="https://ricardorpalma.github.io/MCSC_Op_4.0/Cap_1//blob/master/05-Cluster_Proveedores.Rmd">View source <i class="fab fa-gitlab"></i></a></li>
+          <li><a id="book-edit" href="https://ricardorpalma.github.io/MCSC_Op_4.0/Cap_1//edit/master/05-Cluster_Proveedores.Rmd">Edit this page <i class="fab fa-gitlab"></i></a></li>
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>Analítica de Datos 4.0</strong>" was written by Ricardo R. Palma. It was last built on 2023-06-30.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer><!-- dynamically load mathjax for compatibility with self-contained --><script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script><script type="text/x-mathjax-config">const popovers = document.querySelectorAll('a.footnote-ref[data-toggle="popover"]');
+for (let popover of popovers) {
+  const div = document.createElement('div');
+  div.setAttribute('style', 'position: absolute; top: 0, left:0; width:0, height:0, overflow: hidden; visibility: hidden;');
+  div.innerHTML = popover.getAttribute('data-content');
+
+  var has_math = div.querySelector("span.math");
+  if (has_math) {
+    document.body.appendChild(div);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
+    MathJax.Hub.Queue(function() {
+      popover.setAttribute('data-content', div.innerHTML);
+      document.body.removeChild(div);
+    })
+  }
+}
+</script>
+</body>
+</html>
